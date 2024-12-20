@@ -56,7 +56,7 @@ void AddFlagAction::ReadActionParameters()
 		return;
 	}
 
-	if (flagPos.GetCellNum() == 1) // Check if start cell is the first cell
+	if (flagPos.GetCellNum() == 1 || flagPos.GetCellNum() == 55) // Check if start cell is the first cell
 	{
 		pOut->PrintMessage("Error: Start cell cannot be the first cell. Click anywhere to continue...");
 		pIn->GetPointClicked(x, y); // Wait for user to click
