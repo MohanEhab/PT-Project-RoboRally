@@ -29,6 +29,7 @@ void Belt::Apply(Grid* pGrid, Player* pPlayer)
 	int x, y;
 	pOut->PrintMessage("You have reached a belt. Click to continue...");
 	pIn->GetPointClicked(x, y); // Wait for the user to click
+	pOut->ClearStatusBar();
 	// 2- Apply the belt's effect by moving the player to the endCellPos
 	 pGrid->UpdatePlayerCell(pPlayer, endCellPos);
 
