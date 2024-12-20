@@ -62,7 +62,7 @@ void AddBeltAction::ReadActionParameters()
 		pOut->ClearStatusBar(); // Clear the status bar after click
 		return;
 	}
-	if (!pGrid->IsCellEmpty(endPos)) // Check if start cell already contains an object
+	if (!pGrid->IsCellEmpty(endPos)) // Check if end cell already contains an object
 	{
 		pOut->PrintMessage("Error: End cell already contains a game object. Click anywhere to continue...");
 		pIn->GetPointClicked(x, y); // Wait for user to click
