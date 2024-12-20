@@ -292,7 +292,7 @@ void Grid::DisPlayerInfo() const
 	for (int i = 0; i < MaxPlayerCount; i++)
 	{
 		Player* player = PlayerList[i];
-		playersInfo = playersInfo + "P" + to_string(player->GetPlayerNumber());
+		playersInfo = playersInfo + "P" + to_string(player->GetPlayerNumber()+1);
 		playersInfo += "(" + to_string(player->GetCell()->GetCellPosition().GetCellNum()) + ",";
 		playersInfo += DirectionString[player->GetDirection()];
 		playersInfo += "," + to_string(player->GetHealth()) + ")";
@@ -300,7 +300,7 @@ void Grid::DisPlayerInfo() const
 		if (i < MaxPlayerCount - 1)
 			playersInfo = playersInfo + ",";
 	}
-	playersInfo = playersInfo + "| curr=p " + to_string(currPlayerNumber);
+	playersInfo = playersInfo + "| Curr= P" + to_string(currPlayerNumber+1);
 	pOut->PrintPlayersInfo(playersInfo);
 }
 
