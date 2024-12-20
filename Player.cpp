@@ -24,7 +24,7 @@ Cell* Player::GetCell() const
 void Player::SetHealth(int h)
 {
 	// Ensure health is not negative
-	if (h < 0)
+	if (h < 0 || h >10)
 		this->health = 0;
 	else
 		this->health = h;
