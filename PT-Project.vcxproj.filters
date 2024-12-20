@@ -205,6 +205,11 @@
     <ClCompile Include="AddAntenna.cpp">
       <Filter>Actions</Filter>
     </ClCompile>
+    <ClCompile Include="ExitAction.cpp" />
+    <ClCompile Include="NewGameAction.cpp" />
+    <ClCompile Include="RebootAndRepairAction.cpp" />
+    <ClCompile Include="ToDesignModeAction.cpp" />
+    <ClCompile Include="ToPlayModeAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -340,5 +345,10 @@
     <ClInclude Include="AddAntenna.h">
       <Filter>Actions</Filter>
     </ClInclude>
+    <ClInclude Include="ExitAction.h" />
+    <ClInclude Include="NewGameAction.h" />
+    <ClInclude Include="RebootAndRepairAction.h" />
+    <ClInclude Include="ToDesignModeAction.h" />
+    <ClInclude Include="ToPlayModeAction.h" />
   </ItemGroup>
 </Project>

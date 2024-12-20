@@ -160,6 +160,11 @@ Belt * Grid::GetNextBelt(const CellPosition & position)
 	return NULL; // not found
 }
 
+Cell* Grid::GetStartingCell() const
+{
+	return CellList[NumVerticalCells - 1][0];
+}
+
 
 // ========= User Interface Functions =========
 
