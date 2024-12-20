@@ -56,9 +56,18 @@ void AddFlagAction::ReadActionParameters()
 		return;
 	}
 
-	if (flagPos.GetCellNum() == 1 || flagPos.GetCellNum() == 55) // Check if start cell is the first cell
+	if (flagPos.GetCellNum() == 1 ) // Check if flag cell is the first cell 1
 	{
-		pOut->PrintMessage("Error: Start cell cannot be the first cell. Click anywhere to continue...");
+		pOut->PrintMessage("Error: Flag cell cannot be the first cell. Click anywhere to continue...");
+		pIn->GetPointClicked(x, y); // Wait for user to click
+		pOut->ClearStatusBar(); // Clear the status bar after click
+		flagPos = CellPosition(-1, -1); // Invalidate flag position
+		return;
+	}
+
+	if ( flagPos.GetCellNum() == 55) // Check if flag cell is the last cell 55
+	{
+		pOut->PrintMessage("Error: Flag cell cannot be the last cell. Click anywhere to continue...");
 		pIn->GetPointClicked(x, y); // Wait for user to click
 		pOut->ClearStatusBar(); // Clear the status bar after click
 		flagPos = CellPosition(-1, -1); // Invalidate flag position
