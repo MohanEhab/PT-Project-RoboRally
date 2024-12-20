@@ -8,6 +8,12 @@
 #include "AddWaterPit.h"
 #include "AddDangerZone.h"
 #include "AddWorkshop.h"
+#include "Action.h"
+#include "ExitAction.h"
+#include "NewGameAction.h"
+#include "ToDesignModeAction.h"
+#include "RebootAndRepairAction.h"
+#include "ToPlayModeAction.h"
 
 ///TODO: Add #include for all action types
 
@@ -38,6 +44,8 @@ Grid * ApplicationManager::GetGrid() const
 void ApplicationManager::UpdateInterface() const
 {
 	pGrid->UpdateInterface();
+	if (UI.InterfaceMode == MODE_PLAY)
+		pGrid->DisPlayerInfo();
 }
 
 //==================================================================================//
@@ -90,16 +98,23 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		break;
 
 	case EXIT:
+		pAct = new ExitAction(this);
 		break;
 
-	case TO_PLAY_MODE:					//TODO:
-		pOut->CreatePlayModeToolBar(); // temporary till you made its action class (CHANGE THIS LATTER)
+	case NEW_GAME:
+		pAct = new NewGameAction(this);
 		break;
 
-	
+	case TO_PLAY_MODE:
+		pAct = new ToPlayModeAction(this);
+		break;
 
-	case TO_DESIGN_MODE:				//TODO:
-		pOut->CreateDesignModeToolBar(); // temporary till you made its action class (CHANGE THIS LATTER)
+	case REBOOT_AND_REPAIR:
+		pAct = new RebootAndRepairAction(this);
+		break;
+
+	case TO_DESIGN_MODE:
+		pAct = new ToDesignModeAction(this);
 		break;
 
 		

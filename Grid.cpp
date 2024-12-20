@@ -252,7 +252,67 @@ bool Grid::HasAntenna() const
 	}
 	return false; // No flag found
 }
+void Grid::ExecutePlayerCommands(const Command commands[], int numCommands)
+{
+	Player* currPlayer = GetCurrentPlayer(); // * to get curr player 
+	Command tempCommands[5];
+	for (int i = 0; i < numCommands; i++)
+	{
+		tempCommands[i] = commands[i];
+	}
+	currPlayer->ExecuteCommand(tempCommands, numCommands, this); //get it from player.cpp
 
+	UpdateInterface(); //update after executing commands
+}
+
+void Grid::ResetAllPlayers()
+{
+	Cell* start = GetStartingCell();
+	for (int i = 0; i < MaxPlayerCount; i++)
+	{
+		Player* player = PlayerList[i];
+		player->ClearDrawing(pOut); //clear player drawing, pOut beysheel el triangle el kan mawgod
+		player->SetCell(start); //ba2et a new cell khalas
+		player->Draw(pOut); //new triangle is drawn
+
+	}
+	currPlayerNumber = 0; //reset of player count
+}
+
+void Grid::DisPlayerInfo() const
+{
+	const char* DirectionString[] = { "UP","DOWN","RIGHT","LEFT" };
+	//static arr to get the dir as a string
+	string playersInfo = "";
+	for (int i = 0; i < MaxPlayerCount; i++)
+	{
+		Player* player = PlayerList[i];
+		playersInfo = playersInfo + "P" + to_string(player->GetPlayerNumber());
+		playersInfo += "(" + to_string(player->GetCell()->GetCellPosition().GetCellNum()) + ",";
+		playersInfo += DirectionString[player->GetDirection()];
+		playersInfo += "," + to_string(player->GetHealth()) + ")";
+
+		if (i < MaxPlayerCount - 1)
+			playersInfo = playersInfo + ",";
+	}
+	playersInfo = playersInfo + "| curr=p " + to_string(currPlayerNumber);
+	pOut->PrintPlayersInfo(playersInfo);
+}
+
+void Grid::ClearAllObjects()
+{
+	for (int i = 0; i < NumVerticalCells; i++)
+	{
+		for (int j = 0; j < NumHorizontalCells; j++)
+		{
+			Cell* cell = CellList[i][j];
+			if (cell->GetGameObject())
+			{
+				cell->SetGameObject(nullptr); //removes object if found
+			}
+		}
+	}
+}
 Cell* Grid::GetCell(const CellPosition& pos) const
 {
 	return CellList[pos.VCell()][pos.HCell()]; // Return the corresponding cell

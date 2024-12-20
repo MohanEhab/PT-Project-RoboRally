@@ -63,6 +63,10 @@ public:
 	bool HasAntenna() const;
 	bool IsCellEmpty(const CellPosition& pos) const;
 	Cell* GetCell(const CellPosition& pos) const;
+	void ExecutePlayerCommands(const Command commands[], int numCommands);
+	void ResetAllPlayers();
+	void DisPlayerInfo()const;
+	void ClearAllObjects();
 
 	///TODO: add any needed setter/getter "EXCEPT" ANY setters or getters of "CellList" or "PlayerList" (Forbidden for class Responsibilities)
 
@@ -70,6 +74,7 @@ public:
 	
 	Player * GetCurrentPlayer() const;	// Gets a Pointer to the Current Player	                                    
 	Belt * GetNextBelt(const CellPosition & position);  // Gets a Pointer to the first Belth after the passed "position"
+	Cell* Grid::GetStartingCell()const;
 
 	// ========= User Interface Functions =========
 

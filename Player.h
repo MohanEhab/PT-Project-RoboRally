@@ -7,9 +7,10 @@ class Player
 {
 	Cell * pCell;		   // pointer to the current Cell of the player
 
-	const int playerNum;   // the player number (from 0 to MaxPlayerCount-1)
+	const int playerNum ;   // the player number (from 0 to MaxPlayerCount-1)
 	                       // player number does NOT change after construction (const.)
 
+	
 	int stepCount;		   // step count which is the same as his cellNum: from 1 to NumVerticalCells*NumHorizontalCells
 	Direction currDirection; // Current Direction of the player
 	int health;				// Player's current health points
@@ -31,12 +32,19 @@ public:
 
 	void SetHealth(int h);			// A setter for the health points
 	int GetHealth();				// A getter for the health points
-	int GetPlayerNumber() const;
+	int GetPlayerNumber() const; 
 
 	///TODO: You can add setters and getters for data members here (if needed)
 
 	// ====== Drawing Functions ======
-
+	Direction GetDirection() const;
+	void RebootAndRepair(Grid* pGrid);
+	void ExecuteCommand(Command* command, int commandCount, Grid* pGrid);
+	void RotateClockwise();
+	void RotateCounterClockwise();
+	string GetPlayerInfo() const;
+	void SelectCommands(Grid* pGrid);
+	
 	void Draw(Output* pOut) const;			// Draws the Player's Triangle on its current cell
 
 	void ClearDrawing(Output* pOut) const;	// Clears the Player's Triangle from its current cell
