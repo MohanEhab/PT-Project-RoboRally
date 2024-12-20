@@ -24,6 +24,7 @@ void DangerZone::Apply(Grid * pGrid, Player * pPlayer)
 	int x, y;
 	pOut->PrintMessage("You have reached a danger zone. Click to continue...");
 	pIn->GetPointClicked(x, y);
+	pOut->ClearStatusBar();
 	// 2- Apply the danger zone's effect by reducing the health of the player by 1 
 	int currentHealth = pPlayer->GetHealth();
 	pPlayer->SetHealth(currentHealth - 1);
