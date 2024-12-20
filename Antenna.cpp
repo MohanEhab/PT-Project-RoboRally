@@ -21,64 +21,14 @@ void Antenna::Apply(Grid * pGrid, Player * pPlayer)
 	// == Here are some guideline steps (numbered below) to implement this function ==
 
 	// 1- Print a message "the antenna will decide the turn of players. Click to continue ..." and wait mouse click
-	pGrid->PrintErrorMessage("The antenna will decide the turn of players. Click to continue ...");
-	pGrid->GetInput()->GetPointClicked(x, y);
 
 	// 2- Apply the antenna effect by following these notes, check grid class and decide which function to use
-	if (!pGrid->HasAntenna()) {
-		pGrid->PrintErrorMessage("Error: No antenna exists on the grid. Click to continue...");
-		return;
-	}
-	if (pGrid->GetEndGame()) {
-		pGrid->PrintErrorMessage("The game is already marked as ended. Click to continue...");
-		return;
-	}
-    struct PlayerInfo {
-        Player* player;
-        int distance;
-    };
+	//The antenna determines the turn order for players.
+	//The distance of each player from the antenna determines his turn order in each rount.
+	//Player with the minimum distance[ from the antenna will have the first turn in that round.
+	//If there is a tie, player number will break it, for example if player 1 & 2 are in the same cell and they have the same distance from the antenna, player 1 will play first in that round.
+	// 3- After deciding the turn of player Print a message indicating which player will play first example: "Player 1 will play first"
 
-    PlayerInfo playerInfos[MaxPlayerCount];
-
-    for (int i = 0; i < MaxPlayerCount; i++) {
-        playerInfos[i].player = pGrid->GetPlayer(i); 
-        Cell* playerCell = playerInfos[i].player->GetCell();
-        CellPosition playerPos = playerCell->GetCellPosition();
-        CellPosition antennaPos = this->GetPosition(); 
-
-       
-        int vDistance = (playerPos.VCell() > antennaPos.VCell())
-            ? (playerPos.VCell() - antennaPos.VCell())
-            : (antennaPos.VCell() - playerPos.VCell());
-        int hDistance = (playerPos.HCell() > antennaPos.HCell())
-            ? (playerPos.HCell() - antennaPos.HCell())
-            : (antennaPos.HCell() - playerPos.HCell());
-
-        playerInfos[i].distance = vDistance + hDistance;
-    }
-    std::sort(playerInfos, playerInfos + MaxPlayerCount, [](const PlayerInfo& a, const PlayerInfo& b) {
-        if (a.distance == b.distance)
-            return a.player->GetPlayerNumber() < b.player->GetPlayerNumber(); 
-        return a.distance < b.distance;
-        });
-
-    
-    for (int i = 0; i < MaxPlayerCount; i++) {
-        if (playerInfos[i].player->GetHealth() <= 0) {
-            pGrid->PrintErrorMessage("Error: Player " + std::to_string(playerInfos[i].player->GetPlayerNumber()) + " is eliminated. Skipping...");
-            continue;
-        }
-    }
-    for (int i = 0; i < MaxPlayerCount; i++) {
-        pGrid->SetPlayerTurnOrder(i, playerInfos[i].player->GetPlayerNumber());
-    }
-    // 3- After deciding the turn of player Print a message indicating which player will play first example: "Player 1 will play first"
-
-    pGrid->AdvanceCurrentPlayer();
-    pGrid->PrintErrorMessage("Player " + std::to_string(playerInfos[0].player->GetPlayerNumber()) + " will play first.");
-}
-
-	
 }
 
 
