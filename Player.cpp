@@ -5,7 +5,6 @@
 Player::Player(Cell * pCell, int playerNum) : stepCount(0), health(10), playerNum(playerNum), currDirection(RIGHT),hasDoubleLaser(false),hasExtendedMemory(false), hasToolkit(false),hasHackDevice(false), equippedLaser(BASIC_LASER)
 {
 	this->pCell = pCell;
-	
 	// Make all the needed initialization or validations
 }
 
@@ -89,6 +88,9 @@ bool Player::HasHackDevice() const {
 void Player::Draw(Output* pOut) const
 {
 	color playerColor = UI.PlayerColors[playerNum];
+	if (pCell != nullptr)
+		pOut->DrawPlayer(pCell->GetCellPosition(), playerNum, playerColor, currDirection);
+	
 
 
 	///TODO: use the appropriate output function to draw the player with "playerColor"
