@@ -24,6 +24,24 @@ void ToPlayModeAction::Execute()
 		Player* newPlayer = new Player(startCell, i);
 	}
 	pOut->PrintMessage("switched to play mode");
+	Command savedCommands[5];
+	Command availableCommands[10];
+	savedCommands[0] = MOVE_FORWARD_ONE_STEP;
+	savedCommands[1] = MOVE_BACKWARD_ONE_STEP;
+	savedCommands[2] = MOVE_FORWARD_TWO_STEPS;
+	savedCommands[3] = MOVE_BACKWARD_TWO_STEPS;
+	savedCommands[4] = MOVE_FORWARD_THREE_STEPS;
+
+
+
+	availableCommands[0] = NO_COMMAND;
+	availableCommands[1] = NO_COMMAND;
+	availableCommands[2] = NO_COMMAND;
+	availableCommands[3] = NO_COMMAND;
+	availableCommands[4] = NO_COMMAND;
+	availableCommands[5] = NO_COMMAND;
+	availableCommands[6] = NO_COMMAND;
+	pOut->CreateCommandsBar(savedCommands, 5, availableCommands, 7);
 
 
 }
