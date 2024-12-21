@@ -28,7 +28,7 @@ void ToPlayModeAction::Execute()
 	Command savedCommands[5];
 	Command availableCommands[10];
 	savedCommands[0] = MOVE_FORWARD_ONE_STEP;
-	savedCommands[1] = MOVE_BACKWARD_ONE_STEP;
+	savedCommands[1] = ROTATE_CLOCKWISE;
 	savedCommands[2] = MOVE_FORWARD_TWO_STEPS;
 	savedCommands[3] = MOVE_BACKWARD_TWO_STEPS;
 	savedCommands[4] = MOVE_FORWARD_THREE_STEPS;
@@ -44,5 +44,19 @@ void ToPlayModeAction::Execute()
 	availableCommands[6] = NO_COMMAND;
 	pOut->CreateCommandsBar(savedCommands, 5, availableCommands, 7);
 
+	// Let players take turns to move
+	for (int i = 0; i < MaxPlayerCount; i++)
+	{
+		Player* currentPlayer = pGrid->GetCurrentPlayer(); // Get the player
+		pOut->PrintMessage("Player " + std::to_string(i + 1) + "'s turn. Click anywhere to proceed.");
+		int x, y;
+		pGrid->GetInput()->GetPointClicked(x, y); // Wait for user to click
 
-}
+		currentPlayer->Move(pGrid, savedCommands); // Call the Move function
+		pGrid->AdvanceCurrentPlayer();
+	}
+	}
+
+
+	
+

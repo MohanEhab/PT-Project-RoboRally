@@ -227,27 +227,51 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 			break;
 		case ROTATE_CLOCKWISE:
 			RotateClockwise(pGrid);
-			continue;
+			break;
 		case ROTATE_COUNTERCLOCKWISE:
 			RotateCounterClockwise(pGrid);
-			continue;
+			break;
 		default:
-			continue;
+			break;
 		}
 		if (!newPos.IsValidCell())
 		{
-			pOut->PrintMessage("Invalid Move.");
-			pIn->GetPointClicked(x, y);
-			pOut->ClearStatusBar();
-			return;
+			pOut->PrintMessage("Invalid Move! Click inside the grid to continue.");
+			while (true)
+			{
+				pIn->GetPointClicked(x, y);
+				if (y >= UI.ToolBarHeight && y <= (UI.height - UI.StatusBarHeight))
+				{
+					// Valid grid click
+					pOut->ClearStatusBar();
+					break;
+				}
+				else
+				{
+					pOut->PrintMessage("Invalid click! Click inside the grid area.");
+				}
+			}
+			continue; // Skip this command and continue with the next
 		}
 		pGrid->UpdatePlayerCell(this, newPos);
 
 		if (i < maxCommands - 1 && moveCommands[i + 1] != NO_COMMAND)
 		{
-			pOut->PrintMessage("Click anywhere to execute the next command.");
-			pIn->GetPointClicked(x, y);
-			pOut->ClearStatusBar();
+			pOut->PrintMessage("Click inside the grid to execute the next command.");
+			while (true)
+			{
+				pIn->GetPointClicked(x, y);
+				if (y >= UI.ToolBarHeight && y <= (UI.height - UI.StatusBarHeight))
+				{
+					// Valid grid click
+					pOut->ClearStatusBar();
+					break;
+				}
+				else
+				{
+					pOut->PrintMessage("Invalid click! Click inside the grid area.");
+				}
+			}
 		}	
 	}
 	Cell* finalCell = pGrid->GetCell(pCell->GetCellPosition());
@@ -278,81 +302,100 @@ void Player::RebootAndRepair(Grid* pGrid)
 	pGrid->DisPlayerInfo();
 }
 
-void Player::ExecuteCommand(Command* command, int commandCount, Grid* pGrid)
+void Player::DisplayRandomCommands(Grid* pGrid)
 {
-	CellPosition currentPos = pCell->GetCellPosition();
-	CellPosition newPos;
-	for (int i = 0; i < commandCount; i++)
+	const int maxCommands = 5;
+	Command availableCommand[maxCommands] =
+	{ MOVE_FORWARD_ONE_STEP,
+		ROTATE_CLOCKWISE,
+		MOVE_FORWARD_TWO_STEPS,
+		MOVE_BACKWARD_ONE_STEP,
+		ROTATE_COUNTERCLOCKWISE };
+	Output* pOut = pGrid->GetOutput();
+	string commandList = "Random Commands: ";
+	for (int i = 0; i < maxCommands; i++)
 	{
-		switch (command[i])
-		{
-		case MOVE_FORWARD_ONE_STEP:
-			stepCount = 1;
-			break;
-		case MOVE_BACKWARD_ONE_STEP:
-			stepCount = -1;
-			break;
-		case MOVE_FORWARD_TWO_STEPS:
-			stepCount = 2;
-			break;
-		case MOVE_BACKWARD_TWO_STEPS:
-			stepCount = -2;
-			break;
-		case MOVE_FORWARD_THREE_STEPS:
-			stepCount = 3;
-			break;
-		case MOVE_BACKWARD_THREE_STEPS:
-			stepCount = -3;
-			break;
-		case ROTATE_CLOCKWISE:
-			RotateClockwise(pGrid);
-			break;
-		case ROTATE_COUNTERCLOCKWISE:
-			RotateCounterClockwise(pGrid);
-			break;
-		case NO_COMMAND:
-		default:
-			return;
-		}
+		commandList += CommandToString(availableCommand[i]) + (i < maxCommands - 1 ? "," : "");
 	}
-	for (int i = 0; i < abs(stepCount); i++)
-	{
+	pOut->PrintMessage(commandList);
+}
 
-		switch (currDirection)
-		{
-		case RIGHT:
-			newPos.SetHCell(newPos.HCell() + 1);
-			break;
-		case LEFT:
-			newPos.SetHCell(newPos.HCell() - 1);
-			break;
-		case DOWN:
-			newPos.SetVCell(newPos.VCell() + 1);
-			break;
-		case UP:
-			newPos.SetVCell(newPos.VCell() - 1); //dec count of VCELL
-			break;
+string Player::CommandToString(Command cmd) const
+{
+	switch (cmd) {
+	case MOVE_FORWARD_ONE_STEP:
+		return "Move Forward 1 Step";
+	case MOVE_FORWARD_TWO_STEPS:
+		return "Move Forward 2 Steps";
+	case MOVE_FORWARD_THREE_STEPS:
+		return "Move Forward 3 Steps";
+	case MOVE_BACKWARD_ONE_STEP:
+		return "Move Backward 1 Step";
+	case MOVE_BACKWARD_TWO_STEPS:
+		return "Move Backward 2 Steps";
+	case MOVE_BACKWARD_THREE_STEPS:
+		return "Move Backward 3 Steps";
+	case ROTATE_CLOCKWISE:
+		return "Rotate Clockwise";
+	case ROTATE_COUNTERCLOCKWISE:
+		return "Rotate Counterclockwise";
+	default:
+		return "No Command";
+	}
+}
+
+
+void Player::SelectCommands(Grid* pGrid)
+{
+	int x, y;
+	const int maxCommands = 5;
+	Command availableCommands[maxCommands] =
+	{
+		MOVE_FORWARD_ONE_STEP,
+		ROTATE_CLOCKWISE,
+		MOVE_FORWARD_TWO_STEPS,
+		MOVE_BACKWARD_ONE_STEP,
+		ROTATE_COUNTERCLOCKWISE
+	};
+	Command savedCommands[maxCommands];
+	int savedCommandCount = 0;
+	Input* pIn = pGrid->GetInput();
+	Output* pOut = pGrid->GetOutput();
+	DisplayRandomCommands(pGrid);
+	pOut->PrintMessage("select commands from command bar, click on them");
+
+	while (savedCommandCount < maxCommands) {
+		int commandIndex = pIn->GetSelectedCommandIndex();
+
+		if (commandIndex < 0 || commandIndex >= maxCommands) {
+			pOut->PrintMessage("Invalid selection. Please select a valid command.");
+			continue;
 		}
-		if (!newPos.IsValidCell())
-		{
-			pGrid->PrintErrorMessage("you're out of bound, movement is stopped");
-			return;
+
+		savedCommands[savedCommandCount++] = availableCommands[commandIndex];
+
+		pOut->PrintMessage("Command " + to_string(savedCommandCount) + " saved: " +
+			CommandToString(availableCommands[commandIndex]));
+
+		if (savedCommandCount == maxCommands) {
+			pOut->PrintMessage("All commands selected. Proceeding...");
 		}
 	}
-	pGrid->UpdatePlayerCell(this, newPos);
-	pGrid->DisPlayerInfo();
+
+	
+	pOut->PrintMessage("Commands executed successfully! Click anywhere to continue.");
+	pIn->GetPointClicked(x, y);
 }
 Direction Player::GetDirection() const
 {
 	return currDirection;
 }
-void Player::RotateClockwise(Grid *pGrid)
+void Player::RotateClockwise(Grid* pGrid)
 {
 	Output* pOut = pGrid->GetOutput();
 	ClearDrawing(pOut);
 
-	switch (currDirection)
-	{
+	
 		if (currDirection == UP)
 			currDirection = RIGHT;
 		else if (currDirection == RIGHT)
@@ -361,19 +404,14 @@ void Player::RotateClockwise(Grid *pGrid)
 			currDirection = LEFT;
 		else if (currDirection == LEFT)
 			currDirection = UP;
-		break;
-	default:
-		break;
-	}
+	
 	Draw(pOut);
 }
-
 void Player::RotateCounterClockwise(Grid* pGrid)
 {
 	Output* pOut = pGrid->GetOutput();
 	ClearDrawing(pOut);
-	switch (currDirection)
-	{
+	
 		if (currDirection == UP)
 			currDirection = LEFT;
 		else if (currDirection == LEFT)
@@ -382,10 +420,7 @@ void Player::RotateCounterClockwise(Grid* pGrid)
 			currDirection = UP;
 		else if (currDirection == DOWN)
 			currDirection = RIGHT;
-		break;
-	default:
-		break;
-	}
+	
 	Draw(pOut);
 }
 
@@ -417,49 +452,7 @@ string Player::GetPlayerInfo() const
 	return playerInfo;
 }
 
-void Player::SelectCommands(Grid* pGrid)
-{
-	int maxC = (health < 5) ? health : 5;
-	Command selectedCommands[5];
-	pGrid->GetOutput()->PrintMessage("select your command (click command bar)");
-	for (int i = 0; i < maxC; i++)
-	{
-		int commandSet = pGrid->GetInput()->GetSelectedCommandIndex();
-		switch (commandSet)
-		{
-		case 0:
-			selectedCommands[i] = MOVE_FORWARD_ONE_STEP;
-			break;
-		case 1:
-			selectedCommands[i] = MOVE_FORWARD_TWO_STEPS;
-			break;
-		case 2:
-			selectedCommands[i] = MOVE_FORWARD_THREE_STEPS;
-			break;
-		case 3:
-			selectedCommands[i] = MOVE_BACKWARD_ONE_STEP;
-			break;
-		case 4:
-			selectedCommands[i] = MOVE_BACKWARD_TWO_STEPS;
-			break;
-		case 5:
-			selectedCommands[i] = MOVE_BACKWARD_THREE_STEPS;
-			break;
-		case 6:
-			selectedCommands[i] = ROTATE_CLOCKWISE;
-			break;
-		case 7:
-			selectedCommands[i] = ROTATE_COUNTERCLOCKWISE;
-			break;
-		default:
-			selectedCommands[i] = NO_COMMAND;
-			break;
-		}
-		pGrid->GetOutput()->PrintMessage("command" + to_string(i + 1) + "selected");
-	}
-	ExecuteCommand(selectedCommands, maxC, pGrid);
 
-}
 void Player::AppendPlayerInfo(string & playersInfo) const
 {
 	// TODO: Modify the Info as needed

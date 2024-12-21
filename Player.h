@@ -40,20 +40,22 @@ public:
 	int GetHealth();				// A getter for the health points
 	int GetPlayerNumber() const; 
 	
+	Direction GetDirection() const;
+	void RebootAndRepair(Grid* pGrid);
+	void RotateClockwise(Grid* pGrid);
+	void RotateCounterClockwise(Grid* pGrid);
+	string GetPlayerInfo() const;
 	///TODO: You can add setters and getters for data members here (if needed)
 
 	// ====== Drawing Functions ======
-	Direction GetDirection() const;
-	void RebootAndRepair(Grid* pGrid);
-	void ExecuteCommand(Command* command, int commandCount, Grid* pGrid);
-	void RotateClockwise(Grid *pGrid);
-	void RotateCounterClockwise(Grid* pGrid);
-	string GetPlayerInfo() const;
-	void SelectCommands(Grid* pGrid);
+	
 	
 	void Draw(Output* pOut) const;			// Draws the Player's Triangle on its current cell
 
 	void ClearDrawing(Output* pOut) const;	// Clears the Player's Triangle from its current cell
+	void SelectCommands(Grid* pGrid);
+	string CommandToString(Command cmd) const;
+	void DisplayRandomCommands(Grid* pGrid);
 
 	// ====== Equipment Functions ======
 	void EquipDoubleLaser();             // Equip the player with a double laser

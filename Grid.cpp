@@ -265,7 +265,6 @@ void Grid::ExecutePlayerCommands(const Command commands[], int numCommands)
 	{
 		tempCommands[i] = commands[i];
 	}
-	currPlayer->ExecuteCommand(tempCommands, numCommands, this); //get it from player.cpp
 
 	UpdateInterface(); //update after executing commands
 }
