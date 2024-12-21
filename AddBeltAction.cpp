@@ -50,6 +50,7 @@ void AddBeltAction::ReadActionParameters()
 		return;
 	}
 
+	//test if startPos is an EndPos of another Belt
 	for (int i = 0; i < NumVerticalCells; ++i) {
 		for (int j = 0; j < NumHorizontalCells; ++j) { //Go through every single cell on the grid
 			CellPosition currentPos(i, j); //created a position for each cell to test them and check if there's any belt in the grid
