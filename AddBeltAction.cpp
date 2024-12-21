@@ -50,6 +50,26 @@ void AddBeltAction::ReadActionParameters()
 		return;
 	}
 
+	for (int i = 0; i < NumVerticalCells; ++i) {
+		for (int j = 0; j < NumHorizontalCells; ++j) { //Go through every single cell on the grid
+			CellPosition currentPos(i, j); //created a position for each cell to test them and check if there's any belt in the grid
+			Belt* existingBelt = pGrid->GetNextBelt(currentPos);
+
+			// If a belt exists at this cell and its end position matches the start position of the new belt
+			if (existingBelt != NULL) { //if a belt exists, as the GetNextBelt() func returns NULL if not
+
+				CellPosition existingBeltEnd = existingBelt->GetEndPosition();
+				if (existingBeltEnd.VCell() == startPos.VCell() && existingBeltEnd.HCell() == startPos.HCell()) { //existingBelt End Pos = startpos 
+					pOut->PrintMessage("Error: Start cell cannot be the end position of an existing belt. Click anywhere to continue...");
+					pIn->GetPointClicked(x, y); // Wait for user to click
+					pOut->ClearStatusBar();
+					startPos = CellPosition(-1, -1);
+					endPos = CellPosition(-1, -1);
+					return;
+				}
+			}
+		}
+	}
 
 	// Read the endPos parameter
 	pOut->PrintMessage("New Belt: Click on its End Cell ...");
@@ -92,8 +112,7 @@ void AddBeltAction::ReadActionParameters()
 		endPos = CellPosition(-1, -1);
 		return;
 	}
-
-
+	
 	
 	///TODO: Make the needed validations on the read parameters
 
