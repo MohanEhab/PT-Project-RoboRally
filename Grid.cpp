@@ -272,16 +272,22 @@ void Grid::ExecutePlayerCommands(const Command commands[], int numCommands)
 
 void Grid::ResetAllPlayers()
 {
-	Cell* start = GetStartingCell();
-	for (int i = 0; i < MaxPlayerCount; i++)
-	{
-		Player* player = PlayerList[i];
-		player->ClearDrawing(pOut); //clear player drawing, pOut beysheel el triangle el kan mawgod
-		player->SetCell(start); //ba2et a new cell khalas
-		player->Draw(pOut); //new triangle is drawn
-
+	for (int i = 0; i < MaxPlayerCount; i++) {
+		if (PlayerList[i] != nullptr) {
+			PlayerList[i]->ClearDrawing(pOut); // Remove the player's graphical representation
+			delete PlayerList[i]; // Free memory
+			PlayerList[i] = NULL; // Avoid dangling reference
+		}
 	}
-	currPlayerNumber = 0; //reset of player count
+
+	// Reinitialize players
+	Cell* start = GetStartingCell();
+	for (int i = 0; i < MaxPlayerCount; i++) {
+		PlayerList[i] = new Player(start, i); // Create new players
+		PlayerList[i]->Draw(pOut); // Draw players on the grid
+	}
+
+	currPlayerNumber = 0; // Reset current player to the first player
 }
 
 void Grid::DisPlayerInfo() const
@@ -313,7 +319,7 @@ void Grid::ClearAllObjects()
 			Cell* cell = CellList[i][j];
 			if (cell->GetGameObject())
 			{
-				cell->SetGameObject(nullptr); //removes object if found
+				cell->SetGameObject(NULL); //removes object if found
 			}
 		}
 	}

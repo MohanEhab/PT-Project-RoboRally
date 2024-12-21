@@ -16,13 +16,14 @@ void ToPlayModeAction::Execute()
 	Grid* pGrid = pManager->GetGrid(); //access to grid
 	Output* pOut = pGrid->GetOutput(); //access to pOut
 	pOut->CreatePlayModeToolBar(); //switches the mode
-	int numPlayers = 2;
-	for (int i = 0; i < numPlayers; i++)
+	
+	for (int i = 0; i < MaxPlayerCount; i++)
 	{
 		CellPosition startPos(0, i);
 		Cell* startCell = pGrid->GetCell(startPos);
 		Player* newPlayer = new Player(startCell, i);
 	}
+
 	pOut->PrintMessage("switched to play mode");
 	Command savedCommands[5];
 	Command availableCommands[10];
@@ -34,8 +35,8 @@ void ToPlayModeAction::Execute()
 
 
 
-	availableCommands[0] = NO_COMMAND;
-	availableCommands[1] = NO_COMMAND;
+	availableCommands[0] = MOVE_FORWARD_ONE_STEP;
+	availableCommands[1] = MOVE_FORWARD_TWO_STEPS;
 	availableCommands[2] = NO_COMMAND;
 	availableCommands[3] = NO_COMMAND;
 	availableCommands[4] = NO_COMMAND;
