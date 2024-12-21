@@ -32,9 +32,9 @@ void RotatingGear::Apply(Grid* pGrid, Player* pPlayer)
 	pIn->GetPointClicked(x, y);
 	//2- Apply the roating gear's effect by rotating the player according to the direction
 	if(isClockWise)
-		pPlayer->RotateClockwise();
+		pPlayer->RotateClockwise(pGrid);
 	else
-		pPlayer->RotateCounterClockwise();
+		pPlayer->RotateCounterClockwise(pGrid);
 		
 	// Clear the message after applying the effect
 	pOut->ClearStatusBar();

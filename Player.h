@@ -46,8 +46,8 @@ public:
 	Direction GetDirection() const;
 	void RebootAndRepair(Grid* pGrid);
 	void ExecuteCommand(Command* command, int commandCount, Grid* pGrid);
-	void RotateClockwise();
-	void RotateCounterClockwise();
+	void RotateClockwise(Grid *pGrid);
+	void RotateCounterClockwise(Grid* pGrid);
 	string GetPlayerInfo() const;
 	void SelectCommands(Grid* pGrid);
 	

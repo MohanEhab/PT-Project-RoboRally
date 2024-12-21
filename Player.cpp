@@ -109,10 +109,12 @@ void Player::ClearDrawing(Output* pOut) const
 
 // ====== Game Functions ======
 
-void Player::Move(Grid * pGrid, Command moveCommands[])
+void Player::Move(Grid* pGrid, Command moveCommands[])
 {
 	int x, y;
 	const int maxCommands = 5;
+	Input* pIn = pGrid->GetInput();
+	Output* pOut = pGrid->GetOutput();
 	for (int i = 0; i < maxCommands; i++)
 	{
 		if (moveCommands[i] == NO_COMMAND)
@@ -124,47 +126,136 @@ void Player::Move(Grid * pGrid, Command moveCommands[])
 		switch (moveCommands[i])
 		{
 		case MOVE_FORWARD_ONE_STEP:
-			newPos.SetVCell(newPos.VCell() - 1);
+			// Move forward based on the player's direction
+			switch (currDirection) {
+			case UP:
+				newPos.SetVCell(newPos.VCell() - 1); // Move up
+				break;
+			case DOWN:
+				newPos.SetVCell(newPos.VCell() + 1); // Move down
+				break;
+			case LEFT:
+				newPos.SetHCell(newPos.HCell() - 1); // Move left
+				break;
+			case RIGHT:
+				newPos.SetHCell(newPos.HCell() + 1); // Move right
+				break;
+			}
 			break;
 		case MOVE_FORWARD_TWO_STEPS:
-			newPos.SetVCell(newPos.VCell() - 2);
+			switch (currDirection) {
+			case UP:
+				newPos.SetVCell(newPos.VCell() - 2); // Move up 2 steps
+				break;
+			case DOWN:
+				newPos.SetVCell(newPos.VCell() + 2); // Move down 2 steps
+				break;
+			case LEFT:
+				newPos.SetHCell(newPos.HCell() - 2); // Move left 2 steps
+				break;
+			case RIGHT:
+				newPos.SetHCell(newPos.HCell() + 2); // Move right 2 steps
+				break;
+			}
 			break;
 		case MOVE_FORWARD_THREE_STEPS:
-			newPos.SetVCell(newPos.VCell() - 3);
+			switch (currDirection) {
+			case UP:
+				newPos.SetVCell(currentPos.VCell() - 3);
+				break;
+			case DOWN:
+				newPos.SetVCell(currentPos.VCell() + 3);
+				break;
+			case LEFT:
+				newPos.SetHCell(currentPos.HCell() - 3);
+				break;
+			case RIGHT:
+				newPos.SetHCell(currentPos.HCell() + 3);
+				break;
+			}
 			break;
+
 		case MOVE_BACKWARD_ONE_STEP:
-			newPos.SetVCell(newPos.VCell() + 1);
+			switch (currDirection) {
+			case UP:
+				newPos.SetVCell(currentPos.VCell() + 1);
+				break;
+			case DOWN:
+				newPos.SetVCell(currentPos.VCell() - 1);
+				break;
+			case LEFT:
+				newPos.SetHCell(currentPos.HCell() + 1);
+				break;
+			case RIGHT:
+				newPos.SetHCell(currentPos.HCell() - 1);
+				break;
+			}
 			break;
+
 		case MOVE_BACKWARD_TWO_STEPS:
-			newPos.SetVCell(newPos.VCell() + 2);
+			switch (currDirection) {
+			case UP:
+				newPos.SetVCell(currentPos.VCell() + 2);
+				break;
+			case DOWN:
+				newPos.SetVCell(currentPos.VCell() - 2);
+				break;
+			case LEFT:
+				newPos.SetHCell(currentPos.HCell() + 2);
+				break;
+			case RIGHT:
+				newPos.SetHCell(currentPos.HCell() - 2);
+				break;
+			}
 			break;
+
 		case MOVE_BACKWARD_THREE_STEPS:
-			newPos.SetVCell(newPos.VCell() + 3);
+			switch (currDirection) {
+			case UP:
+				newPos.SetVCell(currentPos.VCell() + 3);
+				break;
+			case DOWN:
+				newPos.SetVCell(currentPos.VCell() - 3);
+				break;
+			case LEFT:
+				newPos.SetHCell(currentPos.HCell() + 3);
+				break;
+			case RIGHT:
+				newPos.SetHCell(currentPos.HCell() - 3);
+				break;
+			}
 			break;
 		case ROTATE_CLOCKWISE:
-			RotateClockwise();
+			RotateClockwise(pGrid);
 			continue;
 		case ROTATE_COUNTERCLOCKWISE:
-			RotateCounterClockwise();
+			RotateCounterClockwise(pGrid);
 			continue;
 		default:
 			continue;
 		}
 		if (!newPos.IsValidCell())
 		{
-			pGrid->PrintErrorMessage("invalid move");
+			pOut->PrintMessage("Invalid Move.");
+			pIn->GetPointClicked(x, y);
+			pOut->ClearStatusBar();
 			return;
 		}
 		pGrid->UpdatePlayerCell(this, newPos);
 
 		if (i < maxCommands - 1 && moveCommands[i + 1] != NO_COMMAND)
 		{
-			pGrid->PrintErrorMessage("click anywhere to execute next command");
-			pGrid->GetInput()->GetPointClicked(x, y);
-		}
+			pOut->PrintMessage("Click anywhere to execute the next command.");
+			pIn->GetPointClicked(x, y);
+			pOut->ClearStatusBar();
+		}	
 	}
-	
-
+	Cell* finalCell = pGrid->GetCell(pCell->GetCellPosition());
+	GameObject* obj = finalCell->GetGameObject();
+	if (obj != nullptr)
+	{
+		obj->Apply(pGrid, this);
+	}
 	///TODO: Implement this function using the guidelines mentioned below
 
 	// - If a player has 5 (could have less) saved moveCommands, the robot will execute the first saved command,
@@ -176,7 +267,7 @@ void Player::Move(Grid * pGrid, Command moveCommands[])
 	// - Use the Grid class to update pCell
 	// - Don't forget to apply game objects at the final destination cell and check for game ending
 
-}
+} 
 void Player::RebootAndRepair(Grid* pGrid)
 {
 	Cell* start = pGrid->GetStartingCell(); //gets starting cell
@@ -214,10 +305,10 @@ void Player::ExecuteCommand(Command* command, int commandCount, Grid* pGrid)
 			stepCount = -3;
 			break;
 		case ROTATE_CLOCKWISE:
-			RotateClockwise();
+			RotateClockwise(pGrid);
 			break;
 		case ROTATE_COUNTERCLOCKWISE:
-			RotateCounterClockwise();
+			RotateCounterClockwise(pGrid);
 			break;
 		case NO_COMMAND:
 		default:
@@ -255,8 +346,11 @@ Direction Player::GetDirection() const
 {
 	return currDirection;
 }
-void Player::RotateClockwise()
+void Player::RotateClockwise(Grid *pGrid)
 {
+	Output* pOut = pGrid->GetOutput();
+	ClearDrawing(pOut);
+
 	switch (currDirection)
 	{
 		if (currDirection == UP)
@@ -271,10 +365,13 @@ void Player::RotateClockwise()
 	default:
 		break;
 	}
+	Draw(pOut);
 }
 
-void Player::RotateCounterClockwise()
+void Player::RotateCounterClockwise(Grid* pGrid)
 {
+	Output* pOut = pGrid->GetOutput();
+	ClearDrawing(pOut);
 	switch (currDirection)
 	{
 		if (currDirection == UP)
@@ -289,6 +386,7 @@ void Player::RotateCounterClockwise()
 	default:
 		break;
 	}
+	Draw(pOut);
 }
 
 string Player::GetPlayerInfo() const
