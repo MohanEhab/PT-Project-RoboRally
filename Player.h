@@ -14,6 +14,8 @@ class Player
 	int stepCount;		   // step count which is the same as his cellNum: from 1 to NumVerticalCells*NumHorizontalCells
 	Direction currDirection; // Current Direction of the player
 	int health;				// Player's current health points
+	
+	LaserType equippedLaser; // Player's equipped laser type (laser or double laser)
 
 	bool hasDoubleLaser;      // Tracks if the player owns a double laser
 	bool hasExtendedMemory;   // Tracks if the player owns extended memory
@@ -65,6 +67,7 @@ public:
 
 	void AddHackDevice();                // Add a hack device to the player
 	bool HasHackDevice() const;          // Check if the player has a hack device
+	void EquipLaser(LaserType laser);    //Equips player laser type
 	// ====== Game Functions ======
 
 	void Move(Grid * pGrid, Command moveCommands[]);	// Moves the Player with the passed move command

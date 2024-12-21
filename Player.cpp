@@ -2,10 +2,10 @@
 
 #include "GameObject.h"
 
-Player::Player(Cell * pCell, int playerNum) : stepCount(0), health(10), playerNum(playerNum), currDirection(RIGHT),hasDoubleLaser(false),hasExtendedMemory(false), hasToolkit(false),hasHackDevice(false)
+Player::Player(Cell * pCell, int playerNum) : stepCount(0), health(10), playerNum(playerNum), currDirection(RIGHT),hasDoubleLaser(false),hasExtendedMemory(false), hasToolkit(false),hasHackDevice(false), equippedLaser(BASIC_LASER)
 {
 	this->pCell = pCell;
-
+	
 	// Make all the needed initialization or validations
 }
 
@@ -39,9 +39,14 @@ int Player::GetHealth()
 
 // ====== Equipment Functions ======
 
+void Player::EquipLaser(LaserType laser) {
+	equippedLaser = laser;
+}
+
+
 void Player::EquipDoubleLaser() {
 	
-	//code TODO()
+	EquipLaser(DOUBLE_LASER);
 	hasDoubleLaser = true;
 }
 
