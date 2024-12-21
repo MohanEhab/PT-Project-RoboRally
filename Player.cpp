@@ -163,29 +163,8 @@ void Player::Move(Grid * pGrid, Command moveCommands[])
 			pGrid->GetInput()->GetPointClicked(x, y);
 		}
 	}
-	Cell* final = pCell;
-	if (final->GetGameObject() != nullptr)
-	{
-		final->GetGameObject()->Apply(pGrid, this);
-	}
-	if (final->HasFlag() != nullptr)
-	{
-		pGrid->PrintErrorMessage("Player " + to_string(playerNum) + " wins!");
-	}
-	else if (final->HasWaterPit() != nullptr)
-	{
-		pGrid->PrintErrorMessage("You fell into a water pit! Game over for Player " + to_string(playerNum));
-		return;
-	}
-	else if (final->HasDangerZone() != nullptr)
-	{
-		health -= 1;
-		if (health <= 0)
-		{
-			pGrid->PrintErrorMessage("Player " + to_string(playerNum) + " has died in the danger zone.");
-			return;
-		}
-	}
+	
+
 	///TODO: Implement this function using the guidelines mentioned below
 
 	// - If a player has 5 (could have less) saved moveCommands, the robot will execute the first saved command,
