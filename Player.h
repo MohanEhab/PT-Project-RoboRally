@@ -15,6 +15,10 @@ class Player
 	Direction currDirection; // Current Direction of the player
 	int health;				// Player's current health points
 
+	bool hasDoubleLaser;      // Tracks if the player owns a double laser
+	bool hasExtendedMemory;   // Tracks if the player owns extended memory
+	bool hasToolkit;          // Tracks if the player owns a toolkit
+	bool hasHackDevice;       // Tracks if the player owns a hack device
 	// owned equipments
 	// carried consumables
 	// carried laser type (default, double laser)
@@ -33,7 +37,7 @@ public:
 	void SetHealth(int h);			// A setter for the health points
 	int GetHealth();				// A getter for the health points
 	int GetPlayerNumber() const; 
-
+	
 	///TODO: You can add setters and getters for data members here (if needed)
 
 	// ====== Drawing Functions ======
@@ -49,6 +53,18 @@ public:
 
 	void ClearDrawing(Output* pOut) const;	// Clears the Player's Triangle from its current cell
 
+	// ====== Equipment Functions ======
+	void EquipDoubleLaser();             // Equip the player with a double laser
+	bool HasDoubleLaser() const;         // Check if the player has a double laser
+
+	void EnableExtendedMemory();         // Enable extended memory
+	bool HasExtendedMemory() const;      // Check if the player has extended memory
+
+	void AddToolkit();                   // Add a toolkit to the player
+	bool HasToolkit() const;             // Check if the player has a toolkit
+
+	void AddHackDevice();                // Add a hack device to the player
+	bool HasHackDevice() const;          // Check if the player has a hack device
 	// ====== Game Functions ======
 
 	void Move(Grid * pGrid, Command moveCommands[]);	// Moves the Player with the passed move command

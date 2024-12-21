@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 
-Player::Player(Cell * pCell, int playerNum) : stepCount(0), health(10), playerNum(playerNum), currDirection(RIGHT)
+Player::Player(Cell * pCell, int playerNum) : stepCount(0), health(10), playerNum(playerNum), currDirection(RIGHT),hasDoubleLaser(false),hasExtendedMemory(false), hasToolkit(false),hasHackDevice(false)
 {
 	this->pCell = pCell;
 
@@ -37,7 +37,47 @@ int Player::GetHealth()
 	return this->health;
 }
 
+// ====== Equipment Functions ======
 
+void Player::EquipDoubleLaser() {
+	
+	//code TODO()
+	hasDoubleLaser = true;
+}
+
+bool Player::HasDoubleLaser() const {
+	return hasDoubleLaser;
+}
+
+void Player::EnableExtendedMemory() {
+	
+	//code TODO()
+	hasExtendedMemory = true;
+}
+
+bool Player::HasExtendedMemory() const {
+	return hasExtendedMemory;
+}
+
+void Player::AddToolkit() {
+	
+	//code TODO()
+	hasToolkit = true;
+}
+
+bool Player::HasToolkit() const {
+	return hasToolkit;
+}
+
+void Player::AddHackDevice() {
+	
+	//code TODO()
+	hasHackDevice = true;
+}
+
+bool Player::HasHackDevice() const {
+	return hasHackDevice;
+}
 
 // ====== Drawing Functions ======
 
