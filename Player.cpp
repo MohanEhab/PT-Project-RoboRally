@@ -320,30 +320,37 @@ void Player::RebootAndRepair(Grid* pGrid)
 	pOut->PrintMessage("player is successfully rebooted"); 
 }
 
-void Player::DisplayRandomCommands(Grid* pGrid) {
+void Player::DisplayRandomCommands(Grid* pGrid, Command availableCommands[]) { 
 	Output* pOut = pGrid->GetOutput();
-	int maxCommands = (health < 10) ? health : 5; // Determine max commands based on health
 
-	Command availableCommands[8] = {
+	Command commandPool[8] = {
 		MOVE_FORWARD_ONE_STEP, MOVE_FORWARD_TWO_STEPS, MOVE_FORWARD_THREE_STEPS,
 		MOVE_BACKWARD_ONE_STEP, MOVE_BACKWARD_TWO_STEPS, MOVE_BACKWARD_THREE_STEPS,
 		ROTATE_CLOCKWISE, ROTATE_COUNTERCLOCKWISE
 	};
 
-	Command displayedCommands[5]; 
-	string commandList = "Commands: "; 
+	string commandList = "Available Commands: ";
 
-	// Cycle through the available commands
-	for (int i = 0; i < maxCommands; i++) { 
-		displayedCommands[i] = availableCommands[i % 8]; // Cycle through indices 
-		commandList += CommandToString(displayedCommands[i]) + (i < maxCommands - 1 ? ", " : ""); 
+	// Generate 10 random commands
+	for (int i = 0; i < 10; i++) {
+		int randomIndex = rand() % 8;
+		availableCommands[i] = commandPool[randomIndex];
+		commandList += CommandToString(availableCommands[i]) + (i < 9 ? ", " : "");
 	}
 
-	// Display the commands
-	pOut->PrintMessage(commandList); 
+	pOut->PrintMessage(commandList); // Display commands as a message
+}
 
-	// Save the displayed commands for selection and execution
-	SaveCommands(displayedCommands, maxCommands); 
+
+
+int Player::GetAvailableCommandCount() const
+{
+	return availableCommandCount;
+}
+
+Command* Player::GetAvailableCommands() 
+{
+	return availableCommands;  
 }
 
 
@@ -371,49 +378,37 @@ string Player::CommandToString(Command cmd) const
 	}
 }
 
-
-void Player::SelectCommands(Grid* pGrid) {
+void Player::SelectCommands(Grid* pGrid, Command availableCommands[]) { 
 	Output* pOut = pGrid->GetOutput();
 	Input* pIn = pGrid->GetInput();
 
-	const int maxCommands = (health < 5) ? health : 5; // Limit selection by health
-	Command* displayedCommands = GetSavedCommands();  // Retrieve the displayed commands
-	int displayedCount = GetSavedCommandCount();      // Retrieve the count of displayed commands
-
-	if (displayedCommands == nullptr || displayedCount == 0) {
-		pOut->PrintMessage("No commands available to select.");
-		return;
-	}
-
-	Command selectedCommands[5];  // Array to hold the selected commands
+	int maxCommands = (health < 5) ? health : 5; // Limit commands by health
+	Command selectedCommands[5]; // To store player's selected commands
 	int numSelected = 0;
 
-	pOut->PrintMessage("Click on the command bar to select your commands.");
+	pOut->PrintMessage("Select up to " + to_string(maxCommands) + " commands. Click the command bar to select.");
 
 	for (int i = 0; i < maxCommands; i++) {
-		int selectedIndex = pIn->GetSelectedCommandIndex(); // Get the clicked command index
-		if (selectedIndex < 0 || selectedIndex >= displayedCount) {
-			pOut->PrintMessage("Invalid selection. Ending command selection.");
+		int commandIndex = pIn->GetSelectedCommandIndex(); // Get the clicked command index
+		if (commandIndex < 0 || commandIndex >= 10) { // Ensure valid selection
+			pOut->PrintMessage("Invalid selection. Selection ended.");
 			break;
 		}
 
-		selectedCommands[numSelected++] = displayedCommands[selectedIndex]; // Save the selected command
-		pOut->PrintMessage("Selected: " + CommandToString(displayedCommands[selectedIndex]));
+		selectedCommands[numSelected++] = availableCommands[commandIndex];
+		pOut->PrintMessage("Command " + to_string(i + 1) + " selected: " + CommandToString(availableCommands[commandIndex]));
 	}
 
-	// Save the selected commands for execution
+	// Save selected commands for execution
 	SaveCommands(selectedCommands, numSelected);
 
-	// Notify the player
 	if (numSelected == 0) {
-		pOut->PrintMessage("No commands selected. Using previously saved commands.");
+		pOut->PrintMessage("No commands selected. Previous saved commands will be used.");
 	}
 	else {
-		pOut->PrintMessage(to_string(numSelected) + " commands selected.");
+		pOut->PrintMessage(to_string(numSelected) + " commands saved.");
 	}
 }
-
-
  
 Command* Player::GetSavedCommands()
 {
@@ -424,13 +419,13 @@ int Player::GetSavedCommandCount() const
 	return savedCommandCount; 
 }
 void Player::SaveCommands(const Command commands[], int count) {
-	Command savedCommands[5] = {};
-	int savedCommandCount = 0;
 	count = (count > 5) ? 5 : count;
+
 	for (int i = 0; i < count; i++) {
-		savedCommands[i] = commands[i];
+		this->savedCommands[i] = commands[i]; 
 	}
-	savedCommandCount = count;  // Update the count of saved commands
+
+	this->savedCommandCount = count;
 }
 Direction Player::GetDirection() const
 {

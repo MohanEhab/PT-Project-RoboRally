@@ -27,8 +27,9 @@ class Player
 	// isHacked (to indicate whether the player is blocked to play the round, as a result of the opponent using a hacking device)
 	bool isActive;
 	Command savedCommands[5];
+	Command availableCommands[10];
 	int savedCommandCount;
-	
+	int availableCommandCount;
 public:
 
 	Player(Cell * pCell, int playerNum); // Constructor making any needed initializations
@@ -56,12 +57,14 @@ public:
 	void Draw(Output* pOut) const;			// Draws the Player's Triangle on its current cell
 
 	void ClearDrawing(Output* pOut) const;	// Clears the Player's Triangle from its current cell
-	void SelectCommands(Grid* pGrid);
+	void SelectCommands(Grid* pGrid, Command availableCommands[]);
 	Command* GetSavedCommands();
 	int GetSavedCommandCount() const;
 	void SaveCommands(const Command commands[], int count);
 	string CommandToString(Command cmd) const;
-	void DisplayRandomCommands(Grid* pGrid);
+	void DisplayRandomCommands(Grid* pGrid, Command availableCommands[]);
+	int GetAvailableCommandCount()const; 
+	Command* GetAvailableCommands(); 
 
 	// ====== Equipment Functions ======
 	void EquipDoubleLaser();             // Equip the player with a double laser
