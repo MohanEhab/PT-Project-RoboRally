@@ -16,47 +16,33 @@ void ToPlayModeAction::Execute()
 	Grid* pGrid = pManager->GetGrid(); //access to grid
 	Output* pOut = pGrid->GetOutput(); //access to pOut
 	pOut->CreatePlayModeToolBar(); //switches the mode
-	
+	Player* players[2];
 	for (int i = 0; i < MaxPlayerCount; i++)
 	{
 		CellPosition startPos(0, i);
 		Cell* startCell = pGrid->GetCell(startPos);
-		Player* newPlayer = new Player(startCell, i);
+		players[i] = new Player(startCell, i);
 	}
+	pGrid->DisPlayerInfo();
+	pOut->PrintMessage("Switched to Play Mode");
+	Player* currentPlayer = pGrid->GetCurrentPlayer();
+	// Generate and display random commands
+	currentPlayer->DisplayRandomCommands(pGrid);
+	// Retrieve available commands
+	int availableCommandsCount = currentPlayer->GetSavedCommandCount();
 
-	pOut->PrintMessage("switched to play mode");
-	Command savedCommands[5];
-	Command availableCommands[10];
-	savedCommands[0] = MOVE_FORWARD_ONE_STEP;
-	savedCommands[1] = ROTATE_CLOCKWISE;
-	savedCommands[2] = MOVE_FORWARD_TWO_STEPS;
-	savedCommands[3] = MOVE_BACKWARD_TWO_STEPS;
-	savedCommands[4] = MOVE_FORWARD_THREE_STEPS;
+	// Use the generated commands in the commands bar
+    Command savedCommands[5] = { NO_COMMAND, NO_COMMAND, NO_COMMAND, NO_COMMAND, NO_COMMAND };
+	Command availableCommands[8] = {
+		MOVE_FORWARD_ONE_STEP, MOVE_FORWARD_TWO_STEPS, MOVE_FORWARD_THREE_STEPS,
+		MOVE_BACKWARD_ONE_STEP, MOVE_BACKWARD_TWO_STEPS, MOVE_BACKWARD_THREE_STEPS,
+		ROTATE_CLOCKWISE, ROTATE_COUNTERCLOCKWISE
+	};
+	pOut->CreateCommandsBar(savedCommands, 5, availableCommands, 8);	
 
+	// Let the player select commands
+	currentPlayer->SelectCommands(pGrid);
 
-
-	availableCommands[0] = MOVE_FORWARD_ONE_STEP;
-	availableCommands[1] = MOVE_FORWARD_TWO_STEPS;
-	availableCommands[2] = NO_COMMAND;
-	availableCommands[3] = NO_COMMAND;
-	availableCommands[4] = NO_COMMAND;
-	availableCommands[5] = NO_COMMAND;
-	availableCommands[6] = NO_COMMAND;
-	pOut->CreateCommandsBar(savedCommands, 5, availableCommands, 7);
-
-	// Let players take turns to move
-	for (int i = 0; i < MaxPlayerCount; i++)
-	{
-		Player* currentPlayer = pGrid->GetCurrentPlayer(); // Get the player
-		pOut->PrintMessage("Player " + std::to_string(i + 1) + "'s turn. Click anywhere to proceed.");
-		int x, y;
-		pGrid->GetInput()->GetPointClicked(x, y); // Wait for user to click
-
-		currentPlayer->Move(pGrid, savedCommands); // Call the Move function
-		pGrid->AdvanceCurrentPlayer();
-	}
-	}
-
-
-	
-
+	// Execute the selected commands
+	currentPlayer->Move(pGrid, savedCommands);
+}

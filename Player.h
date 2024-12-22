@@ -25,7 +25,9 @@ class Player
 	// carried consumables
 	// carried laser type (default, double laser)
 	// isHacked (to indicate whether the player is blocked to play the round, as a result of the opponent using a hacking device)
-	
+	bool isActive;
+	Command savedCommands[5];
+	int savedCommandCount;
 	
 public:
 
@@ -48,12 +50,16 @@ public:
 	///TODO: You can add setters and getters for data members here (if needed)
 
 	// ====== Drawing Functions ======
-	
+	void setInactive();
+	void resetForNextRound();
 	
 	void Draw(Output* pOut) const;			// Draws the Player's Triangle on its current cell
 
 	void ClearDrawing(Output* pOut) const;	// Clears the Player's Triangle from its current cell
 	void SelectCommands(Grid* pGrid);
+	Command* GetSavedCommands();
+	int GetSavedCommandCount() const;
+	void SaveCommands(const Command commands[], int count);
 	string CommandToString(Command cmd) const;
 	void DisplayRandomCommands(Grid* pGrid);
 

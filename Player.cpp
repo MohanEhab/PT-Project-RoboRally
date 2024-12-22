@@ -272,7 +272,7 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 					pOut->PrintMessage("Invalid click! Click inside the grid area.");
 				}
 			}
-		}	
+		}
 	}
 	Cell* finalCell = pGrid->GetCell(pCell->GetCellPosition());
 	GameObject* obj = finalCell->GetGameObject();
@@ -291,34 +291,61 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 	// - Use the Grid class to update pCell
 	// - Don't forget to apply game objects at the final destination cell and check for game ending
 
-} 
-void Player::RebootAndRepair(Grid* pGrid)
-{
-	Cell* start = pGrid->GetStartingCell(); //gets starting cell
-	ClearDrawing(pGrid->GetOutput()); //clears recent drawing 
-	SetCell(start); //player on new cell now
-	Draw(pGrid->GetOutput()); //redraws player on cell
-	health = 10; //max health
-	pGrid->DisPlayerInfo();
 }
 
-void Player::DisplayRandomCommands(Grid* pGrid)
+
+void Player::RebootAndRepair(Grid* pGrid)
 {
-	const int maxCommands = 5;
-	Command availableCommand[maxCommands] =
-	{ MOVE_FORWARD_ONE_STEP,
-		ROTATE_CLOCKWISE,
-		MOVE_FORWARD_TWO_STEPS,
-		MOVE_BACKWARD_ONE_STEP,
-		ROTATE_COUNTERCLOCKWISE };
-	Output* pOut = pGrid->GetOutput();
-	string commandList = "Random Commands: ";
-	for (int i = 0; i < maxCommands; i++)
-	{
-		commandList += CommandToString(availableCommand[i]) + (i < maxCommands - 1 ? "," : "");
+	Output*pOut = pGrid->GetOutput(); 
+	if (health < 10) {  
+		health = 10;
+		pOut->PrintMessage("Reboot and Repair: Health restored to maximum!");
 	}
-	pOut->PrintMessage(commandList);
+	else {
+		pOut->PrintMessage("Reboot and Repair: Health is already at maximum.");
+	}
+
+	// Move the player to the starting position
+	Cell* startingCell = pGrid->GetStartingCell();
+	if (!startingCell)
+	{
+		pOut->PrintMessage("ERROR: Invalid starting cell");
+		return;
+	}
+	ClearDrawing(pOut);
+	SetCell(startingCell); 
+	Draw(pOut);
+	setInactive(); //skip actions for player
+	pGrid->DisPlayerInfo();
+	pOut->PrintMessage("player is successfully rebooted"); 
 }
+
+void Player::DisplayRandomCommands(Grid* pGrid) {
+	Output* pOut = pGrid->GetOutput();
+	int maxCommands = (health < 10) ? health : 5; // Determine max commands based on health
+
+	Command availableCommands[8] = {
+		MOVE_FORWARD_ONE_STEP, MOVE_FORWARD_TWO_STEPS, MOVE_FORWARD_THREE_STEPS,
+		MOVE_BACKWARD_ONE_STEP, MOVE_BACKWARD_TWO_STEPS, MOVE_BACKWARD_THREE_STEPS,
+		ROTATE_CLOCKWISE, ROTATE_COUNTERCLOCKWISE
+	};
+
+	Command displayedCommands[5]; 
+	string commandList = "Commands: "; 
+
+	// Cycle through the available commands
+	for (int i = 0; i < maxCommands; i++) { 
+		displayedCommands[i] = availableCommands[i % 8]; // Cycle through indices 
+		commandList += CommandToString(displayedCommands[i]) + (i < maxCommands - 1 ? ", " : ""); 
+	}
+
+	// Display the commands
+	pOut->PrintMessage(commandList); 
+
+	// Save the displayed commands for selection and execution
+	SaveCommands(displayedCommands, maxCommands); 
+}
+
 
 string Player::CommandToString(Command cmd) const
 {
@@ -345,46 +372,65 @@ string Player::CommandToString(Command cmd) const
 }
 
 
-void Player::SelectCommands(Grid* pGrid)
-{
-	int x, y;
-	const int maxCommands = 5;
-	Command availableCommands[maxCommands] =
-	{
-		MOVE_FORWARD_ONE_STEP,
-		ROTATE_CLOCKWISE,
-		MOVE_FORWARD_TWO_STEPS,
-		MOVE_BACKWARD_ONE_STEP,
-		ROTATE_COUNTERCLOCKWISE
-	};
-	Command savedCommands[maxCommands];
-	int savedCommandCount = 0;
-	Input* pIn = pGrid->GetInput();
+void Player::SelectCommands(Grid* pGrid) {
 	Output* pOut = pGrid->GetOutput();
-	DisplayRandomCommands(pGrid);
-	pOut->PrintMessage("select commands from command bar, click on them");
+	Input* pIn = pGrid->GetInput();
 
-	while (savedCommandCount < maxCommands) {
-		int commandIndex = pIn->GetSelectedCommandIndex();
+	const int maxCommands = (health < 5) ? health : 5; // Limit selection by health
+	Command* displayedCommands = GetSavedCommands();  // Retrieve the displayed commands
+	int displayedCount = GetSavedCommandCount();      // Retrieve the count of displayed commands
 
-		if (commandIndex < 0 || commandIndex >= maxCommands) {
-			pOut->PrintMessage("Invalid selection. Please select a valid command.");
-			continue;
-		}
-
-		savedCommands[savedCommandCount++] = availableCommands[commandIndex];
-
-		pOut->PrintMessage("Command " + to_string(savedCommandCount) + " saved: " +
-			CommandToString(availableCommands[commandIndex]));
-
-		if (savedCommandCount == maxCommands) {
-			pOut->PrintMessage("All commands selected. Proceeding...");
-		}
+	if (displayedCommands == nullptr || displayedCount == 0) {
+		pOut->PrintMessage("No commands available to select.");
+		return;
 	}
 
-	
-	pOut->PrintMessage("Commands executed successfully! Click anywhere to continue.");
-	pIn->GetPointClicked(x, y);
+	Command selectedCommands[5];  // Array to hold the selected commands
+	int numSelected = 0;
+
+	pOut->PrintMessage("Click on the command bar to select your commands.");
+
+	for (int i = 0; i < maxCommands; i++) {
+		int selectedIndex = pIn->GetSelectedCommandIndex(); // Get the clicked command index
+		if (selectedIndex < 0 || selectedIndex >= displayedCount) {
+			pOut->PrintMessage("Invalid selection. Ending command selection.");
+			break;
+		}
+
+		selectedCommands[numSelected++] = displayedCommands[selectedIndex]; // Save the selected command
+		pOut->PrintMessage("Selected: " + CommandToString(displayedCommands[selectedIndex]));
+	}
+
+	// Save the selected commands for execution
+	SaveCommands(selectedCommands, numSelected);
+
+	// Notify the player
+	if (numSelected == 0) {
+		pOut->PrintMessage("No commands selected. Using previously saved commands.");
+	}
+	else {
+		pOut->PrintMessage(to_string(numSelected) + " commands selected.");
+	}
+}
+
+
+ 
+Command* Player::GetSavedCommands()
+{
+	return savedCommands;
+}
+int Player::GetSavedCommandCount() const
+{
+	return savedCommandCount; 
+}
+void Player::SaveCommands(const Command commands[], int count) {
+	Command savedCommands[5] = {};
+	int savedCommandCount = 0;
+	count = (count > 5) ? 5 : count;
+	for (int i = 0; i < count; i++) {
+		savedCommands[i] = commands[i];
+	}
+	savedCommandCount = count;  // Update the count of saved commands
 }
 Direction Player::GetDirection() const
 {
@@ -452,14 +498,21 @@ string Player::GetPlayerInfo() const
 	return playerInfo;
 }
 
+void Player::setInactive()
+{
+	isActive = false;
+}
 
-void Player::AppendPlayerInfo(string & playersInfo) const
+void Player::resetForNextRound()
+{
+	isActive = true;
+}
+
+void Player::AppendPlayerInfo(string& playersInfo) const
 {
 	// TODO: Modify the Info as needed
-	playersInfo += "P" + to_string(playerNum) + "(" ;
-	playersInfo += to_string(currDirection) + ", ";
-	playersInfo += to_string(health) + ")";
 
+	playersInfo += GetPlayerInfo();
 }
 
 int Player:: GetPlayerNumber() const {

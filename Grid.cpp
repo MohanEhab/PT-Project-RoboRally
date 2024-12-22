@@ -305,7 +305,7 @@ void Grid::DisPlayerInfo() const
 		if (i < MaxPlayerCount - 1)
 			playersInfo = playersInfo + ",";
 	}
-	playersInfo = playersInfo + "| Curr= P" + to_string(currPlayerNumber+1);
+	playersInfo = playersInfo + "| Curr P = P" + to_string(currPlayerNumber+1);
 	pOut->PrintPlayersInfo(playersInfo);
 }
 
