@@ -170,12 +170,6 @@ ActionType Input::GetUserAction() const
 			case ITM_REBOOT_AND_REPAIR: return REBOOT_AND_REPAIR;
 			case ITM_USE_CONSUMABLE: return USE_CONSUMABLE;
 			case ITM_NEW_GAME: return NEW_GAME;
-			case ITM_SHOOT: return SHOOT;
-			case ITM_INTERACT_WITH_WORKSHOP: return INTERACT_WITH_WORKSHOP;
-			case ITM_USE_BELT: return USE_BELT;
-			case ITM_ENTER_DANGER_ZONE: return ENTER_DANGER_ZONE;
-			case ITM_STEP_IN_WATER_PIT: return STEP_IN_WATER_PIT;
-			case ITM_STEP_IN_ROTATING_GEAR: return STEP_IN_ROTATING_GEAR;
 
 
 			default: return EMPTY;	// A click on an empty place in the toolbar
