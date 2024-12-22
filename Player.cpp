@@ -37,7 +37,6 @@ int Player::GetHealth()
 }
 
 // ====== Equipment Functions ======
-
 void Player::EquipLaser(LaserType laser) {
 	equippedLaser = laser;
 }
@@ -497,6 +496,7 @@ void Player::setInactive()
 {
 	isActive = false;
 }
+
 void Player::UseToolkit(Grid* pGrid) {
 	Output* pOut = pGrid->GetOutput();
 
