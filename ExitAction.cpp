@@ -11,7 +11,7 @@ void ExitAction::ReadActionParameters()
 void ExitAction::Execute()
 {
 	Grid* pGrid = pManager->GetGrid();
-	pGrid->PrintErrorMessage("exiting the game, bye");
+	pGrid->PrintErrorMessage("Exiting the game, Bye. ;)");
 }
 
 ExitAction::~ExitAction()

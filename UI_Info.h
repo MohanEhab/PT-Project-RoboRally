@@ -51,19 +51,13 @@ enum PLAY_MODE_ITEMS // The items of the Play Mode (you should add more items)
 {
 	// Note: Items are ordered here as they appear in menu
 	// If you want to change the menu items order, change the order here
-
-	ITM_EXECUTE_COMMANDS,
-	ITM_SELECT_COMMAND,
 	ITM_SWITCH_TO_DESIGN_MODE,
+	ITM_SELECT_COMMAND,
+	ITM_EXECUTE_COMMANDS,
 	ITM_REBOOT_AND_REPAIR,
 	ITM_USE_CONSUMABLE,
 	ITM_NEW_GAME,
-	ITM_SHOOT,
-	ITM_INTERACT_WITH_WORKSHOP,
-	ITM_USE_BELT,
-	ITM_ENTER_DANGER_ZONE,
-	ITM_STEP_IN_WATER_PIT,
-	ITM_STEP_IN_ROTATING_GEAR,
+
 
 
 	///TODO: Add more items names here

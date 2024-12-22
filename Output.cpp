@@ -341,18 +341,14 @@ void Output::CreatePlayModeToolBar() const
 	MenuItemImages[ITM_SWITCH_TO_DESIGN_MODE] = "images\\Menu_SwitchToGrid.jpg";
 
 	///TODO: Change the path of the images as needed
-	MenuItemImages[ITM_EXECUTE_COMMANDS] = "images\\Menu_Dice.jpg";
 	MenuItemImages[ITM_SELECT_COMMAND] = "images\\Menu_Dice.jpg";
+	MenuItemImages[ITM_EXECUTE_COMMANDS] = "images\\Menu_Dice.jpg";
+	
 	///TODO: Prepare images for each menu item and add it to the list
 	MenuItemImages[ITM_REBOOT_AND_REPAIR] = "images\\Menu_RebootRepair.jpg";
 	MenuItemImages[ITM_USE_CONSUMABLE] = "images\\Menu_UseConsumable.jpg";
 	MenuItemImages[ITM_NEW_GAME] = "images\\Menu_NewGame.jpg";
-	MenuItemImages[ITM_SHOOT] = "images\\Menu_Shoot.jpg";
-	MenuItemImages[ITM_INTERACT_WITH_WORKSHOP] = "images\\Menu_Workshop.jpg";
-	MenuItemImages[ITM_USE_BELT] = "images\\Menu_Belt.jpg";
-	MenuItemImages[ITM_ENTER_DANGER_ZONE] = "images\\Menu_DangerZone.jpg";
-	MenuItemImages[ITM_STEP_IN_WATER_PIT] = "images\\Menu_WaterPit.jpg";
-	MenuItemImages[ITM_STEP_IN_ROTATING_GEAR] = "images\\Menu_RotatingGear.jpg";
+	
 
 
 

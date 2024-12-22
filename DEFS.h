@@ -33,19 +33,13 @@ enum ActionType // The actions supported (add more as needed)
 	///TODO: Add more action types of Design Mode
 
 	// [2] Actions of Play Mode
-	EXECUTE_COMMANDS, //Executes saved command 
-	SELECT_COMMAND, //Select a command from the available ones
 	TO_DESIGN_MODE,	// Go to Design Mode
+	SELECT_COMMAND, //Select a command from the available ones
+	EXECUTE_COMMANDS, //Executes saved command 
 	REBOOT_AND_REPAIR, //Rebotes and repairs the robot
 	USE_CONSUMABLE, //Use consumable item
 	NEW_GAME, //Restarts the game
-	SHOOT,  //shoots at target 
-	INTERACT_WITH_WORKSHOP,// Players can purchase equipment, repair their robot, or buy..
-	USE_BELT,     //The robot is moved to another cell, based on the belt’s direction
-	ENTER_DANGER_ZONE, // The robot loses health points if it lands here
-	STEP_IN_WATER_PIT,/*  The robot is destroyed instantly, causing the game to end, and the
-	other player is declared the winner.*/
-	STEP_IN_ROTATING_GEAR, // Player’s direction is rotated
+	
 
 
 
