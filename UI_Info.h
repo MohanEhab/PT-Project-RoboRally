@@ -38,7 +38,8 @@ enum DESIGN_MODE_ITEMS // The items of the Design Mode (you should add more item
 	ITM_DELETE_GAME_OBJECT,
 	ITM_SAVE_GRID,
 	ITM_LOAD_GRID,
-
+	ITM_USE_TOOLKIT,
+	ITM_USE_HACK_DEVICE,
 
 
 

@@ -52,6 +52,8 @@ public:
 
 	// ====== Drawing Functions ======
 	void setInactive();
+	void UseToolkit(Grid* pGrid);
+	void UseHackDevice(Grid* pGrid);
 	void resetForNextRound();
 	
 	void Draw(Output* pOut) const;			// Draws the Player's Triangle on its current cell

@@ -300,7 +300,7 @@ void Grid::DisPlayerInfo() const
 		playersInfo = playersInfo + "P" + to_string(player->GetPlayerNumber()+1);
 		playersInfo += "(" + to_string(player->GetCell()->GetCellPosition().GetCellNum()) + ",";
 		playersInfo += DirectionString[player->GetDirection()];
-		playersInfo += "," + to_string(player->GetHealth()) + ")";
+		playersInfo += ", " + to_string(player->GetHealth()) + ")";
 
 		if (i < MaxPlayerCount - 1)
 			playersInfo = playersInfo + ",";

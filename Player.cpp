@@ -42,7 +42,6 @@ void Player::EquipLaser(LaserType laser) {
 	equippedLaser = laser;
 }
 
-
 void Player::EquipDoubleLaser() {
 	
 	EquipLaser(DOUBLE_LASER);
@@ -293,7 +292,6 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 
 }
 
-
 void Player::RebootAndRepair(Grid* pGrid)
 {
 	Output*pOut = pGrid->GetOutput(); 
@@ -331,17 +329,15 @@ void Player::DisplayRandomCommands(Grid* pGrid, Command availableCommands[]) {
 
 	string commandList = "Available Commands: ";
 
-	// Generate 10 random commands
+	//  10 random commands
 	for (int i = 0; i < 10; i++) {
 		int randomIndex = rand() % 8;
 		availableCommands[i] = commandPool[randomIndex];
 		commandList += CommandToString(availableCommands[i]) + (i < 9 ? ", " : "");
 	}
 
-	pOut->PrintMessage(commandList); // Display commands as a message
+	pOut->PrintMessage(commandList); 
 }
-
-
 
 int Player::GetAvailableCommandCount() const
 {
@@ -352,7 +348,6 @@ Command* Player::GetAvailableCommands()
 {
 	return availableCommands;  
 }
-
 
 string Player::CommandToString(Command cmd) const
 {
@@ -414,10 +409,12 @@ Command* Player::GetSavedCommands()
 {
 	return savedCommands;
 }
+
 int Player::GetSavedCommandCount() const
 {
 	return savedCommandCount; 
 }
+
 void Player::SaveCommands(const Command commands[], int count) {
 	count = (count > 5) ? 5 : count;
 
@@ -427,10 +424,12 @@ void Player::SaveCommands(const Command commands[], int count) {
 
 	this->savedCommandCount = count;
 }
+
 Direction Player::GetDirection() const
 {
 	return currDirection;
 }
+
 void Player::RotateClockwise(Grid* pGrid)
 {
 	Output* pOut = pGrid->GetOutput();
@@ -448,6 +447,7 @@ void Player::RotateClockwise(Grid* pGrid)
 	
 	Draw(pOut);
 }
+
 void Player::RotateCounterClockwise(Grid* pGrid)
 {
 	Output* pOut = pGrid->GetOutput();
@@ -496,6 +496,36 @@ string Player::GetPlayerInfo() const
 void Player::setInactive()
 {
 	isActive = false;
+}
+void Player::UseToolkit(Grid* pGrid) {
+	Output* pOut = pGrid->GetOutput();
+
+	if (!hasToolkit) {
+		pOut->PrintMessage("No toolkit available to use.");
+		return;
+	}
+
+	health = 10;
+	hasToolkit = false; // toolkit is consumed
+	pOut->PrintMessage("Toolkit used! Health fully restored to 10.");
+}
+
+void Player::UseHackDevice(Grid* pGrid) {
+	Output* pOut = pGrid->GetOutput();
+
+	if (!hasHackDevice) {
+		pOut->PrintMessage("No hack device available to use.");
+		return;
+	}
+
+	for (int i = 0; i < MaxPlayerCount; i++) {
+		Player* opponent = pGrid-> GetCurrentPlayer();
+		if (opponent != this) { //dont hack itself
+			opponent->setInactive(); //hack other player
+		}
+	}
+	hasHackDevice = false; //  device is consumed
+	pOut->PrintMessage("Hack device used! Opponents cannot play this round.");
 }
 
 void Player::resetForNextRound()
