@@ -80,7 +80,9 @@ void Grid::UpdatePlayerCell(Player * player, const CellPosition & newPosition)
 {
 	// Clear the player's triangle from the old cell position
 	player->ClearDrawing(pOut);
-	for (int i = 0; i < MaxPlayerCount; i++) {
+	
+	
+	for (int i = 0; i < MaxPlayerCount; i++) { //fix issue of player being removed if another player passed by it
 		Player* otherPlayer = PlayerList[i];
 		if (otherPlayer != player &&
 			otherPlayer->GetCell()->GetCellPosition().VCell() == player->GetCell()->GetCellPosition().VCell() &&
@@ -89,13 +91,29 @@ void Grid::UpdatePlayerCell(Player * player, const CellPosition & newPosition)
 			otherPlayer->Draw(pOut);
 		}
 	}
-
 	// Set the player's CELL with the new position
 	Cell * newCell = CellList[newPosition.VCell()][newPosition.HCell()];
 	player->SetCell(newCell);	
 
+	//fixes issue of player delete belts drawn 
+	for (int i = 0; i < NumVerticalCells; ++i) {
+		for (int j = 0; j < NumHorizontalCells; ++j) {
+			Cell* cell = CellList[i][j];
+			Belt* belt = cell->HasBelt(); 
+			if (belt) {
+				CellPosition beltStart = belt->GetPosition();
+				CellPosition beltEnd = belt->GetEndPosition();
+
+					pOut->DrawBelt(beltStart, beltEnd);
+				}
+			}
+		}
+
+
+
 	// Draw the player's triangle on the new cell position
 	player->Draw(pOut);
+
 }
 
 
