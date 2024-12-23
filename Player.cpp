@@ -112,10 +112,11 @@ void Player::ClearDrawing(Output* pOut) const
 {
 	///TODO: Modify the cellColor to draw the correct cellColor (hint: if cell contains non-default cellColor)
 	color cellColor = UI.CellColor;
-	
-	pOut->DrawCell(pCell->GetCellPosition(), cellColor);
-	///TODO: use the appropriate output function to draw the player with "cellColor" (to clear it)
-
+	if (pCell)
+		pOut->DrawCell(pCell->GetCellPosition(), cellColor);
+	///TODO: use the appropriate output function to draw the player with "cellColor" (to clear it)
+	GameObject* obj = pCell->GetGameObject();
+	if (obj) obj->Draw(pOut);
 }
 
 // ====== Game Functions ======
