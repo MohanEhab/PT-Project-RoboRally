@@ -210,6 +210,9 @@
     <ClCompile Include="RebootAndRepairAction.cpp" />
     <ClCompile Include="ToDesignModeAction.cpp" />
     <ClCompile Include="ToPlayModeAction.cpp" />
+    <ClCompile Include="ShootingAction.cpp" />
+    <ClCompile Include="ExecutePlayerMovementAction.cpp" />
+    <ClCompile Include="SelectPlayerMovementAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -350,5 +353,8 @@
     <ClInclude Include="RebootAndRepairAction.h" />
     <ClInclude Include="ToDesignModeAction.h" />
     <ClInclude Include="ToPlayModeAction.h" />
+    <ClInclude Include="ShootingAction.h" />
+    <ClInclude Include="ExecutePlayerMovementAction.h" />
+    <ClInclude Include="SelectPlayerMovementAction.h" />
   </ItemGroup>
 </Project>
