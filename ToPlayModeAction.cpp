@@ -24,6 +24,7 @@ void ToPlayModeAction::Execute() {
 
     do
     {
+
     for (int i = 0; i < MaxPlayerCount; i++) {
         Player* currentPlayer = pGrid->GetCurrentPlayer();
 

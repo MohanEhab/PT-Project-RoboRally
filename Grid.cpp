@@ -80,6 +80,15 @@ void Grid::UpdatePlayerCell(Player * player, const CellPosition & newPosition)
 {
 	// Clear the player's triangle from the old cell position
 	player->ClearDrawing(pOut);
+	for (int i = 0; i < MaxPlayerCount; i++) {
+		Player* otherPlayer = PlayerList[i];
+		if (otherPlayer != player &&
+			otherPlayer->GetCell()->GetCellPosition().VCell() == player->GetCell()->GetCellPosition().VCell() &&
+			otherPlayer->GetCell()->GetCellPosition().HCell() == player->GetCell()->GetCellPosition().HCell()) {
+			// Redraw the other player after clearing
+			otherPlayer->Draw(pOut);
+		}
+	}
 
 	// Set the player's CELL with the new position
 	Cell * newCell = CellList[newPosition.VCell()][newPosition.HCell()];
