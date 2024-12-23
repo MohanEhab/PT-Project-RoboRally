@@ -333,7 +333,7 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 void Player::RebootAndRepair(Grid* pGrid)
 {
 	Output*pOut = pGrid->GetOutput(); 
-	if (!HasRebootnRepair)
+	if (!HasRebootnRepair())
 	{
 		pOut->PrintMessage("Player Cannot be rebooted or repaired");
 		return;
@@ -540,7 +540,7 @@ void Player::setInactive()
 void Player::UseToolkit(Grid* pGrid) {
 	Output* pOut = pGrid->GetOutput();
 
-	if (!HasToolkit)
+	if (!HasToolkit())
 	{
 		pOut->PrintMessage("No Toolkit is available for you ");
 		return; 
@@ -554,7 +554,7 @@ void Player::UseToolkit(Grid* pGrid) {
 void Player::UseHackDevice(Grid* pGrid) {
 	Output* pOut = pGrid->GetOutput();
 
-	if (!HasHackDevice) 
+	if (!HasHackDevice()) 
 	{ 
 		pOut->PrintMessage("You don't have a hackdevice.");
 		return;
