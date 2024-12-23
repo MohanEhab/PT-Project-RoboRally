@@ -18,7 +18,7 @@ void Workshop::Apply(Grid* pGrid, Player* pPlayer)
     int x, y;
 
     // Print workshop message
-    pOut->PrintMessage("Welcome to the Workshop! Choose what you want to buy: 1. Double Laser 2. Extended Memory 3. Toolkit 4. Hack Device 5. Laser Reflect Gear 6. Shield.");
+    pOut->PrintMessage("Welcome to the Workshop! Choose from to buy: 1. Double Laser 2. Extended Memory 3. Toolkit 4. Hack Device 5. Laser Reflect Gear 6. Shield.");
     string choice = pIn->GetSrting(pOut);
 
     if (choice == "1") {
