@@ -26,6 +26,9 @@ void Flag::Apply(Grid* pGrid, Player* pPlayer)
 	pOut->PrintMessage("Player " + to_string(Winner) + " reached the flag and Wins!  Click to continue...");
 	pIn->GetPointClicked(x, y);
 	pOut->ClearStatusBar();
+	pOut->PrintMessage("Start a new Game.");
+	pIn->GetPointClicked(x, y);
+	pOut->ClearStatusBar();
 	pGrid->SetEndGame(true);
 	//    Review the "pGrid" functions and decide which function can be used for that
 }

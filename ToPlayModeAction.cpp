@@ -50,13 +50,17 @@ void ToPlayModeAction::Execute() {
         //shootingAction.Execute();
 
         pGrid->AdvanceCurrentPlayer();
-
+        if (pGrid->GetEndGame())
+            break;
     }
-
-    pOut->PrintMessage("Round Completed. Click anywhere to continue.");
-    int x, y;
-    pIn->GetPointClicked(x, y);
-    pOut->ClearStatusBar();
+    if (!pGrid->GetEndGame()) {
+        pOut->PrintMessage("Movement Phase Completed. Click anywhere to enter Shooting Phase.");
+        int x, y;
+        pIn->GetPointClicked(x, y);
+        pOut->ClearStatusBar();
+    }
+    else
+        break;
     } while (!pGrid -> GetEndGame());
     
 

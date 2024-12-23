@@ -144,12 +144,22 @@ void ShootingAction::Execute() {
     // Check if the game should end
     if (playerX->GetHealth() == 0) {
         pOut->PrintMessage("Player " + to_string(playerYNumber) + " wins! Game over.");
+        pIn->GetPointClicked(x, y);
+        pOut->ClearStatusBar();
+        pOut->PrintMessage("Start a new Game.");
+        pIn->GetPointClicked(x, y);
+        pOut->ClearStatusBar();
         pGrid->SetEndGame(true);
         return;
     }
 
     if (playerY->GetHealth() == 0) {
         pOut->PrintMessage("Player " + to_string(playerXNumber) + " wins! Game over.");
+        pIn->GetPointClicked(x, y);
+        pOut->ClearStatusBar();
+        pOut->PrintMessage("Start a new Game.");
+        pIn->GetPointClicked(x, y);
+        pOut->ClearStatusBar();
         pGrid->SetEndGame(true);
         return;
     }
