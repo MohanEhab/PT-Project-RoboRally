@@ -1,26 +1,24 @@
 #include "Workshop.h"
 
-
-
-Workshop::Workshop(const CellPosition & workshopPosition):GameObject( workshopPosition)
+Workshop::Workshop(const CellPosition& workshopPosition) :GameObject(workshopPosition)
 {
 
 }
 
 
-void Workshop::Draw(Output * pOut) const
+void Workshop::Draw(Output* pOut) const
 {
-	pOut->DrawWorkshop(position);
+    pOut->DrawWorkshop(position);
 }
 
-void Workshop::Apply(Grid * pGrid, Player * pPlayer)
+void Workshop::Apply(Grid* pGrid, Player* pPlayer)
 {
     Output* pOut = pGrid->GetOutput();
     Input* pIn = pGrid->GetInput();
     int x, y;
 
     // Print workshop message
-    pOut->PrintMessage("Welcome to the Workshop! Choose what you want to buy: 1. Double Laser 2. Extended Memory 3. Toolkit 4. Hack Device. Type your choice and press Enter.");
+    pOut->PrintMessage("Welcome to the Workshop! Choose what you want to buy: 1. Double Laser 2. Extended Memory 3. Toolkit 4. Hack Device 5. Laser Reflect Gear 6. Shield.");
     string choice = pIn->GetSrting(pOut);
 
     if (choice == "1") {
@@ -63,13 +61,32 @@ void Workshop::Apply(Grid * pGrid, Player * pPlayer)
             pOut->PrintMessage("You already have a Hack Device. Click anywhere to continue...");
         }
     }
+    else if (choice == "5") {
+        // Player chooses Laser Reflect Gear
+        if (!pPlayer->HasLaserReflection()) { // Check if player already has Laser Reflect Gear
+            pPlayer->EnableLaserReflection(); // Equip the player with Laser Reflect Gear
+            pOut->PrintMessage("You have acquired Laser Reflect Gear! Click anywhere to continue...");
+        }
+        else {
+            pOut->PrintMessage("You already have Laser Reflect Gear. Click anywhere to continue...");
+        }
+    }
+    else if (choice == "6") {
+        // Player chooses Shield Mechanism
+        if (!pPlayer->HasShield()) { // Check if player already has a Shield
+            pPlayer->EnableShield(); // Equip the player with a shield
+            pOut->PrintMessage("You have acquired a Shield! Click anywhere to continue...");
+        }
+        else {
+            pOut->PrintMessage("You already have a Shield. Click anywhere to continue...");
+        }
+    }
     else {
         // Invalid choice
         pOut->PrintMessage("Invalid choice. Click anywhere to continue...");
     }
 
-    // Wait for the player to click before clearing the message
-    
+
     pIn->GetPointClicked(x, y);
     pOut->ClearStatusBar();
 }

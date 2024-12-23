@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 
-Player::Player(Cell * pCell, int playerNum) : stepCount(0), health(10), playerNum(playerNum), currDirection(RIGHT),hasDoubleLaser(false),hasExtendedMemory(false), hasToolkit(false),hasHackDevice(false), equippedLaser(BASIC_LASER), hasShield(false)
+Player::Player(Cell * pCell, int playerNum) : stepCount(0), health(10), playerNum(playerNum), currDirection(RIGHT),hasDoubleLaser(false),hasExtendedMemory(false), hasToolkit(false),hasHackDevice(false), equippedLaser(BASIC_LASER), hasShield(false), hasLaserReflection(false)
 {
 	this->pCell = pCell;
 	// Make all the needed initialization or validations
@@ -38,6 +38,19 @@ int Player::GetHealth()
 
 // ====== Equipment Functions ======
 
+
+void Player::EnableLaserReflection() {
+	hasLaserReflection = true;
+}
+
+bool Player::HasLaserReflection() const {
+	return hasLaserReflection;
+}
+
+
+void Player::DisableLaserReflection() {
+	hasLaserReflection = false;
+}
 
 void Player::EnableShield() {
 	hasShield = true;

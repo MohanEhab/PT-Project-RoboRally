@@ -12,6 +12,8 @@ void ShootingAction::ReadActionParameters()
 void ShootingAction::Execute() {
     Grid* pGrid = pManager->GetGrid();
     Output* pOut = pGrid->GetOutput();
+    Input* pIn = pGrid->GetInput();
+    int x, y;
 
     Player* player1 = pGrid->GetPlayer(0); 
     Player* player2 = pGrid->GetPlayer(1); 
@@ -58,38 +60,48 @@ void ShootingAction::Execute() {
         break;
     }
 
+    int player1Damage = player1->HasDoubleLaser() ? 2 : 1; //created both possible damages to be able to use them easily down
+    int player2Damage = player2->HasDoubleLaser() ? 2 : 1;
+
+
     if (player1CanShoot) {
-        if (player1->HasShield()) {
-            player1->DisableShield(); //one time and then disabled 
+        if (player2->HasLaserReflection()) { // Reflect laser
+            player1->SetHealth(player1->GetHealth() - player1Damage);
+            player2->DisableLaserReflection();
+            pOut->PrintMessage("Player 1 shot Player 2, but the damage was reflected back!");
+        }
+        else if (player2->HasShield()) {
+            player2->DisableShield(); // Shield used once and then disabled 
             pOut->PrintMessage("Player 1 shot at Player 2, but the shield protected Player 2!");
         }
         else {
-
-            int damage = player1->HasDoubleLaser() ? 2 : 1;
-            int newHealth = player2->GetHealth() - damage;
+            int newHealth = player2->GetHealth() - player1Damage;
             player2->SetHealth(newHealth);
-            pOut->PrintMessage("Player 1 hit Player 2! Damage dealt: " + to_string(damage));
+            pOut->PrintMessage("Player 1 hit Player 2! Damage dealt: " + to_string(player1Damage));
         }
         pIn->GetPointClicked(x, y); // Wait for user to click
         pOut->ClearStatusBar(); // Clear the status bar after click
     }
 
     if (player2CanShoot) {
-        
-        if (player1->HasShield()) {
-            player1->DisableShield(); //one time and then disabled 
+        if (player1->HasLaserReflection()) { // Reflect laser
+            player2->SetHealth(player2->GetHealth() - player2Damage);
+            player1->DisableLaserReflection();
+            pOut->PrintMessage("Player 2 shot Player 1, but the damage was reflected back!");
+        }
+        else if (player1->HasShield()) {
+            player1->DisableShield(); // Shield used once and then disabled 
             pOut->PrintMessage("Player 2 shot at Player 1, but the shield protected Player 1!");
         }
         else {
-
-            int damage = player2->HasDoubleLaser() ? 2 : 1;
-            int newHealth = player1->GetHealth() - damage;
+            int newHealth = player1->GetHealth() - player2Damage;
             player1->SetHealth(newHealth);
-            pOut->PrintMessage("Player 2 hit Player 1! Damage dealt: " + to_string(damage));
+            pOut->PrintMessage("Player 2 hit Player 1! Damage dealt: " + to_string(player2Damage));
         }
         pIn->GetPointClicked(x, y); // Wait for user to click
         pOut->ClearStatusBar(); // Clear the status bar after click
     }
+
 
     // If neither can shoot
     if (!player1CanShoot && !player2CanShoot) {
