@@ -21,6 +21,9 @@ void ToPlayModeAction::Execute() {
     pOut->CreatePlayModeToolBar();
     pOut->PrintMessage("Switched to Play Mode!");
 
+
+    do
+    {
     for (int i = 0; i < MaxPlayerCount; i++) {
         Player* currentPlayer = pGrid->GetCurrentPlayer();
 
@@ -36,6 +39,7 @@ void ToPlayModeAction::Execute() {
         Command* selectedCommands = currentPlayer->GetSavedCommands();
         int selectedCommandCount = currentPlayer->GetSavedCommandCount();
         pOut->CreateCommandsBar(selectedCommands, selectedCommandCount, availableCommands, 10);
+        
 
         ExecutePlayerMovementAction executeAction(pManager);
         executeAction.Execute();
@@ -45,10 +49,14 @@ void ToPlayModeAction::Execute() {
         //shootingAction.Execute();
 
         pGrid->AdvanceCurrentPlayer();
+
     }
 
-    pOut->PrintMessage("All players have completed their turns. Click anywhere to continue.");
+    pOut->PrintMessage("Round Completed. Click anywhere to continue.");
     int x, y;
     pIn->GetPointClicked(x, y);
     pOut->ClearStatusBar();
+    } while (!pGrid -> GetEndGame());
+    
+
 }
