@@ -10,6 +10,7 @@ class ShootingAction: public Action
 public:
 	ShootingAction(ApplicationManager* pApp);
 	virtual~ShootingAction();
+	virtual void ReadActionParameters();
 	virtual void Execute();
 };
 

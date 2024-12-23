@@ -4,7 +4,10 @@
 AntennaAction :: AntennaAction(ApplicationManager* pApp) : Action(pApp) {}
 
 AntennaAction::~AntennaAction() {}
- 
+
+void AntennaAction::ReadActionParameters() {
+}
+
 
 void AntennaAction:: Execute(){
 

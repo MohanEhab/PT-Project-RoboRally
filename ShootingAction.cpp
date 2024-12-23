@@ -7,7 +7,8 @@ ShootingAction::ShootingAction(ApplicationManager* pApp) :Action(pApp)
 ShootingAction::~ShootingAction()
 {
 }
-
+void ShootingAction::ReadActionParameters() {
+}
 
 void ShootingAction::Execute() {
     Grid* pGrid = pManager->GetGrid();

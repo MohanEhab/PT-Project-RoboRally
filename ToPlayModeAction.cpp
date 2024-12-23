@@ -6,11 +6,10 @@
 #include "ExecutePlayerMovementAction.h"
 #include "SelectPlayerMovementAction.h"
 #include "ShootingAction.h"
+#include "AntennaAction.h"
 
 ToPlayModeAction::ToPlayModeAction(ApplicationManager* pApp) : Action(pApp) {}
 ToPlayModeAction::~ToPlayModeAction() {}
-
-void ToPlayModeAction::ReadActionParameters() {}
 
 void ToPlayModeAction::Execute() {
     Grid* pGrid = pManager->GetGrid(); 
@@ -24,7 +23,12 @@ void ToPlayModeAction::Execute() {
 
     do
     {
+        //Antenna, to decide which player should start first
+        AntennaAction AntennaAction(pManager);
+        AntennaAction.Execute();
 
+
+        //Movement Phase
     for (int i = 0; i < MaxPlayerCount; i++) {
         Player* currentPlayer = pGrid->GetCurrentPlayer();
 
@@ -45,9 +49,7 @@ void ToPlayModeAction::Execute() {
         ExecutePlayerMovementAction executeAction(pManager);
         executeAction.Execute();
 
-        // Step 6: Allow Shooting Phase
-        //ShootingAction shootingAction(pManager);
-        //shootingAction.Execute();
+        
 
         pGrid->AdvanceCurrentPlayer();
         if (pGrid->GetEndGame())
@@ -61,6 +63,11 @@ void ToPlayModeAction::Execute() {
     }
     else
         break;
+
+    // Shooting Phase
+    ShootingAction shootingAction(pManager);
+    shootingAction.Execute();
+
     } while (!pGrid -> GetEndGame());
     
 
