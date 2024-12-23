@@ -21,6 +21,7 @@ class Player
 	bool hasExtendedMemory;   // Tracks if the player owns extended memory
 	bool hasToolkit;          // Tracks if the player owns a toolkit
 	bool hasHackDevice;       // Tracks if the player owns a hack device
+	bool hasShield;           //Tracks if the player has a shield (bonus)
 	// owned equipments
 	// carried consumables
 	// carried laser type (default, double laser)
@@ -48,6 +49,12 @@ public:
 	void RotateClockwise(Grid* pGrid);
 	void RotateCounterClockwise(Grid* pGrid);
 	string GetPlayerInfo() const;
+
+	bool HasShield() const;
+	void DisableShield();
+	void EnableShield();
+
+
 	///TODO: You can add setters and getters for data members here (if needed)
 
 	// ====== Drawing Functions ======
