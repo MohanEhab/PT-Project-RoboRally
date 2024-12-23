@@ -9,6 +9,7 @@
 #include "Output.h"
 #include "Antenna.h"
 #include "RotatingGear.h"
+#include "Workshop.h"
 Cell::Cell(const CellPosition & pos) : position(pos)
 {
 	// initializes the data members (position & pGameObject)
@@ -87,6 +88,13 @@ RotatingGear* Cell::HasRotatingGear() const
 
 	return dynamic_cast<RotatingGear*>(pGameObject); // DONE
 }
+Workshop * Cell::HasWorkShop() const
+{
+	///TODO: Implement the following function like HasBelt() function==========DONE
+
+	return dynamic_cast<Workshop*>(pGameObject); // DONE
+}
+
 
 // ======= Drawing Functions ======= 
 
@@ -119,5 +127,8 @@ void Cell::DrawGameObject(Output* pOut) const
 	}
 	else if (HasRotatingGear()) {
 		pOut->DrawRotatingGear(position, HasRotatingGear() ->GetisClockWise());
+	}
+	else if (HasWorkShop()) {
+		pOut->DrawWorkshop(position);
 	}
 }

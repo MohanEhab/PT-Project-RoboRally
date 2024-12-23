@@ -248,14 +248,14 @@ bool Grid::HasAntenna() const
 	{
 		for (int j = 0; j < NumHorizontalCells; j++)
 		{
-			// Check if the cell contains a flag
+			// Check if the cell contains an Antenna
 			if (CellList[i][j]->HasAntenna())
 			{
-				return true; // A flag exists
+				return true; // An Antenna exists
 			}
 		}
 	}
-	return false; // No flag found
+	return false; // No Antenna found
 }
 CellPosition Grid::FindAntennaPosition() const
 {
