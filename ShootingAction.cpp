@@ -18,7 +18,6 @@ void ShootingAction::Execute() {
     Player* player1 = pGrid->GetPlayer(0); 
     Player* player2 = pGrid->GetPlayer(1); 
 
-
     // Get positions and directions of both players
     CellPosition player1Pos = player1->GetCell()->GetCellPosition();
     CellPosition player2Pos = player2->GetCell()->GetCellPosition();
@@ -64,7 +63,7 @@ void ShootingAction::Execute() {
     int player2Damage = player2->HasDoubleLaser() ? 2 : 1;
 
 
-    if (player1CanShoot) {
+    if (player1CanShoot && !player1->HasRebootnRepair() ) {
         if (player2->HasLaserReflection()) { // Reflect laser
             player1->SetHealth(player1->GetHealth() - player1Damage);
             player2->DisableLaserReflection();
@@ -83,7 +82,7 @@ void ShootingAction::Execute() {
         pOut->ClearStatusBar(); // Clear the status bar after click
     }
 
-    if (player2CanShoot) {
+    if (player2CanShoot && !player2->HasRebootnRepair()) {
         if (player1->HasLaserReflection()) { // Reflect laser
             player2->SetHealth(player2->GetHealth() - player2Damage);
             player1->DisableLaserReflection();

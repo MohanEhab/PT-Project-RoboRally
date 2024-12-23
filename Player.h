@@ -23,6 +23,8 @@ class Player
 	bool hasHackDevice;       // Tracks if the player owns a hack device
 	bool hasShield;           //Tracks if the player has a shield (bonus)
 	bool hasLaserReflection;  //Tracks if the player has a Laser Reflection Gear (bonus)
+	bool isRebootnRepair;	          //Tracks if player chose to reboot and repair
+
 	// owned equipments
 	// carried consumables
 	// carried laser type (default, double laser)
@@ -58,8 +60,9 @@ public:
 	bool HasLaserReflection() const;
 	void DisableLaserReflection();
 	void EnableLaserReflection();
-
-
+	
+	bool HasRebootnRepair();
+	void setRebootnRepair(bool n);
 
 	///TODO: You can add setters and getters for data members here (if needed)
 

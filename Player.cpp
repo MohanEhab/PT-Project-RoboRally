@@ -2,13 +2,20 @@
 
 #include "GameObject.h"
 
-Player::Player(Cell * pCell, int playerNum) : stepCount(0), health(10), playerNum(playerNum), currDirection(RIGHT),hasDoubleLaser(false),hasExtendedMemory(false), hasToolkit(false),hasHackDevice(false), equippedLaser(BASIC_LASER), hasShield(false), hasLaserReflection(false)
+Player::Player(Cell * pCell, int playerNum) : stepCount(0), health(10), playerNum(playerNum), currDirection(RIGHT),hasDoubleLaser(false),hasExtendedMemory(false), hasToolkit(false),hasHackDevice(false), equippedLaser(BASIC_LASER), hasShield(false), hasLaserReflection(false), isRebootnRepair(false)
 {
 	this->pCell = pCell;
 	// Make all the needed initialization or validations
 }
 
 // ====== Setters and Getters ======
+bool Player::HasRebootnRepair() {
+	return isRebootnRepair;
+}
+
+void Player::setRebootnRepair(bool n) {
+	isRebootnRepair = n;
+}
 
 void Player::SetCell(Cell * cell)
 {
@@ -331,11 +338,7 @@ void Player::RebootAndRepair(Grid* pGrid)
 
 	// Move the player to the starting position
 	Cell* startingCell = pGrid->GetStartingCell();
-	if (!startingCell)
-	{
-		pOut->PrintMessage("ERROR: Invalid starting cell");
-		return;
-	}
+	
 	ClearDrawing(pOut);
 	SetCell(startingCell); 
 	Draw(pOut);
