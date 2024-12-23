@@ -15,8 +15,9 @@ void ShootingAction::Execute() {
     Input* pIn = pGrid->GetInput();
     int x, y;
 
-    Player* player1 = pGrid->GetPlayer(0); 
-    Player* player2 = pGrid->GetPlayer(1); 
+    Player* player1 = pGrid->GetCurrentPlayer();
+    pGrid->AdvanceCurrentPlayer()
+    Player* player2 = pGrid->GetCurrentPlayer();
 
     // Get positions and directions of both players
     CellPosition player1Pos = player1->GetCell()->GetCellPosition();
@@ -24,6 +25,20 @@ void ShootingAction::Execute() {
 
     Direction player1Direction = player1->GetDirection();
     Direction player2Direction = player2->GetDirection();
+
+    // Check if players are in the same cell
+    if (player1Pos.HCell() == player2Pos.HCell() && player1Pos.VCell() == player2Pos.VCell()) {
+        int player1Damage = player1->HasDoubleLaser() ? 2 : 1;
+        int player2Damage = player2->HasDoubleLaser() ? 2 : 1;
+
+        player1->SetHealth(player1->GetHealth() - player2Damage);
+        player2->SetHealth(player2->GetHealth() - player1Damage);
+
+        pOut->PrintMessage("Players are in the same cell! They shoot each other. Damage exchanged.");
+        pIn->GetPointClicked(x, y);
+        pOut->ClearStatusBar();
+        return;
+    }
 
     // Determine if player1 can shoot player2
     bool player1CanShoot = false;
@@ -59,11 +74,13 @@ void ShootingAction::Execute() {
         break;
     }
 
+
+
     int player1Damage = player1->HasDoubleLaser() ? 2 : 1; //created both possible damages to be able to use them easily down
     int player2Damage = player2->HasDoubleLaser() ? 2 : 1;
 
 
-    if (player1CanShoot && !player1->HasRebootnRepair() ) {
+    if (player1CanShoot) {
         if (player2->HasLaserReflection()) { // Reflect laser
             player1->SetHealth(player1->GetHealth() - player1Damage);
             player2->DisableLaserReflection();
@@ -82,7 +99,7 @@ void ShootingAction::Execute() {
         pOut->ClearStatusBar(); // Clear the status bar after click
     }
 
-    if (player2CanShoot && !player2->HasRebootnRepair()) {
+    if (player2CanShoot) {
         if (player1->HasLaserReflection()) { // Reflect laser
             player2->SetHealth(player2->GetHealth() - player2Damage);
             player1->DisableLaserReflection();

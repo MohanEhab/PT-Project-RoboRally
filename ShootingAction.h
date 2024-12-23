@@ -2,6 +2,8 @@
 #include "Action.h"
 #include "Player.h"
 #include "Grid.h"
+#include "ApplicationManager.h"
+
 class ShootingAction: public Action
 {
 public:
