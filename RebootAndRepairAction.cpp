@@ -5,12 +5,10 @@
 
 #include "RebootAndRepairAction.h"
 RebootAndRepairAction::RebootAndRepairAction(ApplicationManager* pApp) :Action(pApp)
-{
-}
+{}
 
 void RebootAndRepairAction::ReadActionParameters()
-{
-}
+{}
 
 void RebootAndRepairAction::Execute()
 {
@@ -18,10 +16,8 @@ void RebootAndRepairAction::Execute()
 	Player* currentPlayer = pGrid->GetCurrentPlayer(); //gets current player
 	currentPlayer->RebootAndRepair(pGrid); //calls func
 	pGrid->GetOutput()->PrintMessage("player rebooted and repaired");
-
 }
 
 RebootAndRepairAction::~RebootAndRepairAction()
-{
-}
+{}
 
