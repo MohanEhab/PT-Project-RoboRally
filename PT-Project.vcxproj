@@ -137,6 +137,7 @@
     <ClCompile Include="AddWaterPit.cpp" />
     <ClCompile Include="AddWorkshop.cpp" />
     <ClCompile Include="Antenna.cpp" />
+    <ClCompile Include="AntennaAction.cpp" />
     <ClCompile Include="ApplicationManager.cpp" />
     <ClCompile Include="Belt.cpp" />
     <ClCompile Include="Cell.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="AddWaterPit.h" />
     <ClInclude Include="AddWorkshop.h" />
     <ClInclude Include="Antenna.h" />
+    <ClInclude Include="AntennaAction.h" />
     <ClInclude Include="ApplicationManager.h" />
     <ClInclude Include="Belt.h" />
     <ClInclude Include="Cell.h" />

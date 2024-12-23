@@ -213,6 +213,7 @@
     <ClCompile Include="ShootingAction.cpp" />
     <ClCompile Include="ExecutePlayerMovementAction.cpp" />
     <ClCompile Include="SelectPlayerMovementAction.cpp" />
+    <ClCompile Include="AntennaAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -356,5 +357,6 @@
     <ClInclude Include="ShootingAction.h" />
     <ClInclude Include="ExecutePlayerMovementAction.h" />
     <ClInclude Include="SelectPlayerMovementAction.h" />
+    <ClInclude Include="AntennaAction.h" />
   </ItemGroup>
 </Project>

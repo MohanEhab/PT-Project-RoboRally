@@ -257,6 +257,20 @@ bool Grid::HasAntenna() const
 	}
 	return false; // No flag found
 }
+CellPosition Grid::FindAntennaPosition() const
+{
+	for (int i = 0; i < NumVerticalCells; i++)
+	{
+		for (int j = 0; j < NumHorizontalCells; j++)
+		{
+			if (CellList[i][j]->HasAntenna()) {
+				return CellList[i][j]->GetCellPosition();
+			}
+		}
+	}
+	return CellPosition(-1, -1); // Return invalid position if no antenna is found
+}
+
 void Grid::ExecutePlayerCommands(const Command commands[], int numCommands)
 {
 	Player* currPlayer = GetCurrentPlayer(); // * to get curr player 
