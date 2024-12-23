@@ -421,9 +421,15 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[]) {
 	int numSelected = 0;
 
 	pOut->PrintMessage("Select up to " + to_string(maxCommands) + " commands. Click the command bar to select.");
-
+	int commandIndex;
 	for (int i = 0; i < maxCommands; i++) {
-		int commandIndex = pIn->GetSelectedCommandIndex(); // Get the clicked command index
+		do
+		{
+		 commandIndex = pIn->GetSelectedCommandIndex(); // Get the clicked command index
+		 
+		
+		} while (commandIndex == -1);
+		
 		if (commandIndex < 0 || commandIndex >= 10) { // Ensure valid selection
 			pOut->PrintMessage("Invalid selection. Selection ended.");
 			break;
