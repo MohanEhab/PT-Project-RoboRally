@@ -43,21 +43,27 @@ void AntennaAction:: Execute(){
         CellPosition playerYPos = playerY->GetCell()->GetCellPosition();
         CellPosition antennaPos = pGrid->FindAntennaPosition();
 
-        // Calculate distances for both players
-        int playerXDistance = (playerXPos.VCell() > antennaPos.VCell()
+        // Calculate vertical distances
+        int playerXVerticalDistance = (playerXPos.VCell() > antennaPos.VCell())
             ? (playerXPos.VCell() - antennaPos.VCell())
-            : (antennaPos.VCell() - playerXPos.VCell())) +
-            (playerXPos.HCell() > antennaPos.HCell()
-                ? (playerXPos.HCell() - antennaPos.HCell())
-                : (antennaPos.HCell() - playerXPos.HCell()));
+            : (antennaPos.VCell() - playerXPos.VCell());
 
-        int playerYDistance = (playerYPos.VCell() > antennaPos.VCell())
+        int playerYVerticalDistance = (playerYPos.VCell() > antennaPos.VCell())
             ? (playerYPos.VCell() - antennaPos.VCell())
-            : (antennaPos.VCell() - playerYPos.VCell()) +
-            (playerYPos.HCell() > antennaPos.HCell())
-            ?
-            (playerYPos.HCell() - antennaPos.HCell())
+            : (antennaPos.VCell() - playerYPos.VCell());
+
+        // Calculate horizontal distances
+        int playerXHorizontalDistance = (playerXPos.HCell() > antennaPos.HCell())
+            ? (playerXPos.HCell() - antennaPos.HCell())
+            : (antennaPos.HCell() - playerXPos.HCell());
+
+        int playerYHorizontalDistance = (playerYPos.HCell() > antennaPos.HCell())
+            ? (playerYPos.HCell() - antennaPos.HCell())
             : (antennaPos.HCell() - playerYPos.HCell());
+
+        // Sum up total distances
+        int playerXDistance = playerXVerticalDistance + playerXHorizontalDistance;
+        int playerYDistance = playerYVerticalDistance + playerYHorizontalDistance;
 
         // If both distances are equal
         if (playerXDistance == playerYDistance) {
