@@ -30,16 +30,7 @@ void ToPlayModeAction::Execute() {
     Command* selectedCommands = currentPlayer->GetSavedCommands();
     int selectedCommandCount = currentPlayer->GetSavedCommandCount();
     pOut->CreateCommandsBar(selectedCommands, selectedCommandCount, availableCommands, 10);
-    ActionType action = pIn->GetUserAction();  
-    if (action == ITM_USE_TOOLKIT) { // Toolkit action
-        Player* currentPlayer = pGrid->GetCurrentPlayer();
-        currentPlayer->UseToolkit(pGrid);
-    }
-
-    if (action == ITM_USE_HACK_DEVICE) { // Hack device action
-        Player* currentPlayer = pGrid->GetCurrentPlayer();
-        currentPlayer->UseHackDevice(pGrid);
-    }
+    
 }
 
 
