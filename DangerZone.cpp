@@ -26,8 +26,20 @@ void DangerZone::Apply(Grid * pGrid, Player * pPlayer)
 	pIn->GetPointClicked(x, y);
 	pOut->ClearStatusBar();
 	// 2- Apply the danger zone's effect by reducing the health of the player by 1 
-	int currentHealth = pPlayer->GetHealth();
-	pPlayer->SetHealth(currentHealth - 1);
+	if (pPlayer->HasShield()) {
+		pPlayer->DisableShield(); // Break the shield
+		pOut->PrintMessage("Your shield protected you from the danger zone, but it is now broken. Click to continue...");
+		pIn->GetPointClicked(x, y);
+		pOut->ClearStatusBar();
+	}
+	else {
+		// 3- Apply the danger zone's effect by reducing the health of the player by 1 
+		int currentHealth = pPlayer->GetHealth();
+		pPlayer->SetHealth(currentHealth - 1);
+		pOut->PrintMessage("You lost 1 health in the danger zone. Click to continue...");
+		pIn->GetPointClicked(x, y);
+		pOut->ClearStatusBar();
+	}
 
 	// 3- Update the players info which is displayed (check Grid class and decide which function to use)
 	pGrid->UpdateInterface();
