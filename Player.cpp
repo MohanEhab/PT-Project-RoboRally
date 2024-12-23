@@ -2,7 +2,12 @@
 
 #include "GameObject.h"
 
-Player::Player(Cell * pCell, int playerNum) : stepCount(0), health(10), playerNum(playerNum), currDirection(RIGHT),hasDoubleLaser(false),hasExtendedMemory(false), hasToolkit(false),hasHackDevice(false), equippedLaser(BASIC_LASER), hasShield(false), hasLaserReflection(false), isRebootnRepair(false)
+Player::Player(Cell * pCell, int playerNum) : stepCount(0),
+health(10), playerNum(playerNum), currDirection(RIGHT),
+hasDoubleLaser(false),hasExtendedMemory(false), 
+hasToolkit(false),hasHackDevice(false), 
+equippedLaser(BASIC_LASER), hasShield(false), 
+hasLaserReflection(false), isRebootnRepair(false)
 {
 	this->pCell = pCell;
 	// Make all the needed initialization or validations
@@ -328,7 +333,12 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 void Player::RebootAndRepair(Grid* pGrid)
 {
 	Output*pOut = pGrid->GetOutput(); 
-	if (health < 10) {  
+	if (!HasRebootnRepair)
+	{
+		pOut->PrintMessage("Player Cannot be rebooted or repaired");
+		return;
+	}
+    if (health < 10) {  
 		health = 10;
 		pOut->PrintMessage("Reboot and Repair: Health restored to maximum!");
 	}
@@ -530,9 +540,10 @@ void Player::setInactive()
 void Player::UseToolkit(Grid* pGrid) {
 	Output* pOut = pGrid->GetOutput();
 
-	if (!hasToolkit) {
-		pOut->PrintMessage("No toolkit available to use.");
-		return;
+	if (!HasToolkit)
+	{
+		pOut->PrintMessage("No Toolkit is available for you ");
+		return; 
 	}
 
 	health = 10;
@@ -543,8 +554,9 @@ void Player::UseToolkit(Grid* pGrid) {
 void Player::UseHackDevice(Grid* pGrid) {
 	Output* pOut = pGrid->GetOutput();
 
-	if (!hasHackDevice) {
-		pOut->PrintMessage("No hack device available to use.");
+	if (!HasHackDevice) 
+	{ 
+		pOut->PrintMessage("You don't have a hackdevice.");
 		return;
 	}
 
