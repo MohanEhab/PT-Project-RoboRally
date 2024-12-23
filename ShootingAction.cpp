@@ -16,7 +16,7 @@ void ShootingAction::Execute() {
     int x, y;
 
     Player* player1 = pGrid->GetCurrentPlayer();
-    pGrid->AdvanceCurrentPlayer()
+    pGrid->AdvanceCurrentPlayer();
     Player* player2 = pGrid->GetCurrentPlayer();
 
     // Get positions and directions of both players
