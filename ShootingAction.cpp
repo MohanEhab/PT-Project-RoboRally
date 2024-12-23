@@ -81,13 +81,13 @@ void ShootingAction::Execute() {
             // Both players have laser reflection gear
             playerY->DisableLaserReflection();
             playerX->DisableLaserReflection();
-            playerY->SetHealth(playerY->GetHealth() - playerXDamage); // Player Y takes the damage
+            playerY->SetHealth(max(0,playerY->GetHealth() - playerXDamage)); // Player Y takes the damage
             pOut->PrintMessage("Both players have laser reflection gear! Player " + to_string(playerYNumber) + " took the damage after reflections.");
         }
         
         
         else if (playerY->HasLaserReflection()) { // Reflect laser
-            playerX->SetHealth(playerX->GetHealth() - playerXDamage);
+            playerX->SetHealth(max(0,playerX->GetHealth() - playerXDamage));
             playerY->DisableLaserReflection();
             pOut->PrintMessage("Player " + to_string(playerXNumber) + " shot Player " + to_string(playerYNumber) + ", but the damage was reflected back!");
         }
@@ -96,7 +96,7 @@ void ShootingAction::Execute() {
             pOut->PrintMessage("Player " + to_string(playerXNumber) + " shot at Player " + to_string(playerYNumber) + ", but the shield protected Player " + to_string(playerYNumber) + "!");
         }
         else {
-            playerY->SetHealth(playerY->GetHealth() - playerXDamage);
+            playerY->SetHealth(max(0,playerY->GetHealth() - playerXDamage));
             pOut->PrintMessage("Player " + to_string(playerXNumber) + " hit Player " + to_string(playerYNumber) + "! Damage dealt: " + to_string(playerXDamage));
         }
         pIn->GetPointClicked(x, y); // Wait for user to click
@@ -111,12 +111,12 @@ void ShootingAction::Execute() {
             // Both players have laser reflection gear
             playerX->DisableLaserReflection();
             playerY->DisableLaserReflection();
-            playerX->SetHealth(playerX->GetHealth() - playerYDamage); // Player X takes the damage
+            playerX->SetHealth(max(0,playerX->GetHealth() - playerYDamage)); // Player X takes the damage
             pOut->PrintMessage("Both players have laser reflection gear! Player " + to_string(playerXNumber) + " took the damage after reflections.");
         }
     
         else if (playerX->HasLaserReflection()) { // Reflect laser
-            playerY->SetHealth(playerY->GetHealth() - playerYDamage);
+            playerY->SetHealth(max(0,playerY->GetHealth() - playerYDamage));
             playerX->DisableLaserReflection();
             pOut->PrintMessage("Player " + to_string(playerYNumber) + " shot Player " + to_string(playerXNumber) + ", but the damage was reflected back!");
         }
@@ -125,7 +125,7 @@ void ShootingAction::Execute() {
             pOut->PrintMessage("Player " + to_string(playerYNumber) + " shot at Player " + to_string(playerXNumber) + ", but the shield protected Player " + to_string(playerXNumber) + "!");
         }
         else {
-            playerX->SetHealth(playerX->GetHealth() - playerYDamage);
+            playerX->SetHealth(max(0,playerX->GetHealth() - playerYDamage));
             pOut->PrintMessage("Player " + to_string(playerYNumber) + " hit Player " + to_string(playerXNumber) + "! Damage dealt: " + to_string(playerYDamage));
         }
         pIn->GetPointClicked(x, y); // Wait for user to click
@@ -140,6 +140,21 @@ void ShootingAction::Execute() {
         pIn->GetPointClicked(x, y); // Wait for user to click
         pOut->ClearStatusBar(); // Clear the status bar after click
     }
+    
+    // Check if the game should end
+    if (playerX->GetHealth() == 0) {
+        pOut->PrintMessage("Player " + to_string(playerYNumber) + " wins! Game over.");
+        pGrid->SetEndGame(true);
+        return;
+    }
+
+    if (playerY->GetHealth() == 0) {
+        pOut->PrintMessage("Player " + to_string(playerXNumber) + " wins! Game over.");
+        pGrid->SetEndGame(true);
+        return;
+    }
+
+
     pGrid->AdvanceCurrentPlayer();
     pOut->ClearStatusBar();
 }

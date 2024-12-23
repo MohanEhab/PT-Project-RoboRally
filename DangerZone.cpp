@@ -35,10 +35,22 @@ void DangerZone::Apply(Grid * pGrid, Player * pPlayer)
 	else {
 		// 3- Apply the danger zone's effect by reducing the health of the player by 1 
 		int currentHealth = pPlayer->GetHealth();
-		pPlayer->SetHealth(currentHealth - 1);
-		pOut->PrintMessage("You lost 1 health in the danger zone. Click to continue...");
-		pIn->GetPointClicked(x, y);
-		pOut->ClearStatusBar();
+		pPlayer->SetHealth(max(0,currentHealth - 1));
+
+		if (pPlayer->GetHealth() == 0) {
+			pOut ->PrintMessage("Player " + to_string(pPlayer->GetPlayerNumber()) + " Has fallen and died in danger zone. Clcik to continue..");
+			pIn->GetPointClicked(x, y);
+			pOut->ClearStatusBar();
+			pGrid->AdvanceCurrentPlayer();
+			pOut->PrintMessage("Player " + to_string(pPlayer->GetPlayerNumber()) + " Has won! Clcik to continue..");
+			pGrid->SetEndGame(true);
+		}
+		else {
+			pOut->PrintMessage("You lost 1 health in the danger zone. Click to continue...");
+			pIn->GetPointClicked(x, y);
+			pOut->ClearStatusBar();
+		}
+		
 	}
 
 	// 3- Update the players info which is displayed (check Grid class and decide which function to use)
