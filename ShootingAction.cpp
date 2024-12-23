@@ -101,7 +101,7 @@ void ShootingAction::Execute() {
         }
         pIn->GetPointClicked(x, y); // Wait for user to click
         pOut->ClearStatusBar(); // Clear the status bar after click
-
+        //clear Drawing
     }
 
     if (playerYCanShoot) {
@@ -130,6 +130,7 @@ void ShootingAction::Execute() {
         }
         pIn->GetPointClicked(x, y); // Wait for user to click
         pOut->ClearStatusBar(); // Clear the status bar after click
+        //clear Drawing
 
     }
 

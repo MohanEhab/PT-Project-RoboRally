@@ -18,11 +18,14 @@ void Flag::Apply(Grid* pGrid, Player* pPlayer)
 	// 1- Print a message "You have reached a flag. Click to continue ..." and wait mouse click
 	Output* pOut = pGrid->GetOutput();
 	Input* pIn = pGrid->GetInput();
-	pOut->PrintMessage("You have reached a flag. Click to continue...");
 	int x, y;
 	pIn->GetPointClicked(x, y);
 	pOut->ClearStatusBar();
 	// 2- Apply the flag's effect by ending the game
+	int Winner = pPlayer->GetPlayerNumber() + 1;
+	pOut->PrintMessage("Player " + to_string(Winner) + " reached the flag and Wins!  Click to continue...");
+	pIn->GetPointClicked(x, y);
+	pOut->ClearStatusBar();
 	pGrid->SetEndGame(true);
 	//    Review the "pGrid" functions and decide which function can be used for that
 }
