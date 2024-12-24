@@ -23,8 +23,7 @@ void ToPlayModeAction::Execute() {
     pOut->PrintMessage("Switched to Play Mode!");
 
 
-    do
-    {
+    
         //Antenna, to decide which player should start first
         AntennaAction AntennaAction(pManager);
         AntennaAction.Execute();
@@ -58,7 +57,7 @@ void ToPlayModeAction::Execute() {
 
         if (pGrid->GetEndGame())
             break;
-    }
+    
     if (!pGrid->GetEndGame()) {
         pOut->PrintMessage("Movement Phase Completed. Click anywhere to enter Shooting Phase.");
         int x, y;
@@ -73,7 +72,7 @@ void ToPlayModeAction::Execute() {
     shootingAction.Execute();
     pOut->ClearGridArea();
     pGrid->UpdateInterface();
-    } while (!pGrid -> GetEndGame());
+    } //while (!pGrid -> GetEndGame());
     
 
 }
