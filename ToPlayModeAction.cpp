@@ -46,13 +46,12 @@ void ToPlayModeAction::Execute() {
 
         Command* selectedCommands = currentPlayer->GetSavedCommands();
         int selectedCommandCount = currentPlayer->GetSavedCommandCount();
-        pOut->CreateCommandsBar(selectedCommands, selectedCommandCount, availableCommands, 10);
+        pOut->CreateCommandsBar(selectedCommands, selectedCommandCount, availableCommands, availableCommandsCount);
         
 
         ExecutePlayerMovementAction executeAction(pManager);
         executeAction.Execute();
 
-        
 
         pGrid->AdvanceCurrentPlayer();
         pGrid->DisPlayerInfo();

@@ -123,6 +123,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	case TO_DESIGN_MODE:
 		pAct = new ToDesignModeAction(this);
 		break;
+
 	case SELECT_COMMAND:
 		pAct = new SelectPlayerMovementAction(this);
 		break;
@@ -136,6 +137,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	case CUT_GAME_OBJECT:
 		pAct = new  CutObjectAction(this);
 		break;
+
 	case PASTE_GAME_OBJECT:
 		pAct = new PasteObjectAction(this);
 		break;

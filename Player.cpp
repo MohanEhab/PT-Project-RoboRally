@@ -418,45 +418,57 @@ void Player:: disableExtendedMemory() {
 	hasExtendedMemory = false;
 }
 
-void Player::SelectCommands(Grid* pGrid, Command availableCommands[]) { 
+void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
+{
 	Output* pOut = pGrid->GetOutput();
 	Input* pIn = pGrid->GetInput();
+
 	int extra = (this->HasExtendedMemory()) ? 1 : 0;
-	int maxCommands = (health < 5) ? health + extra : 5 + extra; // limit commands 
+	int maxCommands = (health < 5) ? health + extra : 5 + extra; // limit commands
 	this->disableExtendedMemory();
-	Command* selectedCommands = new Command[maxCommands]; //  store player's selected commands
+
+	Command* selectedCommands = new Command[maxCommands]; // store player's selected commands
 	int numSelected = 0;
+	int availableCommandCount = (health<10)? health:10; // initial size of availableCommands array
 
 	pOut->PrintMessage("Select up to " + to_string(maxCommands) + " commands. Click the command bar to select.");
 	int commandIndex;
-	for (int i = 0; i < maxCommands; i++) {
+
+	for (int i = 0; i < maxCommands; i++)
+	{
 		do
 		{
-		 commandIndex = pIn->GetSelectedCommandIndex(); // get the clicked command index
-		 
-		
+			commandIndex = pIn->GetSelectedCommandIndex(); // get the clicked command index
 		} while (commandIndex == -1);
-		
-		if (commandIndex < 0 || commandIndex >= 10) { // validation
+
+		if (commandIndex < 0 || commandIndex >= availableCommandCount) // validation
+		{
 			pOut->PrintMessage("Invalid selection. Selection ended.");
 			break;
 		}
 
+		// add selected command to the player's commands
 		selectedCommands[numSelected++] = availableCommands[commandIndex];
 		pOut->PrintMessage("Command " + to_string(i + 1) + " selected: " + CommandToString(availableCommands[commandIndex]));
+		availableCommands[commandIndex] = NO_COMMAND;
+		pOut->CreateCommandsBar(selectedCommands, numSelected, availableCommands, availableCommandCount);
 	}
 
-	// save selected commands 
+	// save the selected commands
 	SaveCommands(selectedCommands, numSelected);
 
-	if (numSelected == 0) {
+	if (numSelected == 0)
+	{
 		pOut->PrintMessage("No commands selected. Previous saved commands will be used.");
 	}
-	else {
+	else
+	{
 		pOut->PrintMessage(to_string(numSelected) + " commands saved.");
 	}
+
 	delete[] selectedCommands;
 }
+
  
 Command* Player::GetSavedCommands()
 {
