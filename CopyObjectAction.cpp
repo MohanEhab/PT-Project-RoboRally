@@ -59,7 +59,5 @@ void CopyObjectAction::Execute() {
     // Store the object in the clipboard
     pGrid->SetClipboard(pGameObject->Copy()); // copy the object for independent copy
 
-    pOutput->PrintMessage("Game object copied successfully,click anywhere to contiune");
-    pInput->GetPointClicked(x, y); // Wait for user to click
-    pOutput->ClearStatusBar(); // Clear the status bar after click
+    pOutput->PrintMessage("Game object copied successfully!");
 }

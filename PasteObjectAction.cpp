@@ -62,8 +62,6 @@ void PasteObjectAction::Execute() {
         pOut->ClearStatusBar();
     }
     else {
-        pOut->PrintMessage("Game object pasted successfully,click anywhere to contiune");
-        pIn->GetPointClicked(x, y); // Wait for the user to click
-        pOut->ClearStatusBar();
+        pOut->PrintMessage("Game object pasted successfully!");
     }
 }

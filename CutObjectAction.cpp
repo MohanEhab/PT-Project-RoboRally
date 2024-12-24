@@ -61,7 +61,7 @@ void CutObjectAction::Execute() {
     // Store the object in the clipboard
     pGrid->SetClipboard(pGameObject);
 
-    pOutput->PrintMessage("Game object cut successfully,click anywhere to contiune");
-    pInput->GetPointClicked(x, y); // Wait for user to click
-    pOutput->ClearStatusBar(); // Clear the status bar after click
+    pOutput->PrintMessage("Game object cut successfully!");
+  
+
 }
