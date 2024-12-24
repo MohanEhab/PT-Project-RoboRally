@@ -182,7 +182,8 @@ void Grid::LoadAll(ifstream& InFile) {
 	// Display a success message
 	Output* pOut = GetOutput();
 	pOut->PrintMessage("Grid loaded successfully!");
-}void Grid::SaveAll(ofstream& OutFile, int Type) {
+}
+void Grid::SaveAll(ofstream& OutFile, int Type) {
 	int count = CountGameObjects(Type);
 	OutFile << count << endl; // Write the count first
 	for (int i = 0; i < NumVerticalCells; i++) {
@@ -345,7 +346,7 @@ void Grid::UpdateInterface() const
 		{
 			PlayerList[i]->AppendPlayerInfo(playersInfo); // passed by reference
 			if (i < MaxPlayerCount-1) // except the last player
-				playersInfo += ", ";
+				playersInfo += " , ";
 		}
 		playersInfo += " | Curr = P " + to_string(currPlayerNumber);
 

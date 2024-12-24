@@ -335,13 +335,13 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 void Player::RebootAndRepair(Grid* pGrid)
 {
 	Output*pOut = pGrid->GetOutput(); 
-	if (!HasRebootnRepair())
+	if (!HasRebootnRepair())  //checks if its rebooted or not
 	{
 		pOut->PrintMessage("Player Cannot be rebooted or repaired");
 		return;
 	}
     if (health < 10) {  
-		health = 10;
+		health = 10; //sets health to 10 again
 		pOut->PrintMessage("Reboot and Repair: Health restored to maximum!");
 	}
 	else {
@@ -352,7 +352,7 @@ void Player::RebootAndRepair(Grid* pGrid)
 	ClearDrawing(pOut);
 	SetCell(startingCell); 
 	Draw(pOut);
-	setInactive(); //skip actions for player
+	setInactive(); //skip actions for player during this round
 	pGrid->DisPlayerInfo();
 	pOut->PrintMessage("player is successfully rebooted"); 
 }
@@ -360,19 +360,20 @@ void Player::RebootAndRepair(Grid* pGrid)
 void Player::DisplayRandomCommands(Grid* pGrid, Command availableCommands[]) { 
 	Output* pOut = pGrid->GetOutput();
 
-	Command commandPool[8] = {
+	Command commandPool[8] = //all possible cmds
+	{ 
 		MOVE_FORWARD_ONE_STEP, MOVE_FORWARD_TWO_STEPS, MOVE_FORWARD_THREE_STEPS,
 		MOVE_BACKWARD_ONE_STEP, MOVE_BACKWARD_TWO_STEPS, MOVE_BACKWARD_THREE_STEPS,
 		ROTATE_CLOCKWISE, ROTATE_COUNTERCLOCKWISE
 	};
 
 	string commandList = "Available Commands: ";
-	int availableCommandsCount = (health < 10) ? health : 10;
+	int availableCommandsCount = (health < 10) ? health : 10; //no. of av cmds 
 
 	//  10 random commands
-	for (int i = 0; i < 10; i++) {
-		int randomIndex = rand() % 8;
-		availableCommands[i] = commandPool[randomIndex];
+	for (int i = 0; i < availableCommandCount; i++) {
+		int randomIndex = rand() % 8; //rand num between 0 and 7
+		availableCommands[i] = commandPool[randomIndex]; //assign cmd to av cmd
 		commandList += CommandToString(availableCommands[i]) + (i < availableCommandCount-1 ? ", " : "");
 	}
 
@@ -430,7 +431,7 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 	int availableCommandCount = (health<10)? health:10; // initial size of availableCommands array
 
 	pOut->PrintMessage("Select up to " + to_string(maxCommands) + " commands. Click the command bar to select.");
-	int commandIndex;
+	int commandIndex; //int to represent position of selection on bar 
 
 
 	do
@@ -438,7 +439,7 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 		do
 		{
 		commandIndex = pIn->GetSelectedCommandIndex(); // get the clicked command index
-		} while (commandIndex == -1);
+		} while (commandIndex == -1); //break if out of bound
 
 		if (commandIndex < 0 || commandIndex >= availableCommandCount) // validation
 		{
@@ -447,22 +448,22 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 		}
 
 		// add selected command to the player's commands
-		if (availableCommands[commandIndex] != NO_COMMAND) {
-			selectedCommands[numSelected++] = availableCommands[commandIndex];
+		if (availableCommands[commandIndex] != NO_COMMAND) { //no command maydkholsh
+			selectedCommands[numSelected++] = availableCommands[commandIndex]; //selected av to save 3ala tol
 			pOut->PrintMessage("Command " + to_string(numSelected) + " selected: " + CommandToString(availableCommands[commandIndex]));
 			availableCommands[commandIndex] = NO_COMMAND;
-			pOut->CreateCommandsBar(selectedCommands, numSelected, availableCommands, availableCommandCount);
+			pOut->CreateCommandsBar(selectedCommands, numSelected, availableCommands, availableCommandCount); //yekhaly el chosen black
 		}
 	}
 	while (numSelected < maxCommands);
 	
 
 	// save the selected commands
-	SaveCommands(selectedCommands, numSelected);
+	SaveCommands(selectedCommands, numSelected); //save for execution (move)
 
 	if (numSelected == 0)
 	{
-		pOut->PrintMessage("No commands selected. Previous saved commands will be used.");
+		pOut->PrintMessage("No commands selected. Select Command Now.");
 	}
 	else
 	{
@@ -485,17 +486,17 @@ int Player::GetSavedCommandCount() const
 
 void Player::SaveCommands(const Command commands[], int count) {
 	int extra = (this->HasExtendedMemory()) ? 1 : 0;
-	int max_count{ 5 + extra};
-	count = (count > max_count) ? max_count : count;
+	int max_count{ 5 + extra};  //def 5 then add extra
+	count = (count > max_count) ? max_count : count; //count should be <max
 
 	for (int i = 0; i < count; i++) {
-		this->savedCommands[i] = commands[i]; 
+		this->savedCommands[i] = commands[i];  //commands into savedcommands
 	}
 	for (int i = count; i < max_count; i++) {
-		this->savedCommands[i] = NO_COMMAND;
+		this->savedCommands[i] = NO_COMMAND; //all unsaved spaces yeb2o keda
 	} // to save the rest as NO_COMMAND as to be called in the execute func
 
-	this->savedCommandCount = count;
+	this->savedCommandCount = count; //save total no. of commands
 }
 
 Direction Player::GetDirection() const
@@ -506,7 +507,7 @@ Direction Player::GetDirection() const
 void Player::RotateClockwise(Grid* pGrid)
 {
 	Output* pOut = pGrid->GetOutput();
-	ClearDrawing(pOut);
+	ClearDrawing(pOut); //to clear curr dir
 
 	
 		if (currDirection == UP)
@@ -518,7 +519,7 @@ void Player::RotateClockwise(Grid* pGrid)
 		else if (currDirection == LEFT)
 			currDirection = UP;
 	
-	Draw(pOut);
+	Draw(pOut); //draw new dir
 }
 
 void Player::RotateCounterClockwise(Grid* pGrid)
