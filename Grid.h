@@ -44,7 +44,6 @@ public:
 		// Note: You may need to change the return type of this function (Think)
 
 	void UpdatePlayerCell(Player * player, const CellPosition & newPosition); // Update the player's pCell with the CellList's Cell pointer of the "newPosition",
-	bool AddObjectToCell(GameObject* pObj, const CellPosition& pos);
 	// Clears the player's circle from the previous cell
 	    																	  // and  Draws it in the new cell
 	GameObject* GetObjectFromCell(const CellPosition& pos) const;

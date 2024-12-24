@@ -44,7 +44,7 @@ void PasteObjectAction::Execute() {
     GameObject* clipboardObject = pGrid->GetClipboard();
 
     if (!clipboardObject) {
-        pOutput->PrintMessage("Clipboard is empty! Nothing to paste.");
+        pOutput->PrintMessage("Clipboard is empty Nothing to paste.");
         return;
     }
     GameObject* newObject = clipboardObject->Copy();
@@ -52,7 +52,7 @@ void PasteObjectAction::Execute() {
 
     if (!pGrid->AddObjectToCell(newObject)) {
         delete newObject; // Clean up if the paste fails
-        pOutput->PrintMessage("Failed to paste the game object: Cell is occupied.");
+        pOutput->PrintMessage("Cannot paste cell contains gameobject");
     }
     else {
         pOutput->PrintMessage("Game object pasted successfully!");
