@@ -448,10 +448,12 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 		}
 
 		// add selected command to the player's commands
+		if (!availableCommands[commandIndex] == NO_COMMAND) {
 		selectedCommands[numSelected++] = availableCommands[commandIndex];
 		pOut->PrintMessage("Command " + to_string(i + 1) + " selected: " + CommandToString(availableCommands[commandIndex]));
 		availableCommands[commandIndex] = NO_COMMAND;
 		pOut->CreateCommandsBar(selectedCommands, numSelected, availableCommands, availableCommandCount);
+	}
 	}
 
 	// save the selected commands
