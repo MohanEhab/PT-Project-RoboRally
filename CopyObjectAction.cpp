@@ -19,7 +19,7 @@ void CopyObjectAction::ReadActionParameters()
     Grid* pGrid = pManager->GetGrid();// gets access to the grid using pmanager(which acts as the main controller for the application)
     Input* pInput = pGrid->GetInput(); // Access input to get position cliclked
     Output* pOutput = pGrid->GetOutput();// access outpout to display feedback to the user
-    // display for the user to click on a cell
+   
     pOutput->PrintMessage("Click on the cell to copy the game object from");
     sourcecell = pInput->GetCellClicked();      // gets the clicked cell and stores it in sourcecell
     pOutput->ClearStatusBar();                  // remove the massage displayed
@@ -29,10 +29,13 @@ void CopyObjectAction::Execute() {
     ReadActionParameters();
 
     Grid* pGrid = pManager->GetGrid();
+    Input* pInput = pGrid->GetInput(); // Access input to get position cliclked
     Output* pOutput = pGrid->GetOutput();
-
+    int x, y;
     if (!sourcecell.IsValidCell()) {
-        pOutput->PrintMessage("Error: Selected cell is invalid!");
+        pOutput->PrintMessage("Error: Selected cell is invalid,click anywhere to contiune");
+        pInput->GetPointClicked(x, y); // Wait for user to click
+        pOutput->ClearStatusBar(); // Clear the status bar after click
         return;
     }
 
@@ -40,7 +43,9 @@ void CopyObjectAction::Execute() {
     GameObject* pGameObject = pGrid->GetObjectFromCell(sourcecell);
 
     if (!pGameObject) {
-        pOutput->PrintMessage("No game object found in the selected cell!");
+        pOutput->PrintMessage("No game object found in the selected cell,click anywhere to continue");
+        pInput->GetPointClicked(x, y); // Wait for user to click
+        pOutput->ClearStatusBar(); // Clear the status bar after click
         return;
     }
 

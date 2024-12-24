@@ -33,16 +33,21 @@ void CutObjectAction::Execute() {
     ReadActionParameters();
 
     Grid* pGrid = pManager->GetGrid();
+    Input* pInput = pGrid->GetInput();// Access input to get position cliclked
     Output* pOutput = pGrid->GetOutput();
-
+    int x, y;
     if (!sourceCell.IsValidCell()) {
-        pOutput->PrintMessage("Error: Selected cell is invalid!");
+        pOutput->PrintMessage("Error: Selected cell is invalid,click anywhere to contiune");
+        pInput->GetPointClicked(x, y); // Wait for user to click
+        pOutput->ClearStatusBar(); // Clear the status bar after click
         return;
     }
 
     GameObject* pGameObject = pGrid->GetObjectFromCell(sourceCell);
     if (!pGameObject) {
-        pOutput->PrintMessage("No game object found in the selected cell!");
+        pOutput->PrintMessage("No game object found in the selected cell,click anywhere to contiune");
+        pInput->GetPointClicked(x, y); // Wait for user to click
+        pOutput->ClearStatusBar(); // Clear the status bar after click
         return;
     }
     if (pGameObject->GetType() == 4) {
