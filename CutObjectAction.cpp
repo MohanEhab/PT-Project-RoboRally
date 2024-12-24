@@ -51,7 +51,9 @@ void CutObjectAction::Execute() {
         return;
     }
     if (pGameObject->GetType() == 4) {
-        pOutput->PrintMessage("Belts cannot be cut!");
+        pOutput->PrintMessage("Belts cannot be cut,click anywhere to contiune");
+        pInput->GetPointClicked(x, y); // Wait for user to click
+        pOutput->ClearStatusBar(); // Clear the status bar after click
         return;
     }
 
@@ -59,5 +61,7 @@ void CutObjectAction::Execute() {
     // Store the object in the clipboard
     pGrid->SetClipboard(pGameObject);
 
-    pOutput->PrintMessage("Game object cut successfully!");
+    pOutput->PrintMessage("Game object cut successfully,click anywhere to contiune");
+    pInput->GetPointClicked(x, y); // Wait for user to click
+    pOutput->ClearStatusBar(); // Clear the status bar after click
 }

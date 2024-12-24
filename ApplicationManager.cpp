@@ -21,6 +21,8 @@
 #include "DeleteGameObjectAction.h"
 #include "SaveGridAction.h"
 #include "CutObjectAction.h"
+#include "UseToolKitAction.h"
+#include "UseHackAction.h"
 
 ///TODO: Add #include for all action types
 
@@ -150,9 +152,15 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	case DELETE_GAME_OBJECT:
 		pAct = new DeleteGameObjectAction(this);
 		break;
+	
 		///TODO: Add a case for EACH Action type in the Design mode or Play mode
 
-
+	case USE_TOOLKIT:
+		pAct = new UseToolKitAction(this);
+		break;
+	case USE_HACK:
+		pAct = new UseHackAction(this);
+		break;
 
 	case STATUS:	// a click on the status bar ==> no action
 		return;

@@ -29,11 +29,14 @@ void DeleteGameObjectAction::ReadActionParameters()
 void DeleteGameObjectAction::Execute() {
     ReadActionParameters();
 
-    Grid* pGrid = pManager->GetGrid();
-    Output* pOutput = pGrid->GetOutput();
-
+    Grid* pGrid = pManager->GetGrid();//: Captures the grid cell where the user wants to delete a game object.
+    Output* pOut = pGrid->GetOutput();
+    Input* pIn = pGrid->GetInput();
+    int x, y;
     if (!pos.IsValidCell()) {
-        pOutput->PrintMessage("Error: Selected cell is invalid!");
+        pOut->PrintMessage("Error: Selected cell is invalid,click anywhere to contiune");
+        pIn->GetPointClicked(x, y);
+        pOut->ClearStatusBar();
         return;
     }
 
@@ -41,12 +44,16 @@ void DeleteGameObjectAction::Execute() {
     GameObject* pGameObject = pGrid->RemoveObjectFromCell(pos);
 
     if (!pGameObject) {
-        pOutput->PrintMessage("No game object found in the selected cell!");
+        pOut->PrintMessage("No game object found in the selected cell,click anywhere to contiune");
+        pIn->GetPointClicked(x, y);
+        pOut->ClearStatusBar();
         return;
     }
 
     // Delete the object
     delete pGameObject;
 
-    pOutput->PrintMessage("Game object deleted successfully!");
+    pOut->PrintMessage("Game object deleted successfully,click anywhere to contiune");
+    pIn->GetPointClicked(x, y);
+    pOut->ClearStatusBar();
 }

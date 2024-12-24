@@ -23,7 +23,8 @@ enum ActionType // The actions supported (add more as needed)
 	DELETE_GAME_OBJECT, //Deletes Object in the Selected Cell
 	SAVE_GRID, //Saves Current Grid to a File
 	LOAD_GRID, //Loads Saved Grid and Displays it on the Grid
-
+	USE_TOOLKIT,
+	USE_HACK,
 
 
 

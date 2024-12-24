@@ -129,6 +129,7 @@ ActionType Input::GetUserAction() const
 			case ITM_DELETE_GAME_OBJECT: return DELETE_GAME_OBJECT;
 			case ITM_SAVE_GRID: return SAVE_GRID;
 			case ITM_LOAD_GRID: return LOAD_GRID;
+			
 
 
 
@@ -170,6 +171,8 @@ ActionType Input::GetUserAction() const
 			case ITM_REBOOT_AND_REPAIR: return REBOOT_AND_REPAIR;
 			case ITM_USE_CONSUMABLE: return USE_CONSUMABLE;
 			case ITM_NEW_GAME: return NEW_GAME;
+			case ITM_USE_TOOLKIT: return USE_TOOLKIT; 
+			case ITM_USE_HACK:return USE_HACK; 
 
 
 			default: return EMPTY;	// A click on an empty place in the toolbar

@@ -348,10 +348,8 @@ void Player::RebootAndRepair(Grid* pGrid)
 	else {
 		pOut->PrintMessage("Reboot and Repair: Health is already at maximum.");
 	}
-
-	// Move the player to the starting position
+	// move the player to the starting position
 	Cell* startingCell = pGrid->GetStartingCell();
-	
 	ClearDrawing(pOut);
 	SetCell(startingCell); 
 	Draw(pOut);
@@ -439,7 +437,7 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 	{
 		do
 		{
-			commandIndex = pIn->GetSelectedCommandIndex(); // get the clicked command index
+		commandIndex = pIn->GetSelectedCommandIndex(); // get the clicked command index
 		} while (commandIndex == -1);
 
 		if (commandIndex < 0 || commandIndex >= availableCommandCount) // validation

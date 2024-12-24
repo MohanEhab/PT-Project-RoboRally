@@ -14,29 +14,32 @@ PasteObjectAction::PasteObjectAction(ApplicationManager* pApp) :Action(pApp)
 
 void PasteObjectAction::ReadActionParameters()
 {
-    Grid* pGrid = pManager->GetGrid();
-    Input* pInput = pGrid->GetInput();
-    Output* pOutput = pGrid->GetOutput();
+    Grid* pGrid = pManager->GetGrid();//: Captures the grid cell where the user wants to delete a game object.
+    Output* pOut = pGrid->GetOutput();
+    Input* pIn = pGrid->GetInput();
 
     // Ask the user to click on the target cell
-    pOutput->PrintMessage("Click on the cell to paste the game object...");
-    targetCell = pInput->GetCellClicked(); // Get the clicked cell position
+    pOut->PrintMessage("Click on the cell to paste the game object...");
+    targetCell = pIn->GetCellClicked(); // Get the clicked cell position
 
     // Validate the target cell
     if (!targetCell.IsValidCell()) {
-        pOutput->PrintMessage("Error: Selected cell is invalid!");
+        pOut->PrintMessage("Error: Selected cell is invalid!");
     }
 
-    pOutput->ClearStatusBar();
+    pOut->ClearStatusBar();
 }
 void PasteObjectAction::Execute() {
     ReadActionParameters();
 
-    Grid* pGrid = pManager->GetGrid();
-    Output* pOutput = pGrid->GetOutput();
-
+    Grid* pGrid = pManager->GetGrid();//: Captures the grid cell where the user wants to delete a game object.
+    Output* pOut = pGrid->GetOutput();
+    Input* pIn = pGrid->GetInput();
+    int x, y;
     if (!targetCell.IsValidCell()) {
-        pOutput->PrintMessage("Error: Selected cell is invalid!");
+        pOut->PrintMessage("Error: Selected cell is invalid,clcik anywhere to contiune");
+        pIn->GetPointClicked(x, y); // Wait for user to click
+        pOut->ClearStatusBar(); // Clear the status bar after click
         return;
     }
 
@@ -44,7 +47,9 @@ void PasteObjectAction::Execute() {
     GameObject* clipboardObject = pGrid->GetClipboard();
 
     if (!clipboardObject) {
-        pOutput->PrintMessage("Clipboard is empty Nothing to paste.");
+        pOut->PrintMessage("Clipboard is empty Nothing to paste,click anywhere to contiune");
+        pIn->GetPointClicked(x, y); // Wait for the user to click
+        pOut->ClearStatusBar();
         return;
     }
     GameObject* newObject = clipboardObject->Copy();
@@ -52,9 +57,13 @@ void PasteObjectAction::Execute() {
 
     if (!pGrid->AddObjectToCell(newObject)) {
         delete newObject; // Clean up if the paste fails
-        pOutput->PrintMessage("Cannot paste cell contains gameobject");
+        pOut->PrintMessage("Cannot paste cell contains gameobject,click anywhere to contiune");
+        pIn->GetPointClicked(x, y); // Wait for the user to click
+        pOut->ClearStatusBar();
     }
     else {
-        pOutput->PrintMessage("Game object pasted successfully!");
+        pOut->PrintMessage("Game object pasted successfully,click anywhere to contiune");
+        pIn->GetPointClicked(x, y); // Wait for the user to click
+        pOut->ClearStatusBar();
     }
 }

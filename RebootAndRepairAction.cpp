@@ -15,7 +15,7 @@ void RebootAndRepairAction::Execute()
 	Grid* pGrid = pManager->GetGrid(); //gets current grid 
 	Player* currentPlayer = pGrid->GetCurrentPlayer(); //gets current player
 	currentPlayer->RebootAndRepair(pGrid); //calls func
-	pGrid->GetOutput()->PrintMessage("player rebooted and repaired");
+	pGrid->GetOutput()->PrintMessage("Player is rebooted and repaired, Click to continue");
 }
 
 RebootAndRepairAction::~RebootAndRepairAction()
