@@ -353,6 +353,11 @@ void Grid::UpdateInterface() const
 		pOut->PrintPlayersInfo(playersInfo);
 		for (int i = NumVerticalCells - 1; i >= 0; i--) {
 			for (int j = 0; j < NumHorizontalCells; j++) {
+				CellList[i][j]->DrawCellOrWaterPitOrDangerZone(pOut);
+			}
+		}
+		for (int i = NumVerticalCells - 1; i >= 0; i--) {
+			for (int j = 0; j < NumHorizontalCells; j++) {
 				CellList[i][j]->DrawGameObject(pOut);
 			}
 		}

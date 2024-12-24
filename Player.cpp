@@ -149,7 +149,8 @@ void Player::ClearDrawing(Output* pOut) const
 void Player::Move(Grid* pGrid, Command moveCommands[])
 {
 	int x, y;
-	const int maxCommands = 5;
+	int extra = (this->HasExtendedMemory()) ? 1 : 0;
+	int maxCommands =  5 + extra;	
 	Input* pIn = pGrid->GetInput();
 	Output* pOut = pGrid->GetOutput();
 	for (int i = 0; i < maxCommands; i++)
@@ -424,7 +425,6 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 
 	int extra = (this->HasExtendedMemory()) ? 1 : 0;
 	int maxCommands = (health < 5) ? health + extra : 5 + extra; // limit commands
-	this->disableExtendedMemory();
 
 	Command* selectedCommands = new Command[maxCommands]; // store player's selected commands
 	int numSelected = 0;
@@ -455,7 +455,7 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 			pOut->CreateCommandsBar(selectedCommands, numSelected, availableCommands, availableCommandCount); //yekhaly el chosen black
 		}
 	}
-	while (numSelected < maxCommands);
+	while (numSelected < maxCommands );
 	
 
 	// save the selected commands
