@@ -38,7 +38,7 @@ void WaterPit::Apply(Grid * pGrid, Player * pPlayer)
 	if (drownedPlayer == 0)
 		winningPlayer = 1;
 	
-	pOut->PrintMessage("You drowned in a water pit. Player " +to_string(winningPlayer) + " wins! Click to continue...");
+	pOut->PrintMessage("You drowned in a water pit. Player " +to_string(winningPlayer + 1)  + " wins! Click to continue...");
 	pIn->GetPointClicked(x, y);
 	pOut->ClearStatusBar();
 	pOut->PrintMessage("Start a new Game.");

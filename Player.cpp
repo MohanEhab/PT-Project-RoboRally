@@ -434,7 +434,8 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 	pOut->PrintMessage("Select up to " + to_string(maxCommands) + " commands. Click the command bar to select.");
 	int commandIndex;
 
-	for (int i = 0; i < maxCommands; i++)
+
+	do
 	{
 		do
 		{
@@ -448,13 +449,15 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 		}
 
 		// add selected command to the player's commands
-		if (!availableCommands[commandIndex] == NO_COMMAND) {
-		selectedCommands[numSelected++] = availableCommands[commandIndex];
-		pOut->PrintMessage("Command " + to_string(i + 1) + " selected: " + CommandToString(availableCommands[commandIndex]));
-		availableCommands[commandIndex] = NO_COMMAND;
-		pOut->CreateCommandsBar(selectedCommands, numSelected, availableCommands, availableCommandCount);
+		if (availableCommands[commandIndex] != NO_COMMAND) {
+			selectedCommands[numSelected++] = availableCommands[commandIndex];
+			pOut->PrintMessage("Command " + to_string(numSelected) + " selected: " + CommandToString(availableCommands[commandIndex]));
+			availableCommands[commandIndex] = NO_COMMAND;
+			pOut->CreateCommandsBar(selectedCommands, numSelected, availableCommands, availableCommandCount);
+		}
 	}
-	}
+	while (numSelected < maxCommands);
+	
 
 	// save the selected commands
 	SaveCommands(selectedCommands, numSelected);
