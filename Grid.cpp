@@ -178,8 +178,14 @@ void Grid::LoadAll(ifstream& InFile) {
 	// Display a success message
 	Output* pOut = GetOutput();
 	pOut->PrintMessage("Grid loaded successfully!");
-}void Grid::SaveAll(ofstream& OutFile, int Type) {
+
+}
+void Grid::SaveAll(ofstream& OutFile, int Type) {
 	int count = CountGameObjects(Type);// use count function to count number of gameobjects
+
+}
+void Grid::SaveAll(ofstream& OutFile, int Type) {
+	int count = CountGameObjects(Type);
 	OutFile << count << endl; // Write the count first
 	for (int i = 0; i < NumVerticalCells; i++) {// loops through all cells in grid
 		for (int j = 0; j < NumHorizontalCells; j++) {
@@ -341,11 +347,16 @@ void Grid::UpdateInterface() const
 		{
 			PlayerList[i]->AppendPlayerInfo(playersInfo); // passed by reference
 			if (i < MaxPlayerCount-1) // except the last player
-				playersInfo += ", ";
+				playersInfo += " , ";
 		}
 		playersInfo += " | Curr = P " + to_string(currPlayerNumber);
 
 		pOut->PrintPlayersInfo(playersInfo);
+		for (int i = NumVerticalCells - 1; i >= 0; i--) {
+			for (int j = 0; j < NumHorizontalCells; j++) {
+				CellList[i][j]->DrawCellOrWaterPitOrDangerZone(pOut);
+			}
+		}
 		for (int i = NumVerticalCells - 1; i >= 0; i--) {
 			for (int j = 0; j < NumHorizontalCells; j++) {
 				CellList[i][j]->DrawGameObject(pOut);

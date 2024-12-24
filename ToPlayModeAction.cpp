@@ -23,7 +23,8 @@ void ToPlayModeAction::Execute() {
     pOut->PrintMessage("Switched to Play Mode!");
 
 
-    
+    do
+    {
         //Antenna, to decide which player should start first
         AntennaAction AntennaAction(pManager);
         AntennaAction.Execute();
@@ -38,7 +39,9 @@ void ToPlayModeAction::Execute() {
         int availableCommandsCount = (currentPlayer->GetHealth() < 10) ? currentPlayer->GetHealth() : 10;
 
         pGrid->DisPlayerInfo();
-        Command savedCommands[5] = {}; // empty arr for saved commands
+        int extra = (currentPlayer->HasExtendedMemory()) ? 1 : 0;
+        int maxCommands =  5 + extra;
+        Command* savedCommands = new Command[maxCommands]; // store player's selected commands
         pOut->CreateCommandsBar(savedCommands, 0, availableCommands, availableCommandsCount);
 
         currentPlayer->SelectCommands(pGrid, availableCommands);
@@ -50,6 +53,10 @@ void ToPlayModeAction::Execute() {
 
         ExecutePlayerMovementAction executeAction(pManager);
         executeAction.Execute();
+        
+        if (currentPlayer->HasExtendedMemory()) {
+            currentPlayer->disableExtendedMemory();
+        }
 
 
         pGrid->AdvanceCurrentPlayer();
@@ -57,7 +64,7 @@ void ToPlayModeAction::Execute() {
 
         if (pGrid->GetEndGame())
             break;
-    
+    }
     if (!pGrid->GetEndGame()) {
         pOut->PrintMessage("Movement Phase Completed. Click anywhere to enter Shooting Phase.");
         int x, y;
@@ -70,9 +77,12 @@ void ToPlayModeAction::Execute() {
     // Shooting Phase
     ShootingAction shootingAction(pManager);
     shootingAction.Execute();
+
     pOut->ClearGridArea();
     pGrid->UpdateInterface();
-    } //while (!pGrid -> GetEndGame());
+
+
+    } while (!pGrid -> GetEndGame());
     
 
 }
