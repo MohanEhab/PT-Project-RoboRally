@@ -1,6 +1,10 @@
 #include "Workshop.h"
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+using namespace std;
 
-Workshop::Workshop(const CellPosition& workshopPosition) :GameObject(workshopPosition)
+Workshop::Workshop(const CellPosition& workshopPosition) :GameObject(workshopPosition), repairAmount(0)
 {
 
 }
@@ -90,6 +94,35 @@ void Workshop::Apply(Grid* pGrid, Player* pPlayer)
     pIn->GetPointClicked(x, y);
     pOut->ClearStatusBar();
 }
+void Workshop::Save(ofstream& OutFile, int Type)
+{
+    if (Type == GetType()) { //  5 represents Workshops is saved fifth
+        OutFile << position.GetCellNum() << " " << repairAmount << endl;
+    }
+}
+
+void Workshop::Load(ifstream& InFile)
+{
+    int cellNum, repairAmount;
+    InFile >> cellNum>>repairAmount;
+    position = CellPosition::GetCellPositionFromNum(cellNum);
+   
+}
+GameObject* Workshop::Copy() const
+{
+    return new Workshop(*this); // Use the copy constructor
+}
+Workshop::Workshop() : GameObject(CellPosition()), repairAmount(0) {
+    // Initialize with default CellPosition and repair amount
+}
+Workshop::Workshop(const CellPosition& pos, int repairAmt) : GameObject(pos), repairAmount(repairAmt) {
+    // Initialization code
+}
+int Workshop::GetType() const
+{
+    return 5;
+}
+
 
 Workshop::~Workshop()
 {

@@ -9,6 +9,8 @@
 #include "AntennaAction.h"
 
 ToPlayModeAction::ToPlayModeAction(ApplicationManager* pApp) : Action(pApp) {}
+void ToPlayModeAction::ReadActionParameters()
+{}
 ToPlayModeAction::~ToPlayModeAction() {}
 
 void ToPlayModeAction::Execute() {

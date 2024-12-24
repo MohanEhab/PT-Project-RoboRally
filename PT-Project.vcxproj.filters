@@ -214,6 +214,12 @@
     <ClCompile Include="ExecutePlayerMovementAction.cpp" />
     <ClCompile Include="SelectPlayerMovementAction.cpp" />
     <ClCompile Include="AntennaAction.cpp" />
+    <ClCompile Include="DeleteGameObjectAction.cpp" />
+    <ClCompile Include="LoadGridAction.cpp" />
+    <ClCompile Include="SaveGridAction.cpp" />
+    <ClCompile Include="CopyObjectAction.cpp" />
+    <ClCompile Include="CutObjectAction.cpp" />
+    <ClCompile Include="PasteObjectAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -358,5 +364,11 @@
     <ClInclude Include="ExecutePlayerMovementAction.h" />
     <ClInclude Include="SelectPlayerMovementAction.h" />
     <ClInclude Include="AntennaAction.h" />
+    <ClInclude Include="DeleteGameObjectAction.h" />
+    <ClInclude Include="LoadGridAction.h" />
+    <ClInclude Include="SaveGridAction.h" />
+    <ClInclude Include="CopyObjectAction.h" />
+    <ClInclude Include="CutObjectAction.h" />
+    <ClInclude Include="PasteObjectAction.h" />
   </ItemGroup>
 </Project>

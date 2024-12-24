@@ -15,6 +15,12 @@
 #include "ToPlayModeAction.h"
 #include"SelectPlayerMovementAction.h"
 #include "ExecutePlayerMovementAction.h"
+#include"CopyObjectAction.h"
+#include"PasteObjectAction.h"
+#include"LoadGridAction.h"
+#include "DeleteGameObjectAction.h"
+#include "SaveGridAction.h"
+#include "CutObjectAction.h"
 
 ///TODO: Add #include for all action types
 
@@ -124,7 +130,24 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		pAct = new ExecutePlayerMovementAction(this);
 		break;
 		
-
+	case COPY_GAME_OBJECT:
+		pAct = new CopyObjectAction(this);
+		break;
+	case CUT_GAME_OBJECT:
+		pAct = new  CutObjectAction(this);
+		break;
+	case PASTE_GAME_OBJECT:
+		pAct = new PasteObjectAction(this);
+		break;
+	case LOAD_GRID:
+		pAct = new LoadGridAction(this);
+		break;
+	case SAVE_GRID:
+		pAct = new SaveGridAction(this);
+		break;
+	case DELETE_GAME_OBJECT:
+		pAct = new DeleteGameObjectAction(this);
+		break;
 		///TODO: Add a case for EACH Action type in the Design mode or Play mode
 
 

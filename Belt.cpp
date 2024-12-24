@@ -1,5 +1,11 @@
 #include "Belt.h"
-
+#include "CellPosition.h"
+#include "ApplicationManager.h"
+#include "GameObject.h"
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+#include "AddBeltAction.h"
 
 Belt::Belt(const CellPosition & startCellPos, const CellPosition & endCellPos) : GameObject(startCellPos)
 {
@@ -13,7 +19,25 @@ void Belt::Draw(Output* pOut) const
 {
 	pOut->DrawBelt(position, endCellPos);
 }
-
+void Belt::Load(ifstream& InFile) {
+	int startCellNum, endCellNum;
+	InFile >> startCellNum >> endCellNum;
+	position = CellPosition::GetCellPositionFromNum(startCellNum);
+	endCellPos = CellPosition::GetCellPositionFromNum(endCellNum);
+}
+int Belt::GetType() const
+{
+	return 4;
+}
+Belt::Belt() : GameObject(CellPosition()), endCellPos(CellPosition()) {
+	// Initialize with default positions
+}
+void Belt::Save(ofstream& OutFile, int Type)
+{
+	if (Type == GetType()) { //4 represents Belt is saved fourth
+		OutFile << position.GetCellNum() << " " << endCellPos.GetCellNum() << endl;
+	}
+}
 void Belt::Apply(Grid* pGrid, Player* pPlayer)
 {
 
@@ -40,7 +64,10 @@ CellPosition Belt::GetEndPosition() const
 {
 	return endCellPos;
 }
-
+GameObject* Belt::Copy() const
+{
+	return new Belt(*this);  // Use copy constructor to create a copy of Belt
+}
 
 Belt::~Belt()
 {

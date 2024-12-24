@@ -40,12 +40,14 @@ public:
 	                                                     // only if the Cell does NOT already contain an object, 
 	                                                     // otherwise return false and don't add
 
-	bool RemoveObjectFromCell(const CellPosition & pos); // Removes the GameObject of the Cell of the passed "position"
-	                                                     // Note: You may need to change the return type of this function (Think)
+	GameObject* RemoveObjectFromCell(const CellPosition& pos); 
+		// Note: You may need to change the return type of this function (Think)
 
 	void UpdatePlayerCell(Player * player, const CellPosition & newPosition); // Update the player's pCell with the CellList's Cell pointer of the "newPosition",
-	                                                                          // Clears the player's circle from the previous cell
+	bool AddObjectToCell(GameObject* pObj, const CellPosition& pos);
+	// Clears the player's circle from the previous cell
 	    																	  // and  Draws it in the new cell
+	GameObject* GetObjectFromCell(const CellPosition& pos) const;
 
 	// ========= Setters and Getters Functions =========
 
@@ -62,6 +64,12 @@ public:
 	bool HasFlag() const;
 	bool HasAntenna() const;
 	bool IsCellEmpty(const CellPosition& pos) const;
+	int CountGameObjects(int Type) const;
+	void ClearGrid();
+	static CellPosition GetPositionFromCellNum(int cellNum);// using staticfunction 
+
+	void LoadAll(ifstream& InFile);
+	void SaveAll(std::ofstream& OutFile, int Type);
 	Cell* GetCell(const CellPosition& pos) const;
 	void ExecutePlayerCommands(const Command commands[], int numCommands);
 	void ResetAllPlayers();

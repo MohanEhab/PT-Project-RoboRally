@@ -1,4 +1,9 @@
 #include "RotatingGear.h"
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+#include "AddRotatingGearAction.h"
+using namespace std;
 
 
 
@@ -12,7 +17,14 @@ void RotatingGear::Draw(Output* pOut) const
 {
 	pOut->DrawRotatingGear(position, isClockWise);
 }
-
+GameObject* RotatingGear::Copy() const
+{
+	return new RotatingGear(*this); // Use the copy constructor
+}
+RotatingGear::RotatingGear() : GameObject(), isClockWise(true) {
+	position.SetVCell(0);
+	position.SetHCell(0);
+}
 void RotatingGear::Apply(Grid* pGrid, Player* pPlayer)
 {
 
@@ -43,6 +55,26 @@ void RotatingGear::Apply(Grid* pGrid, Player* pPlayer)
 bool RotatingGear::GetisClockWise() const
 {
 	return isClockWise;
+}
+void RotatingGear::Load(ifstream& InFile)
+{
+	int cellNum, rotationDirection;
+	InFile >> cellNum >> rotationDirection;// Read position
+	position = CellPosition::GetCellPositionFromNum(cellNum); // Convert cell number to position
+
+	isClockWise = (rotationDirection == 1);// 1 for clockwise, 0 for counterclockwise
+}
+
+void RotatingGear::Save(ofstream& OutFile, int Type)
+{
+	if (Type == GetType()) { // Assuming 4 represents RotatingGears
+		OutFile << position.GetCellNum() << " " << (isClockWise ? 1 : 0) << endl;
+	}
+}
+
+int RotatingGear::GetType() const
+{
+	return 7;
 }
 
 RotatingGear::~RotatingGear()

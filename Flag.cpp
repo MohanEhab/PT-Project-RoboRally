@@ -1,7 +1,19 @@
 #include "Flag.h"
-Flag::Flag(const CellPosition& flagposition) : GameObject(flagposition)
+#include "GameObject.h"
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+using namespace std;
+Flag::Flag(const CellPosition& flagposition, int score): GameObject(flagposition), scoreValue(score)
 {
+}
 
+Flag::Flag(const Flag& other) : GameObject(other.position) {
+	this->scoreValue = other.scoreValue; // Copy the score value
+}
+
+Flag::Flag() : GameObject() {
+	scoreValue = 0; // Initialize the scoreValue to a default value
 }
 
 void Flag::Draw(Output* pOut) const
@@ -31,6 +43,33 @@ void Flag::Apply(Grid* pGrid, Player* pPlayer)
 	pOut->ClearStatusBar();
 	pGrid->SetEndGame(true);
 	//    Review the "pGrid" functions and decide which function can be used for that
+}
+
+void Flag::Save(ofstream& OutFile, int Type)
+{
+	if (Type == GetType()) { // Type 1 correspond to Flags saves flag first
+		OutFile << position.GetCellNum() << " " << scoreValue << endl;
+	}
+}
+
+void Flag::Load(std::ifstream& InFile)
+{
+	{
+		int cellNum,scorevalue;
+		InFile >> cellNum >> scorevalue;
+		position = CellPosition::GetCellPositionFromNum(cellNum);
+	}
+
+}
+
+GameObject* Flag::Copy() const
+{
+	return new Flag(*this);
+}
+
+int Flag::GetType() const
+{
+	return 1;
 }
 
 Flag::~Flag()

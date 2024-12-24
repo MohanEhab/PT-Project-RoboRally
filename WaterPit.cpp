@@ -1,10 +1,17 @@
 #include "WaterPit.h"
-
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+using namespace std;
 
 
 WaterPit::WaterPit(const CellPosition & waterPitPosition):GameObject(waterPitPosition)
 {
 }
+WaterPit::WaterPit() : GameObject() {
+	// Default constructor: initialize any WaterPit-specific properties here
+}
+
 
 void WaterPit::Draw(Output * pOut) const
 {
@@ -42,6 +49,30 @@ void WaterPit::Apply(Grid * pGrid, Player * pPlayer)
 
 	// 3- Update the players info which is displayed (check Grid class and decide which function to use)
 	pGrid->UpdateInterface(); 
+}
+void WaterPit::Save(ofstream& OutFile, int Type)
+{
+	if (Type == GetType()) { //  2 represents WaterPits waterpit is second saved
+		OutFile << position.GetCellNum() << endl;
+	}
+}
+
+
+void WaterPit::Load(ifstream& InFile)
+{
+	int cellNum;
+	InFile >> cellNum;
+	position = CellPosition::GetCellPositionFromNum(cellNum);
+}
+
+GameObject* WaterPit::Copy() const
+{
+	return new WaterPit(*this);
+}
+
+int WaterPit::GetType() const
+{
+	return 2;
 }
 
 

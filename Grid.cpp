@@ -1,9 +1,23 @@
 #include "Grid.h"
-
+#include <fstream>
+#include <iostream>
+#include <iomanip>
 #include "Cell.h"
 #include "GameObject.h"
 #include "Belt.h"
 #include "Player.h"
+#include"Flag.h"
+#include "cell.h"
+#include "Antenna.h"
+#include "WaterPit.h"
+#include "Workshop.h"
+#include "RotatingGear.h"
+#include "DangerZone.h"
+#include"CopyObjectAction.h"
+#include "Player.h"
+#include "CellPosition.h"
+using namespace std;
+
 
 Grid::Grid(Input * pIn, Output * pOut) : pIn(pIn), pOut(pOut) // Initializing pIn, pOut
 {
@@ -37,6 +51,16 @@ Grid::Grid(Input * pIn, Output * pOut) : pIn(pIn), pOut(pOut) // Initializing pI
 // ========= Adding or Removing GameObjects to Cells =========
 
 
+GameObject* Grid::GetObjectFromCell(const CellPosition& pos) const
+{
+	if (pos.IsValidCell()) { // Check if the position is valid
+		Cell* pCell = CellList[pos.VCell()][pos.HCell()]; // Get the cell at the specified position
+		if (pCell) {
+			return pCell->GetGameObject(); // Return the GameObject in the cell
+		}
+	}
+	return nullptr; // Return nullptr if the position is invalid or the cell is empty
+}
 bool Grid::AddObjectToCell(GameObject * pNewObject)  // think if any validation is needed
 
 {
@@ -61,19 +85,135 @@ bool Grid::IsCellEmpty(const CellPosition& pos) const
 	GameObject* pObject = CellList[pos.VCell()][pos.HCell()]->GetGameObject(); //pObject should store the object if there is (copied it from the syntax/idea function above)
 	return (pObject == nullptr); // Return true if the cell contains no object
 }
-
-
-// Note: You may need to change the return type of this function (Think)========DONE
-bool Grid::RemoveObjectFromCell(const CellPosition & pos)
+int Grid::CountGameObjects(int Type) const
 {
-	if (pos.IsValidCell()) // Check if valid position
-	{
-		// Note: you can deallocate the object here before setting the pointer to null if it is needed
-
-		CellList[pos.VCell()][pos.HCell()]->SetGameObject(NULL);
-		return true;
+	int count = 0;
+	for (int i = 0; i < NumVerticalCells; i++) {
+		for (int j = 0; j < NumHorizontalCells; j++) {
+			Cell* pCell = CellList[i][j];
+			if (pCell && pCell->GetGameObject() && pCell->GetGameObject()->GetType() == Type) {
+				count++;
+			}
+		}
 	}
-	return false;
+	return count;
+}
+void Grid::ClearGrid()
+{
+	for (int i = 0; i < NumVerticalCells; i++) { // loops iterate thruogh each row
+		for (int j = 0; j < NumHorizontalCells; j++) {// inside each row we iteraee through each cloumn
+			Cell* pCell = CellList[i][j];
+			if (pCell) {// checks if its valid
+				GameObject* pObj = pCell->GetGameObject();
+				if (pObj) {//checks if there is a gameobject in the cell
+					delete pObj; // if gameobejct exsits we delete it to free up memory
+					pCell->SetGameObject(nullptr); //cell is set to nullptr which indicates cell no longer contains object 
+				}
+			}
+		}
+	}
+}
+CellPosition Grid::GetPositionFromCellNum(int cellNum)
+{
+	return CellPosition::GetCellPositionFromNum(cellNum);
+}
+void Grid::LoadAll(ifstream& InFile) {
+	int count;
+
+	// 1. Load Flags
+	InFile >> count; // Read the number of flags
+	for (int i = 0; i < count; i++) {
+		Flag* flag = new Flag(); // Use default constructor
+		flag->Load(InFile);      // Load data from the file
+		AddObjectToCell(flag);   // Add object to the cell
+	}
+
+	// 2. Load Water Pits
+	InFile >> count; // Read the number of water pits
+	for (int i = 0; i < count; i++) {
+		WaterPit* waterPit = new WaterPit(); // Use default constructor
+		waterPit->Load(InFile);             // Load data from the file
+		AddObjectToCell(waterPit);          // Add object to the cell
+	}
+
+	// 3. Load Danger Zones
+	InFile >> count; // Read the number of danger zones
+	for (int i = 0; i < count; i++) {
+		DangerZone* dangerZone = new DangerZone(); // Use default constructor
+		dangerZone->Load(InFile);                 // Load data from the file
+		AddObjectToCell(dangerZone);              // Add object to the cell
+	}
+
+	// 4. Load Belts
+	InFile >> count; // Read the number of belts
+	for (int i = 0; i < count; i++) {
+		Belt* belt = new Belt(); // Use default constructor
+		belt->Load(InFile);      // Load data from the file
+		AddObjectToCell(belt);   // Add object to the cell
+	}
+
+	// 5. Load Workshops
+	InFile >> count; // Read the number of workshops
+	for (int i = 0; i < count; i++) {
+		Workshop* workshop = new Workshop(); // Use default constructor
+		workshop->Load(InFile);              // Load data from the file
+		AddObjectToCell(workshop);           // Add object to the cell
+	}
+
+	// 6. Load Antennas
+	InFile >> count; // Read the number of antennas
+	for (int i = 0; i < count; i++) {
+		Antenna* antenna = new Antenna(); // Use default constructor
+		antenna->Load(InFile);            // Load data from the file
+		AddObjectToCell(antenna);         // Add object to the cell
+	}
+
+	// 7. Load Rotating Gears
+	InFile >> count; // Read the number of rotating gears
+	for (int i = 0; i < count; i++) {
+		RotatingGear* rotatingGear = new RotatingGear(); // Use default constructor
+		rotatingGear->Load(InFile);                     // Load data from the file
+		AddObjectToCell(rotatingGear);                  // Add object to the cell
+	}
+
+	// Update the interface to reflect the loaded objects
+	UpdateInterface();
+
+	// Display a success message
+	Output* pOut = GetOutput();
+	pOut->PrintMessage("Grid loaded successfully!");
+}void Grid::SaveAll(ofstream& OutFile, int Type) {
+	int count = CountGameObjects(Type);
+	OutFile << count << endl; // Write the count first
+	for (int i = 0; i < NumVerticalCells; i++) {
+		for (int j = 0; j < NumHorizontalCells; j++) {
+			Cell* pCell = CellList[i][j]; // Get the cell
+			if (pCell) {
+				GameObject* pObj = pCell->GetGameObject();
+				if (pObj) {
+					pObj->Save(OutFile, Type); // Call the GameObject's Save method
+				}
+			}
+		}
+	}
+}
+// Note: You may need to change the return type of this function (Think)========DONE
+GameObject* Grid::RemoveObjectFromCell(const CellPosition& pos) {
+	if (!pos.IsValidCell()) {
+		return nullptr;
+	}
+
+	Cell* pCell = CellList[pos.VCell()][pos.HCell()];
+	if (!pCell) {
+		return nullptr;
+	}
+
+	GameObject* pObj = pCell->GetGameObject();
+	if (pObj) {
+		pCell->SetGameObject(nullptr);
+	}
+
+	return pObj;
 }
 
 void Grid::UpdatePlayerCell(Player* player, const CellPosition& newPosition)
