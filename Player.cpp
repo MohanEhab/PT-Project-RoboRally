@@ -313,12 +313,7 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 			}
 		}
 	}
-	Cell* finalCell = pGrid->GetCell(pCell->GetCellPosition());
-	GameObject* obj = finalCell->GetGameObject();
-	if (obj != nullptr)
-	{
-		obj->Apply(pGrid, this);
-	}
+	
 	///TODO: Implement this function using the guidelines mentioned below
 
 	// - If a player has 5 (could have less) saved moveCommands, the robot will execute the first saved command,
