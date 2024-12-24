@@ -372,7 +372,7 @@ void Player::DisplayRandomCommands(Grid* pGrid, Command availableCommands[]) {
 	int availableCommandsCount = (health < 10) ? health : 10; //no. of av cmds 
 
 	//  10 random commands
-	for (int i = 0; i < availableCommandCount; i++) {
+	for (int i = 0; i < 10; i++) {
 		int randomIndex = rand() % 8; //rand num between 0 and 7
 		availableCommands[i] = commandPool[randomIndex]; //assign cmd to av cmd
 		commandList += CommandToString(availableCommands[i]) + (i < availableCommandCount-1 ? ", " : "");
@@ -414,6 +414,7 @@ string Player::CommandToString(Command cmd) const
 		return "No Command";
 	}
 }
+
 void Player:: disableExtendedMemory() {
 	hasExtendedMemory = false;
 }
