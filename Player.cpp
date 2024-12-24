@@ -166,32 +166,32 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 			// Move forward based on the player's direction
 			switch (currDirection) {
 			case UP:
-				newPos.SetVCell(newPos.VCell() - 1); // Move up
+				newPos.SetVCell(currentPos.VCell() - 1); // Move up
 				break;
 			case DOWN:
-				newPos.SetVCell(newPos.VCell() + 1); // Move down
+				newPos.SetVCell(currentPos.VCell() + 1); // Move down
 				break;
 			case LEFT:
-				newPos.SetHCell(newPos.HCell() - 1); // Move left
+				newPos.SetHCell(currentPos.HCell() - 1); // Move left
 				break;
 			case RIGHT:
-				newPos.SetHCell(newPos.HCell() + 1); // Move right
+				newPos.SetHCell(currentPos.HCell() + 1); // Move right
 				break;
 			}
 			break;
 		case MOVE_FORWARD_TWO_STEPS:
 			switch (currDirection) {
 			case UP:
-				newPos.SetVCell(newPos.VCell() - 2); // Move up 2 steps
+				newPos.SetVCell(currentPos.VCell() - 2); // Move up 2 steps
 				break;
 			case DOWN:
-				newPos.SetVCell(newPos.VCell() + 2); // Move down 2 steps
+				newPos.SetVCell(currentPos.VCell() + 2); // Move down 2 steps
 				break;
 			case LEFT:
-				newPos.SetHCell(newPos.HCell() - 2); // Move left 2 steps
+				newPos.SetHCell(currentPos.HCell() - 2); // Move left 2 steps
 				break;
 			case RIGHT:
-				newPos.SetHCell(newPos.HCell() + 2); // Move right 2 steps
+				newPos.SetHCell(currentPos.HCell() + 2); // Move right 2 steps
 				break;
 			}
 			break;
@@ -274,6 +274,7 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 		if (!newPos.IsValidCell())
 		{
 			pOut->PrintMessage("Invalid Move! Click inside the grid to continue.");
+		
 			while (true)
 			{
 				pIn->GetPointClicked(x, y);
@@ -286,6 +287,7 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 				else
 				{
 					pOut->PrintMessage("Invalid click! Click inside the grid area.");
+				
 				}
 			}
 			continue; // Skip this command and continue with the next

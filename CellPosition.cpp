@@ -33,7 +33,11 @@ bool CellPosition::SetVCell(int v)
 		vCell = v;
 		return true;
 	}
-	return false; // this line sould be changed with your implementation
+	else {
+		vCell = -1;
+		return false; // this line sould be changed with your implementation
+		
+	}
 }
 
 bool CellPosition::SetHCell(int h)
@@ -42,8 +46,12 @@ bool CellPosition::SetHCell(int h)
 
 		hCell = h;
 		return true;
-	}  ///TODO: Implement this function as described in the .h file (don't forget the validation)
-	return false; // this line sould be changed with your implementation
+	} 
+	else {///TODO: Implement this function as described in the .h file (don't forget the validation)
+		hCell = -1;
+		return false; // this line sould be changed with your implementation
+		
+	}
 }
 
 int CellPosition::VCell() const
@@ -81,7 +89,7 @@ int CellPosition::GetCellNumFromPosition(const CellPosition& cellPosition)
 	// just define an integer that represents cell number and calculate it using the passed cellPosition then return it
 
 	if (!cellPosition.IsValidCell())
-		return 0;   ///TODO: Implement this function as described in the .h file
+		return -1;   ///TODO: Implement this function as described in the .h file
 	int cellnum{0};
 	int rowbelow = 4 - cellPosition.vCell;
 	cellnum += rowbelow * 11;
