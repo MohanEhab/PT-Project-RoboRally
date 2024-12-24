@@ -201,6 +201,8 @@
     <ClCompile Include="ShootingAction.cpp" />
     <ClCompile Include="ToDesignModeAction.cpp" />
     <ClCompile Include="ToPlayModeAction.cpp" />
+    <ClCompile Include="UseHackAction.cpp" />
+    <ClCompile Include="UseToolKitAction.cpp" />
     <ClCompile Include="WaterPit.cpp" />
     <ClCompile Include="Workshop.cpp" />
   </ItemGroup>
@@ -263,6 +265,8 @@
     <ClInclude Include="ToDesignModeAction.h" />
     <ClInclude Include="ToPlayModeAction.h" />
     <ClInclude Include="UI_Info.h" />
+    <ClInclude Include="UseHackAction.h" />
+    <ClInclude Include="UseToolKitAction.h" />
     <ClInclude Include="WaterPit.h" />
     <ClInclude Include="Workshop.h" />
   </ItemGroup>

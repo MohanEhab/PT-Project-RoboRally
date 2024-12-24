@@ -10,18 +10,19 @@ UseHackAction::UseHackAction(ApplicationManager* pApp) : Action(pApp)
 
 void UseHackAction::ReadActionParameters()
 {
-    // No parameters to read for this action
 }
 
 void UseHackAction::Execute()
 {
-    Grid* pGrid = pManager->GetGrid();       // Access the grid
-    Player* currentPlayer = pGrid->GetCurrentPlayer(); // Get the current player
+    Grid* pGrid = pManager->GetGrid();       
+    Player* currentPlayer = pGrid->GetCurrentPlayer(); 
 
     if (!currentPlayer)
         return;
 
-    currentPlayer->UseHackDevice(pGrid);    // Use the hack device for the current player
+    currentPlayer->UseHackDevice(pGrid);     
+    pGrid->PrintErrorMessage("Hack Device is used. Click to Continue");
+
 }
 
 UseHackAction::~UseHackAction()

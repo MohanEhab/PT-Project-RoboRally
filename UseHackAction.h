@@ -7,7 +7,7 @@ class UseHackAction : public Action
 {
 public:
     UseHackAction(ApplicationManager* pApp); // Constructor
-    virtual void ReadActionParameters();          // Reads parameters (if needed)
+    virtual void ReadActionParameters();          
     virtual void Execute();                       // Executes the action
     virtual ~UseHackAction();              // Destructor
 };

@@ -10,18 +10,18 @@ UseToolKitAction::UseToolKitAction(ApplicationManager* pApp) : Action(pApp)
 
 void UseToolKitAction::ReadActionParameters()
 {
-    // No parameters to read for this action
 }
 
 void UseToolKitAction::Execute()
 {
-    Grid* pGrid = pManager->GetGrid();   // Access the grid
-    Player* currentPlayer = pGrid->GetCurrentPlayer(); // Get the current player
+    Grid* pGrid = pManager->GetGrid();   
+    Player* currentPlayer = pGrid->GetCurrentPlayer(); 
 
     if (!currentPlayer)
         return;
 
-    currentPlayer->UseToolkit(pGrid); // Use the toolkit for the current player
+    currentPlayer->UseToolkit(pGrid); 
+    pGrid->PrintErrorMessage("Toolkit is used. Click to continue");
 }
 
 UseToolKitAction::~UseToolKitAction()

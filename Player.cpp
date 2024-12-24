@@ -347,10 +347,8 @@ void Player::RebootAndRepair(Grid* pGrid)
 	else {
 		pOut->PrintMessage("Reboot and Repair: Health is already at maximum.");
 	}
-
 	// move the player to the starting position
 	Cell* startingCell = pGrid->GetStartingCell();
-	
 	ClearDrawing(pOut);
 	SetCell(startingCell); 
 	Draw(pOut);
