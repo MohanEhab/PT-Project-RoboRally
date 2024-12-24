@@ -369,12 +369,13 @@ void Player::DisplayRandomCommands(Grid* pGrid, Command availableCommands[]) {
 	};
 
 	string commandList = "Available Commands: ";
+	int availableCommandsCount = (health < 10) ? health : 10;
 
 	//  10 random commands
 	for (int i = 0; i < 10; i++) {
 		int randomIndex = rand() % 8;
 		availableCommands[i] = commandPool[randomIndex];
-		commandList += CommandToString(availableCommands[i]) + (i < 9 ? ", " : "");
+		commandList += CommandToString(availableCommands[i]) + (i < availableCommandCount-1 ? ", " : "");
 	}
 
 	pOut->PrintMessage(commandList); 
@@ -421,9 +422,9 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[]) {
 	Output* pOut = pGrid->GetOutput();
 	Input* pIn = pGrid->GetInput();
 	int extra = (this->HasExtendedMemory()) ? 1 : 0;
-	int maxCommands = (health < 5) ? health + extra : 5 + extra; // Limit commands by health
+	int maxCommands = (health < 5) ? health + extra : 5 + extra; // limit commands 
 	this->disableExtendedMemory();
-	Command* selectedCommands = new Command[maxCommands]; // To store player's selected commands
+	Command* selectedCommands = new Command[maxCommands]; //  store player's selected commands
 	int numSelected = 0;
 
 	pOut->PrintMessage("Select up to " + to_string(maxCommands) + " commands. Click the command bar to select.");
@@ -431,12 +432,12 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[]) {
 	for (int i = 0; i < maxCommands; i++) {
 		do
 		{
-		 commandIndex = pIn->GetSelectedCommandIndex(); // Get the clicked command index
+		 commandIndex = pIn->GetSelectedCommandIndex(); // get the clicked command index
 		 
 		
 		} while (commandIndex == -1);
 		
-		if (commandIndex < 0 || commandIndex >= 10) { // Ensure valid selection
+		if (commandIndex < 0 || commandIndex >= 10) { // validation
 			pOut->PrintMessage("Invalid selection. Selection ended.");
 			break;
 		}
@@ -445,7 +446,7 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[]) {
 		pOut->PrintMessage("Command " + to_string(i + 1) + " selected: " + CommandToString(availableCommands[commandIndex]));
 	}
 
-	// Save selected commands for execution
+	// save selected commands 
 	SaveCommands(selectedCommands, numSelected);
 
 	if (numSelected == 0) {

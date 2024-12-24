@@ -36,10 +36,11 @@ void ToPlayModeAction::Execute() {
 
         Command availableCommands[10];
         currentPlayer->DisplayRandomCommands(pGrid, availableCommands);
+        int availableCommandsCount = (currentPlayer->GetHealth() < 10) ? currentPlayer->GetHealth() : 10;
 
         pGrid->DisPlayerInfo();
         Command savedCommands[5] = {}; // empty arr for saved commands
-        pOut->CreateCommandsBar(savedCommands, 0, availableCommands, 10);
+        pOut->CreateCommandsBar(savedCommands, 0, availableCommands, availableCommandsCount);
 
         currentPlayer->SelectCommands(pGrid, availableCommands);
 
