@@ -15,7 +15,6 @@ void SaveGridAction::ReadActionParameters()
     Output* pOut = pGrid->GetOutput();
     Input* pIn = pGrid->GetInput();
 
-    //display a massage to the user
     pOut->PrintMessage("Enter the file name to save the grid: ");
     fileName = pIn->GetSrting(pOut); // get the file name as a string from the user
     pOut->ClearStatusBar(); // clear the status bar after input

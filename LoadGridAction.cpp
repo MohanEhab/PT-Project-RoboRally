@@ -22,7 +22,7 @@ void LoadGridAction::ReadActionParameters() {
 
 
 void LoadGridAction::Execute() {
-    ReadActionParameters(); // Step 1: Read file name
+    ReadActionParameters(); // Read file name
     Grid* pGrid = pManager->GetGrid();
 
     fileName += ".txt";
@@ -33,8 +33,8 @@ void LoadGridAction::Execute() {
         return;
     }
     pGrid->ClearGrid();
-    pGrid->LoadAll(inFile); // Step 2: Call LoadAll to load objects
-    inFile.close();         // Step 3: Close the file
+    pGrid->LoadAll(inFile); //  Call LoadAll to load objects
+    inFile.close();         //  Close the file
 
     pGrid->GetOutput()->PrintMessage("Grid loaded successfully!");
 }

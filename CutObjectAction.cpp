@@ -62,6 +62,4 @@ void CutObjectAction::Execute() {
     pGrid->SetClipboard(pGameObject);
 
     pOutput->PrintMessage("Game object cut successfully!");
-  
-
 }

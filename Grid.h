@@ -65,7 +65,6 @@ public:
 	bool IsCellEmpty(const CellPosition& pos) const;
 	int CountGameObjects(int Type) const;
 	void ClearGrid();
-	static CellPosition GetPositionFromCellNum(int cellNum);// using staticfunction 
 
 	void LoadAll(ifstream& InFile);
 	void SaveAll(std::ofstream& OutFile, int Type);

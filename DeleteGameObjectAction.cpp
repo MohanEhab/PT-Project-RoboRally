@@ -40,8 +40,8 @@ void DeleteGameObjectAction::Execute() {
         return;
     }
 
-    // Use Grid's method to remove the object
-    GameObject* pGameObject = pGrid->RemoveObjectFromCell(pos);
+ 
+    GameObject* pGameObject = pGrid->RemoveObjectFromCell(pos); // removes gameobject from cell
 
     if (!pGameObject) {
         pOut->PrintMessage("No game object found in the selected cell,click anywhere to contiune");
@@ -50,10 +50,7 @@ void DeleteGameObjectAction::Execute() {
         return;
     }
 
-    // Delete the object
-    delete pGameObject;
+    delete pGameObject;  // Delete the object
 
-    pOut->PrintMessage("Game object deleted successfully,click anywhere to contiune");
-    pIn->GetPointClicked(x, y);
-    pOut->ClearStatusBar();
+    pOut->PrintMessage("Game object deleted successfully!");
 }

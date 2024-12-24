@@ -55,7 +55,7 @@ GameObject* Grid::GetObjectFromCell(const CellPosition& pos) const
 {
 	if (pos.IsValidCell()) { // Check if the position is valid
 		Cell* pCell = CellList[pos.VCell()][pos.HCell()]; // Get the cell at the specified position
-		if (pCell) {
+		if (pCell) {//Ensures its not a nullptr
 			return pCell->GetGameObject(); // Return the GameObject in the cell
 		}
 	}
@@ -64,12 +64,11 @@ GameObject* Grid::GetObjectFromCell(const CellPosition& pos) const
 bool Grid::AddObjectToCell(GameObject * pNewObject)  // think if any validation is needed
 
 {
-	// Get the cell position of pNewObject
-	CellPosition pos = pNewObject->GetPosition();
+	CellPosition pos = pNewObject->GetPosition();// Get the cell position of pNewObject
 	if (pos.IsValidCell()) // Check if valid position
 	{
 		// Get the previous GameObject of the Cell
-		GameObject * pPrevObject = CellList[pos.VCell()][pos.HCell()]->GetGameObject();
+		GameObject * pPrevObject = CellList[pos.VCell()][pos.HCell()]->GetGameObject();// Get the previous GameObject of the Cell
 		if( pPrevObject)  // the cell already contains a game object
 			return false; // do NOT add and return false
 
@@ -87,10 +86,10 @@ bool Grid::IsCellEmpty(const CellPosition& pos) const
 }
 int Grid::CountGameObjects(int Type) const
 {
-	int count = 0;
-	for (int i = 0; i < NumVerticalCells; i++) {
+	int count = 0;//store the number of objects found.
+	for (int i = 0; i < NumVerticalCells; i++) {// loops through all cells in grid
 		for (int j = 0; j < NumHorizontalCells; j++) {
-			Cell* pCell = CellList[i][j];
+			Cell* pCell = CellList[i][j];//accesses the cell positionin of the grid.
 			if (pCell && pCell->GetGameObject() && pCell->GetGameObject()->GetType() == Type) {
 				count++;
 			}
@@ -113,14 +112,11 @@ void Grid::ClearGrid()
 		}
 	}
 }
-CellPosition Grid::GetPositionFromCellNum(int cellNum)
-{
-	return CellPosition::GetCellPositionFromNum(cellNum);
-}
+
 void Grid::LoadAll(ifstream& InFile) {
 	int count;
 
-	// 1. Load Flags
+	// Load Flags
 	InFile >> count; // Read the number of flags
 	for (int i = 0; i < count; i++) {
 		Flag* flag = new Flag(); // Use default constructor
@@ -128,7 +124,7 @@ void Grid::LoadAll(ifstream& InFile) {
 		AddObjectToCell(flag);   // Add object to the cell
 	}
 
-	// 2. Load Water Pits
+	// Load Water Pits
 	InFile >> count; // Read the number of water pits
 	for (int i = 0; i < count; i++) {
 		WaterPit* waterPit = new WaterPit(); // Use default constructor
@@ -136,7 +132,7 @@ void Grid::LoadAll(ifstream& InFile) {
 		AddObjectToCell(waterPit);          // Add object to the cell
 	}
 
-	// 3. Load Danger Zones
+	// Load Danger Zones
 	InFile >> count; // Read the number of danger zones
 	for (int i = 0; i < count; i++) {
 		DangerZone* dangerZone = new DangerZone(); // Use default constructor
@@ -144,7 +140,7 @@ void Grid::LoadAll(ifstream& InFile) {
 		AddObjectToCell(dangerZone);              // Add object to the cell
 	}
 
-	// 4. Load Belts
+	// Load Belts
 	InFile >> count; // Read the number of belts
 	for (int i = 0; i < count; i++) {
 		Belt* belt = new Belt(); // Use default constructor
@@ -152,7 +148,7 @@ void Grid::LoadAll(ifstream& InFile) {
 		AddObjectToCell(belt);   // Add object to the cell
 	}
 
-	// 5. Load Workshops
+	//  Load Workshops
 	InFile >> count; // Read the number of workshops
 	for (int i = 0; i < count; i++) {
 		Workshop* workshop = new Workshop(); // Use default constructor
@@ -160,7 +156,7 @@ void Grid::LoadAll(ifstream& InFile) {
 		AddObjectToCell(workshop);           // Add object to the cell
 	}
 
-	// 6. Load Antennas
+	//  Load Antennas
 	InFile >> count; // Read the number of antennas
 	for (int i = 0; i < count; i++) {
 		Antenna* antenna = new Antenna(); // Use default constructor
@@ -168,7 +164,7 @@ void Grid::LoadAll(ifstream& InFile) {
 		AddObjectToCell(antenna);         // Add object to the cell
 	}
 
-	// 7. Load Rotating Gears
+	//  Load Rotating Gears
 	InFile >> count; // Read the number of rotating gears
 	for (int i = 0; i < count; i++) {
 		RotatingGear* rotatingGear = new RotatingGear(); // Use default constructor
@@ -183,14 +179,14 @@ void Grid::LoadAll(ifstream& InFile) {
 	Output* pOut = GetOutput();
 	pOut->PrintMessage("Grid loaded successfully!");
 }void Grid::SaveAll(ofstream& OutFile, int Type) {
-	int count = CountGameObjects(Type);
+	int count = CountGameObjects(Type);// use count function to count number of gameobjects
 	OutFile << count << endl; // Write the count first
-	for (int i = 0; i < NumVerticalCells; i++) {
+	for (int i = 0; i < NumVerticalCells; i++) {// loops through all cells in grid
 		for (int j = 0; j < NumHorizontalCells; j++) {
 			Cell* pCell = CellList[i][j]; // Get the cell
 			if (pCell) {
-				GameObject* pObj = pCell->GetGameObject();
-				if (pObj) {
+				GameObject* pObj = pCell->GetGameObject();//For each cell it checks if it contains a game object.
+				if (pObj && pObj->GetType() == Type) {//make sure object matches specifed type
 					pObj->Save(OutFile, Type); // Call the GameObject's Save method
 				}
 			}
@@ -199,18 +195,18 @@ void Grid::LoadAll(ifstream& InFile) {
 }
 // Note: You may need to change the return type of this function (Think)========DONE
 GameObject* Grid::RemoveObjectFromCell(const CellPosition& pos) {
-	if (!pos.IsValidCell()) {
+	if (!pos.IsValidCell()) {// checks if between grid boundries
 		return nullptr;
 	}
 
-	Cell* pCell = CellList[pos.VCell()][pos.HCell()];
+	Cell* pCell = CellList[pos.VCell()][pos.HCell()];//access the cell
 	if (!pCell) {
 		return nullptr;
 	}
 
 	GameObject* pObj = pCell->GetGameObject();
 	if (pObj) {
-		pCell->SetGameObject(nullptr);
+		pCell->SetGameObject(nullptr);// removes gameobject
 	}
 
 	return pObj;

@@ -1,5 +1,6 @@
 /* 
-See "version.h" for version info and copyright information
+See "version.h" for version info and 
+right information
 This file was last modified on 05.16.1999
 */
 
