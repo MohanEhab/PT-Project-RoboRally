@@ -293,7 +293,7 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 			continue; // Skip this command and continue with the next
 		}
 		pGrid->UpdatePlayerCell(this, newPos);
-
+		pGrid->DisPlayerInfo();
 		if (i < maxCommands - 1 && moveCommands[i + 1] != NO_COMMAND)
 		{
 			pOut->PrintMessage("Click inside the grid to execute the next command.");

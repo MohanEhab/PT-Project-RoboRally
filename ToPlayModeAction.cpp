@@ -52,6 +52,8 @@ void ToPlayModeAction::Execute() {
         
 
         pGrid->AdvanceCurrentPlayer();
+        pGrid->DisPlayerInfo();
+
         if (pGrid->GetEndGame())
             break;
     }
