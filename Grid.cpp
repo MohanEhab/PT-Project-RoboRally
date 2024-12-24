@@ -180,10 +180,7 @@ void Grid::LoadAll(ifstream& InFile) {
 	pOut->PrintMessage("Grid loaded successfully!");
 
 }
-void Grid::SaveAll(ofstream& OutFile, int Type) {
-	int count = CountGameObjects(Type);// use count function to count number of gameobjects
 
-}
 void Grid::SaveAll(ofstream& OutFile, int Type) {
 	int count = CountGameObjects(Type);
 	OutFile << count << endl; // Write the count first
