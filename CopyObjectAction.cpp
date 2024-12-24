@@ -50,12 +50,16 @@ void CopyObjectAction::Execute() {
     }
 
     if (pGameObject->GetType() == 1 || pGameObject->GetType() == 6 || pGameObject->GetType() == 4) {//makes sure that anntena and belt and flag cannot be copped using get type
-        pOutput->PrintMessage("Flags, Antennas, and Belts cannot be copied!");
+        pOutput->PrintMessage("Flags, Antennas, and Belts cannot be copied,click anywhere to contiune");
+        pInput->GetPointClicked(x, y); // Wait for user to click
+        pOutput->ClearStatusBar(); // Clear the status bar after click
         return;
     }
 
     // Store the object in the clipboard
     pGrid->SetClipboard(pGameObject->Copy()); // copy the object for independent copy
 
-    pOutput->PrintMessage("Game object copied successfully!");
+    pOutput->PrintMessage("Game object copied successfully,click anywhere to contiune");
+    pInput->GetPointClicked(x, y); // Wait for user to click
+    pOutput->ClearStatusBar(); // Clear the status bar after click
 }
