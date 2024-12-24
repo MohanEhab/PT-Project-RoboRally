@@ -76,43 +76,16 @@ bool Grid::RemoveObjectFromCell(const CellPosition & pos)
 	return false;
 }
 
-void Grid::UpdatePlayerCell(Player * player, const CellPosition & newPosition)
+void Grid::UpdatePlayerCell(Player* player, const CellPosition& newPosition)
 {
 	// Clear the player's triangle from the old cell position
 	player->ClearDrawing(pOut);
-	
-	
-	for (int i = 0; i < MaxPlayerCount; i++) { //fix issue of player being removed if another player passed by it
-		Player* otherPlayer = PlayerList[i];
-		if (otherPlayer != player &&
-			otherPlayer->GetCell()->GetCellPosition().VCell() == player->GetCell()->GetCellPosition().VCell() &&
-			otherPlayer->GetCell()->GetCellPosition().HCell() == player->GetCell()->GetCellPosition().HCell()) {
-			// Redraw the other player after clearing
-			otherPlayer->Draw(pOut);
-		}
-	}
 	// Set the player's CELL with the new position
-	Cell * newCell = CellList[newPosition.VCell()][newPosition.HCell()];
-	player->SetCell(newCell);	
-
-	//fixes issue of player delete belts drawn 
-	for (int i = 0; i < NumVerticalCells; ++i) {
-		for (int j = 0; j < NumHorizontalCells; ++j) {
-			Cell* cell = CellList[i][j];
-			Belt* belt = cell->HasBelt(); 
-			if (belt) {
-				CellPosition beltStart = belt->GetPosition();
-				CellPosition beltEnd = belt->GetEndPosition();
-
-					pOut->DrawBelt(beltStart, beltEnd);
-				}
-			}
-		}
-
-
-
+	Cell* newCell = CellList[newPosition.VCell()][newPosition.HCell()];
+	player->SetCell(newCell);
 	// Draw the player's triangle on the new cell position
 	player->Draw(pOut);
+	this->UpdateInterface();
 
 }
 
@@ -237,7 +210,14 @@ void Grid::UpdateInterface() const
 		playersInfo += " | Curr = P " + to_string(currPlayerNumber);
 
 		pOut->PrintPlayersInfo(playersInfo);
-
+		for (int i = NumVerticalCells - 1; i >= 0; i--) {
+			for (int j = 0; j < NumHorizontalCells; j++) {
+				CellList[i][j]->DrawGameObject(pOut);
+			}
+		}
+		for (int i = 0; i < MaxPlayerCount; i++) {
+			PlayerList[i]->Draw(pOut);
+		}
 		// Note: UpdatePlayerCell() function --> already update drawing players in Play Mode
 		//       so we do NOT need draw all players again in UpdateInterface() of the Play mode
 		// In addition, cgame objects do NOT change positions in Play Mode, so need to draw them here too

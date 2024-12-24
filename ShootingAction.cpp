@@ -34,7 +34,6 @@ void ShootingAction::Execute() {
 
     //////////////////////////////////////////////////////////////////////////
     //Drawing calculations 
-   // Calculate StartX and StartY for a given CellPosition
    // Calculate StartX and StartY for Player X
     int startXx = playerXPos.HCell() * UI.CellWidth + UI.CellWidth / 2;
     int startYx = UI.ToolBarHeight + playerXPos.VCell() * UI.CellHeight + UI.CellHeight / 2;

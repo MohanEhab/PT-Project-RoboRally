@@ -771,11 +771,12 @@ void Output::DrawWaterPit(const CellPosition& cellPos) const
 
 }
 void Output:: DrawLaser(int startX, int startY, int endX, int endY) const {
-	pWind->SetPen(RED, 4);
+	pWind->SetPen(RED, 2);
 	pWind->DrawLine(startX, startY, endX, endY);
 
 
 }
+
 
 
 

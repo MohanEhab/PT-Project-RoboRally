@@ -69,7 +69,8 @@ void ToPlayModeAction::Execute() {
     // Shooting Phase
     ShootingAction shootingAction(pManager);
     shootingAction.Execute();
-
+    pOut->ClearGridArea();
+    pGrid->UpdateInterface();
     } while (!pGrid -> GetEndGame());
     
 
