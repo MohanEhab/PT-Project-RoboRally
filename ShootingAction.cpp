@@ -1,5 +1,5 @@
 #include "ShootingAction.h"
-
+#include "Cell.h"
 ShootingAction::ShootingAction(ApplicationManager* pApp) :Action(pApp)
 {
 }
@@ -32,37 +32,76 @@ void ShootingAction::Execute() {
     Direction playerYDirection = playerY->GetDirection();
 
 
+    //////////////////////////////////////////////////////////////////////////
+    //Drawing calculations 
+   // Calculate StartX and StartY for a given CellPosition
+   // Calculate StartX and StartY for Player X
+    int startXx = playerXPos.HCell() * UI.CellWidth + UI.CellWidth / 2;
+    int startYx = UI.ToolBarHeight + playerXPos.VCell() * UI.CellHeight + UI.CellHeight / 2;
+
+    // Calculate StartX and StartY for Player Y
+    int startXy = playerYPos.HCell() * UI.CellWidth + UI.CellWidth / 2;
+    int startYy = UI.ToolBarHeight + playerYPos.VCell() * UI.CellHeight + UI.CellHeight / 2;
+
+    // Initialize EndX and EndY for Player X's laser
+    int endXx = startXx;
+    int endYx = startYx;
+
+    ///////////////////////////////////////////////////////////////////////////////////
+
+
     // Determine if playerX can shoot playerY
     bool playerXCanShoot = false;
+  
     switch (playerXDirection) {
     case RIGHT:
         playerXCanShoot = (playerXPos.VCell() == playerYPos.VCell() && playerXPos.HCell() < playerYPos.HCell());
+        endXx = startXy; // End horizontally at Player Y's X position
+        endYx = startYx; // Same vertical line
         break;
     case LEFT:
         playerXCanShoot = (playerXPos.VCell() == playerYPos.VCell() && playerXPos.HCell() > playerYPos.HCell());
+        endXx = startXy; // End horizontally at Player Y's X position
+        endYx = startYx; // Same vertical line
         break;
     case UP:
         playerXCanShoot = (playerXPos.HCell() == playerYPos.HCell() && playerXPos.VCell() > playerYPos.VCell());
+        endXx = startXx; // Same horizontal line
+        endYx = startYy; // End vertically at Player Y's Y position
         break;
     case DOWN:
         playerXCanShoot = (playerXPos.HCell() == playerYPos.HCell() && playerXPos.VCell() < playerYPos.VCell());
-        break;
+        endXx = startXx; // Same horizontal line
+        endYx = startYy; // End vertically at Player Y's Y position
+       break;
     }
+
 
     // Determine if playerY can shoot playerX
     bool playerYCanShoot = false;
+    int endXy = startXy;
+    int endYy = startYy;
+
     switch (playerYDirection) {
     case RIGHT:
         playerYCanShoot = (playerYPos.VCell() == playerXPos.VCell() && playerYPos.HCell() < playerXPos.HCell());
+        endXy = startXx; // End horizontally at Player X's X position
+        endYy = startYy; // Same vertical line
         break;
     case LEFT:
         playerYCanShoot = (playerYPos.VCell() == playerXPos.VCell() && playerYPos.HCell() > playerXPos.HCell());
+        endXy = startXx; // End horizontally at Player X's X position
+        endYy = startYy; // Same vertical line
         break;
     case UP:
         playerYCanShoot = (playerYPos.HCell() == playerXPos.HCell() && playerYPos.VCell() > playerXPos.VCell());
+        endXy = startXy; // Same horizontal line
+        endYy = startYx; // End vertically at Player X's Y position
         break;
     case DOWN:
         playerYCanShoot = (playerYPos.HCell() == playerXPos.HCell() && playerYPos.VCell() < playerXPos.VCell());
+        endXy = startXy; // Same horizontal line
+        endYy = startYx; // End vertically at Player X's Y position
         break;
     }
 
@@ -73,11 +112,13 @@ void ShootingAction::Execute() {
 
     int playerXDamage = playerX->HasDoubleLaser() ? 2 : 1;
     int playerYDamage = playerY->HasDoubleLaser() ? 2 : 1;
-
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     if (playerXCanShoot) {
         //Drawing
-      
-        
+        pOut->DrawLaser(startXx,startYx,endXx,endYx);
+
         if (playerY->HasLaserReflection() && playerX->HasLaserReflection()) {
             // Both players have laser reflection gear
             playerY->DisableLaserReflection();
@@ -107,7 +148,8 @@ void ShootingAction::Execute() {
 
     if (playerYCanShoot) {
         //Drawing
-        
+        pOut->DrawLaser(startXy, startYy, endXy, endYy);
+
         if (playerX->HasLaserReflection() && playerY->HasLaserReflection()) {
             // Both players have laser reflection gear
             playerX->DisableLaserReflection();

@@ -770,6 +770,12 @@ void Output::DrawWaterPit(const CellPosition& cellPos) const
 	pWind->DrawRectangle(cellStartX, cellStartY, cellStartX + UI.CellWidth, cellStartY + UI.CellHeight);
 
 }
+void Output:: DrawLaser(int startX, int startY, int endX, int endY) const {
+	pWind->SetPen(RED, 4);
+	pWind->DrawLine(startX, startY, endX, endY);
+
+
+}
 
 
 
