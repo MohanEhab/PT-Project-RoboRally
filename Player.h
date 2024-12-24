@@ -90,7 +90,7 @@ public:
 
 	void EnableExtendedMemory();         // Enable extended memory
 	bool HasExtendedMemory() const;      // Check if the player has extended memory
-
+	void disableExtendedMemory();
 	void AddToolkit();                   // Add a toolkit to the player
 	bool HasToolkit() const;             // Check if the player has a toolkit
 

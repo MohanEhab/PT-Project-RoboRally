@@ -413,13 +413,17 @@ string Player::CommandToString(Command cmd) const
 		return "No Command";
 	}
 }
+void Player:: disableExtendedMemory() {
+	hasExtendedMemory = false;
+}
 
 void Player::SelectCommands(Grid* pGrid, Command availableCommands[]) { 
 	Output* pOut = pGrid->GetOutput();
 	Input* pIn = pGrid->GetInput();
-
-	int maxCommands = (health < 5) ? health : 5; // Limit commands by health
-	Command selectedCommands[5]; // To store player's selected commands
+	int extra = (this->HasExtendedMemory()) ? 1 : 0;
+	int maxCommands = (health < 5) ? health + extra : 5 + extra; // Limit commands by health
+	this->disableExtendedMemory();
+	Command* selectedCommands = new Command[maxCommands]; // To store player's selected commands
 	int numSelected = 0;
 
 	pOut->PrintMessage("Select up to " + to_string(maxCommands) + " commands. Click the command bar to select.");
@@ -450,6 +454,7 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[]) {
 	else {
 		pOut->PrintMessage(to_string(numSelected) + " commands saved.");
 	}
+	delete[] selectedCommands;
 }
  
 Command* Player::GetSavedCommands()
@@ -463,11 +468,16 @@ int Player::GetSavedCommandCount() const
 }
 
 void Player::SaveCommands(const Command commands[], int count) {
-	count = (count > 5) ? 5 : count;
+	int extra = (this->HasExtendedMemory()) ? 1 : 0;
+	int max_count{ 5 + extra};
+	count = (count > max_count) ? max_count : count;
 
 	for (int i = 0; i < count; i++) {
 		this->savedCommands[i] = commands[i]; 
 	}
+	for (int i = count; i < max_count; i++) {
+		this->savedCommands[i] = NO_COMMAND;
+	} // to save the rest as NO_COMMAND as to be called in the execute func
 
 	this->savedCommandCount = count;
 }
