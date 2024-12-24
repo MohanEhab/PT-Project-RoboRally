@@ -30,7 +30,7 @@ class Player
 	// carried laser type (default, double laser)
 	// isHacked (to indicate whether the player is blocked to play the round, as a result of the opponent using a hacking device)
 	bool isActive;
-	Command savedCommands[5];
+	Command savedCommands[6];
 	Command availableCommands[10];
 	int savedCommandCount;
 	int availableCommandCount;
