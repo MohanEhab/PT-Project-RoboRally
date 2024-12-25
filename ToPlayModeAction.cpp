@@ -49,6 +49,7 @@ void ToPlayModeAction::Execute() {
             if (currentPlayer->HasHackDevice()) {
                 UseHackAction useHackAction(pManager);
                 useHackAction.Execute();
+
                 currentPlayer->setSkipNextRound(1);
 
             }
