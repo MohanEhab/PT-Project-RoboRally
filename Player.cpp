@@ -589,8 +589,12 @@ void Player::setActive()
 {
 	isActive = true;
 }
-
-void Player::UseToolkit(Grid* pGrid) {
+bool Player::isCurrentlyActive() const
+{
+	return isActive;
+}
+void Player::UseToolkit(Grid* pGrid) 
+{
 	Output* pOut = pGrid->GetOutput();
 	Input* pIn = pGrid->GetInput();
 	int x, y;

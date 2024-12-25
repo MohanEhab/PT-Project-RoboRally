@@ -69,6 +69,7 @@ public:
 	// ====== Drawing Functions ======
 	void setInactive();
 	void setActive();
+	bool isCurrentlyActive() const;
 	void UseToolkit(Grid* pGrid);
 	void UseHackDevice(Grid* pGrid);
 	void resetForNextRound();
