@@ -153,6 +153,7 @@ void Player::ClearDrawing(Output* pOut) const
 void Player::Move(Grid* pGrid, Command moveCommands[])
 {
 	int x, y;
+	if (!isActive) return;
 	int extra = (this->HasExtendedMemory()) ? 1 : 0;
 	int maxCommands =  5 + extra;	
 	Input* pIn = pGrid->GetInput();
@@ -427,7 +428,7 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 {
 	Output* pOut = pGrid->GetOutput();
 	Input* pIn = pGrid->GetInput();
-
+	if (!isActive) return;
 	int extra = (this->HasExtendedMemory()) ? 1 : 0;
 	int maxCommands = (health < 5) ? health + extra : 5 + extra; // limit commands
 
@@ -437,7 +438,6 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 
 	pOut->PrintMessage("Select up to " + to_string(maxCommands) + " commands. Click the command bar to select.");
 	int commandIndex; //int to represent position of selection on bar 
-
 
 	do
 	{
