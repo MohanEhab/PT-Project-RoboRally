@@ -640,7 +640,7 @@ void Player::UseHackDevice(Grid* pGrid)
 	opponent->setInactive(); //hack other player
 	hasHackDevice = false; //  device is consumed
 	pOut->PrintMessage("Hack device used! Opponents cannot play this round.");
-	opponent-> setSkipNextRound(1);
+	opponent->setSkipNextRound(1);
 }
 
 void Player::resetForNextRound()

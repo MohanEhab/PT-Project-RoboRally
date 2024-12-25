@@ -63,7 +63,7 @@ public:
 	void EnableLaserReflection();
 	void setSkipNextRound(int rounds); 
 	bool shouldSkipThisTurn() const; 
-	void decrementSkipRounds(); 
+	void decrementSkipRounds();
 	bool HasRebootnRepair();
 	void setRebootnRepair(bool n);
 
