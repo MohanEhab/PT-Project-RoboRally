@@ -34,6 +34,7 @@ class Player
 	Command availableCommands[10];
 	int savedCommandCount;
 	int availableCommandCount;
+	int skipRounds;
 public:
 
 	Player(Cell * pCell, int playerNum); // Constructor making any needed initializations
@@ -60,7 +61,9 @@ public:
 	bool HasLaserReflection() const;
 	void DisableLaserReflection();
 	void EnableLaserReflection();
-	
+	void setSkipNextRound(int rounds); 
+	bool shouldSkipThisTurn() const; 
+	void decrementSkipRounds(); 
 	bool HasRebootnRepair();
 	void setRebootnRepair(bool n);
 

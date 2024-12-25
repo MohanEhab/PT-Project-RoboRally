@@ -37,23 +37,33 @@ void ToPlayModeAction::Execute() {
         //Movement Phase
         for (int i = 0; i < MaxPlayerCount; i++) {
             Player* currentPlayer = pGrid->GetCurrentPlayer();
-            
+            if (currentPlayer->shouldSkipThisTurn()) {
+                pOut->PrintMessage("Player " + to_string(currentPlayer->GetPlayerNumber() + 1) + " is skipping this round.");
+                currentPlayer->decrementSkipRounds(); // decrease the skip counter
+                if (!currentPlayer->shouldSkipThisTurn()) {
+                    currentPlayer->setActive(); // reset to active if no longer skipping
+                }
+                pGrid->AdvanceCurrentPlayer(); // move to the next player
+                continue; // skip this player's turn
+            }
             if (currentPlayer->HasHackDevice()) {
                 UseHackAction useHackAction(pManager);
                 useHackAction.Execute();
-                currentPlayer->setInactive();
+                currentPlayer->setSkipNextRound(1);
+
             }
 
             if (currentPlayer->HasToolkit()) {
                 UseToolKitAction useToolkitAction(pManager);
                 useToolkitAction.Execute();
-                currentPlayer->setInactive();
+                currentPlayer->setSkipNextRound(1);
+
             }
 
             if (currentPlayer->HasRebootnRepair()) {
                 RebootAndRepairAction rebootAction(pManager);
                 rebootAction.Execute();
-                currentPlayer->setInactive(); 
+                currentPlayer->setSkipNextRound(1);
             }
 
             Command availableCommands[10];

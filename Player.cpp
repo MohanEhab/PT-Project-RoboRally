@@ -53,6 +53,21 @@ void Player::EnableLaserReflection() {
 	hasLaserReflection = true;
 }
 
+void Player::setSkipNextRound(int rounds)
+{
+	skipRounds = rounds;
+}
+
+bool Player::shouldSkipThisTurn() const
+{
+	return skipRounds>0;
+}
+
+void Player::decrementSkipRounds()
+{
+	if (skipRounds > 0) { skipRounds--; }
+}
+
 bool Player::HasLaserReflection() const {
 	return hasLaserReflection;
 }
@@ -367,7 +382,7 @@ void Player::RebootAndRepair(Grid* pGrid)
 	ClearDrawing(pOut);
 	SetCell(startingCell); 
 	Draw(pOut);
-	setInactive(); //skip actions for player during this round
+	setSkipNextRound(1);
 	isRebootnRepair = false;
 	pGrid->DisPlayerInfo();
 	// pOut->PrintMessage("Player Rebooted and Repaired successfully"); removed so the message before it would get printed
@@ -609,6 +624,7 @@ void Player::UseToolkit(Grid* pGrid)
 	pOut->PrintMessage("Toolkit used! Health fully restored to 10.");
 	pIn->GetPointClicked(x, y); // Wait for the user to click
 	pOut->ClearStatusBar();
+	setSkipNextRound(1);
 }
 
 void Player::UseHackDevice(Grid* pGrid)
@@ -624,6 +640,7 @@ void Player::UseHackDevice(Grid* pGrid)
 	opponent->setInactive(); //hack other player
 	hasHackDevice = false; //  device is consumed
 	pOut->PrintMessage("Hack device used! Opponents cannot play this round.");
+	opponent-> setSkipNextRound(1);
 }
 
 void Player::resetForNextRound()
