@@ -7,7 +7,7 @@ health(10), playerNum(playerNum), currDirection(RIGHT),
 hasDoubleLaser(false),hasExtendedMemory(false), 
 hasToolkit(false),hasHackDevice(false), 
 equippedLaser(BASIC_LASER), hasShield(false), 
-hasLaserReflection(false), isRebootnRepair(false)
+hasLaserReflection(false), isRebootnRepair(false),isActive(true)
 {
 	this->pCell = pCell;
 	// Make all the needed initialization or validations
@@ -341,24 +341,34 @@ void Player::Move(Grid* pGrid, Command moveCommands[])
 void Player::RebootAndRepair(Grid* pGrid)
 {
 	Output*pOut = pGrid->GetOutput(); 
+	Input* pIn = pGrid->GetInput();
+	int x, y;
 	if (!HasRebootnRepair())  //checks if its rebooted or not
 	{
 		pOut->PrintMessage("Player Cannot be rebooted or repaired");
+		pIn->GetPointClicked(x, y); // Wait for the user to click
+		pOut->ClearStatusBar();
 		return;
 	}
     if (health < 10) {  
 		health = 10; //sets health to 10 again
 		pOut->PrintMessage("Reboot and Repair: Health restored to maximum!");
+		pIn->GetPointClicked(x, y); // Wait for the user to click
+		pOut->ClearStatusBar();
 	}
 	else {
 		pOut->PrintMessage("Reboot and Repair: Health is already at maximum.");
+		pIn->GetPointClicked(x, y); // Wait for the user to click
+		pOut->ClearStatusBar();
 	}
 	// move the player to the starting position
 	Cell* startingCell = pGrid->GetStartingCell();
+	currDirection = RIGHT;
 	ClearDrawing(pOut);
 	SetCell(startingCell); 
 	Draw(pOut);
 	setInactive(); //skip actions for player during this round
+	isRebootnRepair = false;
 	pGrid->DisPlayerInfo();
 	// pOut->PrintMessage("Player Rebooted and Repaired successfully"); removed so the message before it would get printed
 }
@@ -575,10 +585,15 @@ void Player::setInactive()
 {
 	isActive = false;
 }
+void Player::setActive()
+{
+	isActive = true;
+}
 
 void Player::UseToolkit(Grid* pGrid) {
 	Output* pOut = pGrid->GetOutput();
-
+	Input* pIn = pGrid->GetInput();
+	int x, y;
 	if (!HasToolkit()) //add tool kit set it to true, already initialized b false
 	{
 		pOut->PrintMessage("No Toolkit is available for you ");
@@ -588,6 +603,8 @@ void Player::UseToolkit(Grid* pGrid) {
 	health = 10;
 	hasToolkit = false; // toolkit is consumed
 	pOut->PrintMessage("Toolkit used! Health fully restored to 10.");
+	pIn->GetPointClicked(x, y); // Wait for the user to click
+	pOut->ClearStatusBar();
 }
 
 void Player::UseHackDevice(Grid* pGrid)

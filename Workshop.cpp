@@ -22,7 +22,7 @@ void Workshop::Apply(Grid* pGrid, Player* pPlayer)
     int x, y;
 
     // Print workshop message
-    pOut->PrintMessage("Welcome to the Workshop! Choose from to buy: 1. Double Laser 2. Extended Memory 3. Toolkit 4. Hack Device 5. Laser Reflect Gear 6. Shield.");
+    pOut->PrintMessage("Welcome to the Workshop! Choose from to buy: 1. Double Laser 2. Extended Memory 3. Toolkit 4. Hack Device 5. Laser Reflect Gear 6. Shield.7.rnp");
     string choice = pIn->GetSrting(pOut);
 
     if (choice == "1") {
@@ -83,6 +83,16 @@ void Workshop::Apply(Grid* pGrid, Player* pPlayer)
         }
         else {
             pOut->PrintMessage("You already have a Shield. Click anywhere to continue...");
+        }
+    }
+    else if (choice == "7") {
+        // Player chooses Shield Mechanism
+        if (!pPlayer->HasRebootnRepair()) { // Check if player already has a Shield
+            pPlayer->setRebootnRepair(true); // Equip the player with a shield
+            pOut->PrintMessage("You will be rebooted and repaired next round! Click anywhere to continue...");
+        }
+        else {
+            pOut->PrintMessage("You already have a reboot and repair chance. Click anywhere to continue...");
         }
     }
     else {
