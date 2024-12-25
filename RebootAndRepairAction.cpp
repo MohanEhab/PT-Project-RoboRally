@@ -2,7 +2,6 @@
 #include"ApplicationManager.h"
 #include"Grid.h"
 #include"Player.h"
-
 #include "RebootAndRepairAction.h"
 RebootAndRepairAction::RebootAndRepairAction(ApplicationManager* pApp) :Action(pApp)
 {}
@@ -20,4 +19,3 @@ void RebootAndRepairAction::Execute()
 
 RebootAndRepairAction::~RebootAndRepairAction()
 {}
-

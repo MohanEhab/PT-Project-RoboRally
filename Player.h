@@ -86,6 +86,7 @@ public:
 
 	// ====== Equipment Functions ======
 	void EquipDoubleLaser();             // Equip the player with a double laser
+	bool NeedsRebootAndRepair() const;
 	bool HasDoubleLaser() const;         // Check if the player has a double laser
 
 	void EnableExtendedMemory();         // Enable extended memory

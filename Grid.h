@@ -81,6 +81,7 @@ public:
 	// ========= Other Getters =========
 	
 	Player * GetCurrentPlayer() const;	// Gets a Pointer to the Current Player	                                    
+	Player* GetOpponentPlayer() const;
 	Belt * GetNextBelt(const CellPosition & position);  // Gets a Pointer to the first Belth after the passed "position"
 	Cell* Grid::GetStartingCell()const;
 

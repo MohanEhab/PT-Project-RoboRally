@@ -18,7 +18,6 @@
 #include "CellPosition.h"
 using namespace std;
 
-
 Grid::Grid(Input * pIn, Output * pOut) : pIn(pIn), pOut(pOut) // Initializing pIn, pOut
 {
 	// Allocate the Cell Objects of the CellList
@@ -47,9 +46,7 @@ Grid::Grid(Input * pIn, Output * pOut) : pIn(pIn), pOut(pOut) // Initializing pI
 	endGame = false;
 }
 
-
 // ========= Adding or Removing GameObjects to Cells =========
-
 
 GameObject* Grid::GetObjectFromCell(const CellPosition& pos) const
 {
@@ -61,6 +58,7 @@ GameObject* Grid::GetObjectFromCell(const CellPosition& pos) const
 	}
 	return nullptr; // Return nullptr if the position is invalid or the cell is empty
 }
+
 bool Grid::AddObjectToCell(GameObject * pNewObject)  // think if any validation is needed
 
 {
@@ -85,6 +83,7 @@ bool Grid::IsCellEmpty(const CellPosition& pos) const
 	GameObject* pObject = CellList[pos.VCell()][pos.HCell()]->GetGameObject(); //pObject should store the object if there is (copied it from the syntax/idea function above)
 	return (pObject == nullptr); // Return true if the cell contains no object
 }
+
 int Grid::CountGameObjects(int Type) const
 {
 	int count = 0;
@@ -98,6 +97,7 @@ int Grid::CountGameObjects(int Type) const
 	}
 	return count;
 }
+
 void Grid::ClearGrid()
 {
 	for (int i = 0; i < NumVerticalCells; i++) { // loops iterate thruogh each row
@@ -113,10 +113,12 @@ void Grid::ClearGrid()
 		}
 	}
 }
+
 CellPosition Grid::GetPositionFromCellNum(int cellNum)
 {
 	return CellPosition::GetCellPositionFromNum(cellNum);
 }
+
 void Grid::LoadAll(ifstream& InFile) {
 	int count;
 
@@ -183,6 +185,7 @@ void Grid::LoadAll(ifstream& InFile) {
 	Output* pOut = GetOutput();
 	pOut->PrintMessage("Grid loaded successfully!");
 }
+
 void Grid::SaveAll(ofstream& OutFile, int Type) {
 	int count = CountGameObjects(Type);
 	OutFile << count << endl; // Write the count first
@@ -198,6 +201,7 @@ void Grid::SaveAll(ofstream& OutFile, int Type) {
 		}
 	}
 }
+
 // Note: You may need to change the return type of this function (Think)========DONE
 GameObject* Grid::RemoveObjectFromCell(const CellPosition& pos) {
 	if (!pos.IsValidCell()) {
@@ -230,9 +234,7 @@ void Grid::UpdatePlayerCell(Player* player, const CellPosition& newPosition)
 
 }
 
-
 // ========= Setters and Getters Functions =========
-
 
 Input * Grid::GetInput() const
 {
@@ -271,11 +273,14 @@ void Grid::AdvanceCurrentPlayer()
 }
 
 // ========= Other Getters =========
-
-
 Player * Grid::GetCurrentPlayer() const
 {
 	return PlayerList[currPlayerNumber];
+}
+
+Player* Grid::GetOpponentPlayer() const
+{
+	return PlayerList[currPlayerNumber+1 % 2]; 
 }
 
 Belt * Grid::GetNextBelt(const CellPosition & position)
@@ -306,9 +311,7 @@ Cell* Grid::GetStartingCell() const
 	return CellList[NumVerticalCells - 1][0];
 }
 
-
 // ========= User Interface Functions =========
-
 
 void Grid::UpdateInterface() const
 {
@@ -378,7 +381,6 @@ void Grid::PrintErrorMessage(string msg)
 	pOut->ClearStatusBar();
 }
 
-
 bool Grid::HasFlag() const
 {
 	for (int i = 0; i < NumVerticalCells; i++)
@@ -410,6 +412,7 @@ bool Grid::HasAntenna() const
 	}
 	return false; // No Antenna found
 }
+
 CellPosition Grid::FindAntennaPosition() const
 {
 	for (int i = 0; i < NumVerticalCells; i++)
@@ -490,12 +493,11 @@ void Grid::ClearAllObjects()
 		}
 	}
 }
+
 Cell* Grid::GetCell(const CellPosition& pos) const
 {
 	return CellList[pos.VCell()][pos.HCell()]; // Return the corresponding cell
 }
-
-
 
 Grid::~Grid()
 {

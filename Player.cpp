@@ -49,8 +49,6 @@ int Player::GetHealth()
 }
 
 // ====== Equipment Functions ======
-
-
 void Player::EnableLaserReflection() {
 	hasLaserReflection = true;
 }
@@ -58,7 +56,6 @@ void Player::EnableLaserReflection() {
 bool Player::HasLaserReflection() const {
 	return hasLaserReflection;
 }
-
 
 void Player::DisableLaserReflection() {
 	hasLaserReflection = false;
@@ -71,6 +68,7 @@ void Player::EnableShield() {
 bool Player::HasShield() const {
 	return hasShield;
 }
+
 void Player::DisableShield() {
 	hasShield = false;
 }
@@ -83,6 +81,11 @@ void Player::EquipDoubleLaser() {
 	
 	EquipLaser(DOUBLE_LASER);
 	hasDoubleLaser = true;
+}
+
+bool Player::NeedsRebootAndRepair() const
+{
+	return (health < 10); 
 }
 
 bool Player::HasDoubleLaser() const {
@@ -99,13 +102,14 @@ bool Player::HasExtendedMemory() const {
 	return hasExtendedMemory;
 }
 
-void Player::AddToolkit() {
+void Player::AddToolkit() 
+{
 	
-	//code TODO()
 	hasToolkit = true;
 }
 
-bool Player::HasToolkit() const {
+bool Player::HasToolkit() const
+{
 	return hasToolkit;
 }
 
@@ -355,7 +359,7 @@ void Player::RebootAndRepair(Grid* pGrid)
 	Draw(pOut);
 	setInactive(); //skip actions for player during this round
 	pGrid->DisPlayerInfo();
-	pOut->PrintMessage("player is successfully rebooted"); 
+	// pOut->PrintMessage("Player Rebooted and Repaired successfully"); removed so the message before it would get printed
 }
 
 void Player::DisplayRandomCommands(Grid* pGrid, Command availableCommands[]) { 
@@ -474,7 +478,6 @@ void Player::SelectCommands(Grid* pGrid, Command availableCommands[])
 	delete[] selectedCommands;
 }
 
- 
 Command* Player::GetSavedCommands()
 {
 	return savedCommands;
@@ -576,7 +579,7 @@ void Player::setInactive()
 void Player::UseToolkit(Grid* pGrid) {
 	Output* pOut = pGrid->GetOutput();
 
-	if (!HasToolkit())
+	if (!HasToolkit()) //add tool kit set it to true, already initialized b false
 	{
 		pOut->PrintMessage("No Toolkit is available for you ");
 		return; 
@@ -587,7 +590,8 @@ void Player::UseToolkit(Grid* pGrid) {
 	pOut->PrintMessage("Toolkit used! Health fully restored to 10.");
 }
 
-void Player::UseHackDevice(Grid* pGrid) {
+void Player::UseHackDevice(Grid* pGrid)
+{
 	Output* pOut = pGrid->GetOutput();
 
 	if (!HasHackDevice()) 
@@ -595,13 +599,8 @@ void Player::UseHackDevice(Grid* pGrid) {
 		pOut->PrintMessage("You don't have a hackdevice.");
 		return;
 	}
-
-	for (int i = 0; i < MaxPlayerCount; i++) {
-		Player* opponent = pGrid-> GetCurrentPlayer();
-		if (opponent != this) { //dont hack itself
-			opponent->setInactive(); //hack other player
-		}
-	}
+	Player* opponent = pGrid-> GetOpponentPlayer(); 
+	opponent->setInactive(); //hack other player
 	hasHackDevice = false; //  device is consumed
 	pOut->PrintMessage("Hack device used! Opponents cannot play this round.");
 }
