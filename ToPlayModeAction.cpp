@@ -41,19 +41,16 @@ void ToPlayModeAction::Execute() {
             if (currentPlayer->HasHackDevice()) {
                 UseHackAction useHackAction(pManager);
                 useHackAction.Execute();
-                currentPlayer->setInactive();
             }
 
             if (currentPlayer->HasToolkit()) {
                 UseToolKitAction useToolkitAction(pManager);
                 useToolkitAction.Execute();
-                currentPlayer->setInactive();
             }
 
             if (currentPlayer->HasRebootnRepair()) {
                 RebootAndRepairAction rebootAction(pManager);
                 rebootAction.Execute();
-                currentPlayer->setInactive(); 
             }
 
             Command availableCommands[10];
